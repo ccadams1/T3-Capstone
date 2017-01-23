@@ -1,0 +1,92 @@
+/* CSS Document For The Capstone Group- T3 */
+
+html {
+	width: 100%;
+	max-width: 1280px;
+	height:auto;
+	margin: 0;
+	padding: 0;
+	background-color: #fafafa;
+}
+body {
+	margin: 0;
+	padding: 0;
+}
+.logo {
+	float: left;
+	width:13%;
+	height: auto;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10px;
+	margin-bottom: 5px;
+    margin-top: 15px; /*To separate from the top*/
+}
+.header {
+	width: 100%;
+	overflow: auto;
+	background-color:#000;
+}
+.navigation ul {
+  padding: 0px;
+  margin: 0px;
+  margin-right: 30px;
+  margin-top: 80px;
+  float: right;
+  text-align: center;
+  display:inline-block;
+}
+.navigation li {
+  list-style-type: none;
+  padding: 0px;
+  height: 24px;
+  margin-bottom: 4px;
+  display: inline;
+}
+.navigation li a {
+  color: white;
+  font-size: 16px;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  line-height: 70px;
+  padding: 5px 20px;
+}
+
+.navigation li a:hover {
+	color: #47478D;
+}
+/*HOME PAGE MAIN BODY */
+#top-body {
+	background-color: #47478D;
+	height: 100px;
+	text-align: center;
+	margin: 0;
+	color: white;
+	padding-top: 10px;
+}
+.main-body {
+	text-align: center;
+	height: 450px;
+	margin-left: 50px;
+	margin-right: 50px;
+	font-family:"Adobe Hebrew Bold", "American Typewriter Condensed", "American Typewriter", "Apple Chancery";
+	clear: both;
+}
+.main-body2 {
+	height: 200px;
+	background-color: #47478D;
+	clear: both;
+}
+
+/*----End of home page------*/
+
+
+/*Footer*/
+footer {
+	background-color:#000;
+	padding: 20px;
+	color: white;
+	text-align: center;
+	font-family:"Adobe Hebrew Bold", "American Typewriter Condensed", "American Typewriter", "Apple Chancery";
+	height: 100px;
+}

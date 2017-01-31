@@ -1,29 +1,24 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ItemScreen {
+public class ReportScreen {
 	
-	public ItemScreen(Item s){
-		
+	
+	public ReportScreen(Report rep){
+		makeCenter();
 	}
 	
 	private void makeCenter(){
 		
 	}
 	
-	private class goToInventory implements ActionListener{
+	private class printReport implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			
 		}
 	}
 	
 	private class goToMain implements ActionListener{
-		public void actionPerformed(ActionEvent e){
-			
-		}
-	}
-	
-	private class editItem implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			
 		}

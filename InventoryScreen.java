@@ -1,9 +1,11 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
+
 public class InventoryScreen {
 
-		public InventoryScreen(){
+		public InventoryScreen(Inventory inv){
 			
 		}
 		
@@ -28,6 +30,12 @@ public class InventoryScreen {
 		}
 		
 		private class goToItem implements ActionListener{
+			public void actionPerformed(ActionEvent e){
+				
+			}
+		}
+		
+		private class goToMain implements ActionListener{
 			public void actionPerformed(ActionEvent e){
 				
 			}

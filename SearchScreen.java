@@ -1,21 +1,16 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ItemScreen {
-	
-	public ItemScreen(Item s){
-		
+public class SearchScreen {
+
+	public SearchScreen(){
+		makeCenter();
 	}
 	
 	private void makeCenter(){
 		
 	}
 	
-	private class goToInventory implements ActionListener{
-		public void actionPerformed(ActionEvent e){
-			
-		}
-	}
 	
 	private class goToMain implements ActionListener{
 		public void actionPerformed(ActionEvent e){
@@ -23,9 +18,11 @@ public class ItemScreen {
 		}
 	}
 	
-	private class editItem implements ActionListener{
+	private class search implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			
 		}
 	}
+	
+	
 }

@@ -22,4 +22,11 @@ public class Inventory {
 		categories.remove(c);
 	}
 	
+	public int searchInventory(String n){
+		return -1;
+	}
+	
+	public Item getItem(int i){
+		return categories.get(0).getItem(0);
+	}
 }

@@ -24,6 +24,7 @@ public class Category {
 		this.catName = n;
 	}
 	
+	
 	public String getName(){
 		return catName;
 	}
@@ -32,7 +33,15 @@ public class Category {
 		return items;
 	}
 	
+	public Item getItem(int i){
+		
+		//Code to find item by name
+		return items.get(0);  // temp code
+	}
 	
+	public int searchCategory(String n){
+		return -1;
+	}
 	
 	
 	

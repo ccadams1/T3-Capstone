@@ -1,64 +1,74 @@
+
 public class Item {
-	
+
 	private String name;
 	private int id;
 	private double price;
-	private int quantity;
+	private int quantity = 0;
 	private int minStock;
-
-	public Item(String n, int i, double p, int q, int m){
-		name = n;
-		id = i;
-		price = p;
-		quantity = q;
-		minStock = m;
+	
+	public Item(String Name, int Id, double Price, int Quantity, int MinStock)
+	{
+		this.name = Name;
+		this.id = Id;
+		this.price = Price;
+		this.quantity = Quantity;
+		this.minStock = MinStock;
 	}
 	
-	public void setName(String n){
-		name = n;
+	public void setName(String name) {
+		
+		this.name = name;
 	}
 	
-	public String getName(){
-		return name;
+	public String getName() {
+		return name;	
 	}
 	
-	public void setId(int i){
-		id = i;
+	public void setId (int id)
+	{
+		this.id = id;
 	}
 	
-	public int getId(){
+	public int getId() {
 		return id;
 	}
 	
-	public void setPrice(double p){
-		price = p;
+	public void setPrice (double price)
+	{
+		this.price = price;
 	}
 	
-	public double getPrice(){
+	public double getPrice()
+	{
 		return price;
 	}
 	
-	public void setQuantity(int q){
-		quantity = q;
+	public void setQuantity (int quantity)
+	{
+		this.quantity = quantity;
 	}
 	
-	public int getQuantity(){
+	public int getQuantity()
+	{
 		return quantity;
 	}
 	
-	public void setMinStock(int m){
-		minStock = m;
+	public void setMinStock (int minStock)
+	{
+		this.minStock = minStock;
 	}
 	
-	public int getMinStock(){
+	public int getMinStock()
+	{
 		return minStock;
 	}
 	
-	public void addQuantity(){
-		quantity++;
+	public void addQuantity() {
+		this.quantity++;
 	}
 	
-	public void subtractQuantity(){
-		quantity--;
+	public void substractQuantity() {
+		this.quantity--;
 	}
 }

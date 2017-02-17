@@ -62,21 +62,21 @@ public class MainApplicationWindow {
 		//Main panel
 		//adds the Main Screen
 		mainPanel = new MainPanel();
-		mainPanel.setBounds(0, 0, 784, 536);
+		mainPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(mainPanel);
 		mainPanel.setLayout(null);
 		
 		//POS panel
 		//adds the POS Screen
 		posPanel = new POSPanel();
-		posPanel.setBounds(0, 0, 784, 536);
+		posPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(posPanel);
 		posPanel.setLayout(null);		
 		
 		//Inventory panel
 		//adds the Inventory Screen
 		inventoryPanel = new InventoryPanel();
-		inventoryPanel.setBounds(0, 0, 784, 536);
+		inventoryPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(inventoryPanel);
 		inventoryPanel.setLayout(null);
 		
@@ -84,7 +84,7 @@ public class MainApplicationWindow {
 		//Search Panel
 		//adds the Search Screen
 		searchPanel = new SearchPanel();
-		searchPanel.setBounds(0, 0, 784, 536);
+		searchPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(searchPanel);
 		searchPanel.setLayout(null);
 		
@@ -92,7 +92,7 @@ public class MainApplicationWindow {
 		//Report Panel
 		//adds the Report Screen
 		reportPanel = new ReportPanel();
-		reportPanel.setBounds(0, 0, 784, 536);
+		reportPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(reportPanel);
 		reportPanel.setLayout(null);
 		
@@ -100,7 +100,7 @@ public class MainApplicationWindow {
 		//Help Panel
 		//adds the Help Screen
 		helpPanel = new HelpPanel();
-		helpPanel.setBounds(0, 0, 784, 536);
+		helpPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(helpPanel);
 		helpPanel.setLayout(null);		
 	}

@@ -3,30 +3,31 @@ import java.util.List;
 
 public class Inventory {
 	
-	private List<Category> categories;
+	private List<Item> items;
 	
 	public Inventory(){
-		categories = new ArrayList<Category>();
+		items = new ArrayList<Item>();
 	}
 	
-	public void addCategory(String n){
-		Category temp = new Category(n);
-		categories.add(temp);
+	public int size(){
+		return items.size();
 	}
 	
-	public Category getCategory(int i){
-		return categories.get(i);
+	public void addItem(Item n){
+		items.add(n);
 	}
 	
-	public void removeCategory(Category c){
-		categories.remove(c);
+	public Item getItem(int i){
+		return items.get(i);
+	}
+	
+	public void removeItem(Item i){
+		items.remove(i);
 	}
 	
 	public int searchInventory(String n){
 		return -1;
 	}
 	
-	public Item getItem(int i){
-		return categories.get(0).getItem(0);
-	}
+	
 }

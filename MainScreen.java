@@ -4,21 +4,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
-public class MainScreen extends JFrame {
+public class MainScreen extends JPanel {
 	
-	private NavigationBar nav;
 	private JPanel buttons, bottomPanel;
 	private JButton sales, inventory, reports, search, supplier;
 	private JButton settings, changeUser;
 	
 	public MainScreen(){
 		
-		//Create JFrame and GridLayout
-		super("Main Screen");
+		//Create JPanel and GridLayout
+		super();
 		setLayout(new BorderLayout());
 		
 		
@@ -71,7 +68,6 @@ public class MainScreen extends JFrame {
 		add(bottomPanel, BorderLayout.SOUTH);
 		
 		setSize(600, 500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 	

@@ -45,7 +45,7 @@ public class MainApplicationWindow {
 	private void initialize() {
 		//initializes frame and sets layout
 		frame = new JFrame();
-		frame.setBounds(100, 100, 800, 600);
+		frame.setBounds(0, 0, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		frame.setTitle("T3 Tracking and Inventory");
@@ -58,13 +58,14 @@ public class MainApplicationWindow {
 		//creates navigation menu
 		menuBar = NavigationMenu();
 		frame.setJMenuBar(menuBar);
-
+		
+		
+		
 		//Main panel
 		//adds the Main Screen
-		mainPanel = new MainPanel();
+		mainPanel = new MainPanel(menuBar);
 		mainPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(mainPanel);
-		mainPanel.setLayout(null);
 		
 		//POS panel
 		//adds the POS Screen
@@ -79,7 +80,7 @@ public class MainApplicationWindow {
 		inventoryPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(inventoryPanel);
 		inventoryPanel.setLayout(null);
-		
+
 		
 		//Search Panel
 		//adds the Search Screen
@@ -105,7 +106,7 @@ public class MainApplicationWindow {
 		helpPanel.setLayout(null);		
 	}
 	
-	private JMenuBar NavigationMenu()
+	public JMenuBar NavigationMenu()
 	{
 		//Create JMenuBar
 		JMenuBar menu = new JMenuBar();

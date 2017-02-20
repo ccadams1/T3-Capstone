@@ -3,6 +3,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.CardLayout;
 
 public class MainApplicationWindow {
@@ -48,7 +50,7 @@ public class MainApplicationWindow {
 		frame.setBounds(0, 0, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
-		frame.setTitle("T3 Tracking and Inventory");
+		frame.setTitle("T3 Tracking and Inventory for " + "*insert business name here*");
 		
 		//creates layeredPane Screens to operate on
 		JLayeredPane layeredPane = new JLayeredPane();
@@ -110,7 +112,7 @@ public class MainApplicationWindow {
 	{
 		//Create JMenuBar
 		JMenuBar menu = new JMenuBar();
-		
+				
 		//Main button for menu
 		JButton mainScreenButton = new JButton("Main");
 		mainScreenButton.addActionListener(new ActionListener() {
@@ -176,6 +178,13 @@ public class MainApplicationWindow {
 			}
 		});
 		menu.add(helpScreenButton);
+		
+		mainScreenButton.setBorderPainted(false);
+		posScreenButton.setBorderPainted(false);
+		inventoryScreenButton.setBorderPainted(false);
+		searchScreenButton.setBorderPainted(false);
+		reportScreenButton.setBorderPainted(false);
+		helpScreenButton.setBorderPainted(false);
 		
 		//returns Navigation Layout Menu
 		return menu;

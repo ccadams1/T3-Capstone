@@ -1,194 +1,335 @@
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
-import java.awt.CardLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
-public class MainApplicationWindow {
-
-	private JFrame frame;
-	private JPanel mainPanel;
-	private JPanel posPanel;
-	private JPanel inventoryPanel;
-	private JPanel searchPanel;
-	private JPanel reportPanel;
-	private JPanel helpPanel;
-	private JMenuBar menuBar;
+public class InventoryPanel extends JPanel{
+	private JTextField itemNameTextField;
+	private JTextField supplierNameTextField;
+	private JTextField itemIDTextField;
+	private JTextField minPriceTextField;
+	private JTextField maxPriceTextField;
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainApplicationWindow window = new MainApplicationWindow();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public MainApplicationWindow() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		//initializes frame and sets layout
-		frame = new JFrame();
-		frame.setBounds(0, 0, 800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new CardLayout(0, 0));
-		frame.setTitle("T3 Tracking and Inventory");
-		
-		//creates layeredPane Screens to operate on
-		JLayeredPane layeredPane = new JLayeredPane();
-		frame.getContentPane().add(layeredPane, "name_433016626230244");
-		
-		//Navigation Menu
-		//creates navigation menu
-		menuBar = NavigationMenu();
-		frame.setJMenuBar(menuBar);		
-		
-		//Main panel
-		//adds the Main Screen
-		mainPanel = new MainPanel(menuBar);
-		mainPanel.setBounds(0, 0, 772, 476);
-		layeredPane.add(mainPanel);
-		
-		//POS panel
-		//adds the POS Screen
-		posPanel = new POSPanel();
-		posPanel.setBounds(0, 0, 772, 476);
-		layeredPane.add(posPanel);
-		posPanel.setLayout(null);		
-		
-		//Inventory panel
-		//adds the Inventory Screen
-		inventoryPanel = new InventoryPanel();
-		inventoryPanel.setBounds(0, 0, 772, 476);
-		layeredPane.add(inventoryPanel);
-		inventoryPanel.setLayout(null);
-
-		
-		//Search Panel
-		//adds the Search Screen
-		searchPanel = new SearchPanel();
-		searchPanel.setBounds(0, 0, 772, 476);
-		layeredPane.add(searchPanel);
-		searchPanel.setLayout(null);
-		
-		
-		//Report Panel
-		//adds the Report Screen
-		reportPanel = new ReportPanel();
-		reportPanel.setBounds(0, 0, 772, 476);
-		layeredPane.add(reportPanel);
-		reportPanel.setLayout(null);
-		
-		
-		//Help Panel
-		//adds the Help Screen
-		helpPanel = new HelpPanel();
-		helpPanel.setBounds(0, 0, 772, 476);
-		layeredPane.add(helpPanel);
-		helpPanel.setLayout(null);		
-	}
-	
-	public JMenuBar NavigationMenu()
+	public InventoryPanel()
 	{
-		//Create JMenuBar
-		JMenuBar menu = new JMenuBar();
+		//bounds should be set to (0, 0, 772, 476)
+		this.setBounds(0, 0, 772, 476);
+		this.setLayout(null);
 		
-		//Main button for menu
-		JButton mainScreenButton = new JButton("Main");
-		mainScreenButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//sets main as visible screen
-				toggleVisibility(mainPanel, posPanel, inventoryPanel, searchPanel,
-						reportPanel, helpPanel);
+		//sets up a panel for information placement
+		Panel informationPanel = new Panel();
+		informationPanel.setBounds(0, 0, 772, 178);
+		this.add(informationPanel);		
+		informationPanel.setLayout(null);
+			
+		//inserts radio button panel into information panel
+		JPanel RadioPanel = new JPanel();
+		RadioPanel.setBounds(0, 0, 239, 178);
+		informationPanel.add(RadioPanel);
+		RadioPanel.setBorder(new TitledBorder(null, "Inventory", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.PLAIN, 18), null));
+		RadioPanel.setLayout(null);
+		
+		//creates a button group for radio buttons to operate
+		ButtonGroup radioButtons = new ButtonGroup();
+		
+		//creates an add item button and adds it to RadioPanel and ButtonGroup
+		JRadioButton addItemButton = new JRadioButton("Add Item");
+		addItemButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		addItemButton.setBounds(18, 30, 203, 28);
+		addItemButton.setSelected(true);
+		RadioPanel.add(addItemButton);
+		radioButtons.add(addItemButton);
+			
+		//creates an edit item button and adds it to RadioPanel and ButtonGroup
+		JRadioButton editItemButton = new JRadioButton("Edit Item");
+		editItemButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		editItemButton.setBounds(18, 63, 203, 32);
+		RadioPanel.add(editItemButton);
+		radioButtons.add(editItemButton);
+		
+		//creates a delete item button and adds it to RadioPanel and ButtonGroup
+		JRadioButton deleteItemButton = new JRadioButton("Delete Item");
+		deleteItemButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		deleteItemButton.setBounds(18, 96, 203, 32);
+		RadioPanel.add(deleteItemButton);
+		radioButtons.add(deleteItemButton);
+			
+		//adds search button to RadioPanel
+		JButton changeInventoryButton = new JButton("Change Inventory");
+		changeInventoryButton.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		changeInventoryButton.setBounds(18, 134, 191, 31);
+		RadioPanel.add(changeInventoryButton);
+		
+		//creates panels that display based on the radio buttons
+		//sets edit item Panel
+		JPanel editItem = editItemRadioPanel();
+		editItem.setBounds(239, 0, 533, 178);
+		informationPanel.add(editItem);
+		editItem.setVisible(false);
+
+		
+		//sets add item Panel
+		JPanel addItem = addItemRadioPanel();
+		addItem.setBounds(239, 0, 533, 178);
+		addItem.setVisible(true);
+		informationPanel.add(addItem);
+		
+		//sets delete item Panel
+		JPanel deleteItem = deleteItemRadioPanel();
+		deleteItem.setBounds(239, 0, 533, 178);
+		deleteItem.setVisible(false);
+		informationPanel.add(deleteItem);
+		
+		//utilizes radio button to display type of item Panel
+		addItemButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addItem.setVisible(true);
+				deleteItem.setVisible(false);
+				editItem.setVisible(false);
+				changeInventoryButton.setVisible(true);
 			}
 		});
-		menu.add(mainScreenButton);
-		
-		//POS button for menu
-		JButton posScreenButton = new JButton("POS");
-		posScreenButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//sets POS as visible screen
-				toggleVisibility(posPanel, mainPanel, inventoryPanel, searchPanel,
-						reportPanel, helpPanel);
+		editItemButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editItem.setVisible(true);
+				addItem.setVisible(false);
+				deleteItem.setVisible(false);
+				changeInventoryButton.setVisible(true);
 			}
 		});
-		menu.add(posScreenButton);
-		
-		//Inventory button for menu
-		JButton inventoryScreenButton = new JButton("Inventory");
-		inventoryScreenButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//sets inventory as visible screen
-				toggleVisibility(inventoryPanel, mainPanel, posPanel, searchPanel,
-						reportPanel, helpPanel);
+		deleteItemButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				deleteItem.setVisible(true);
+				addItem.setVisible(false);
+				editItem.setVisible(false);
+				changeInventoryButton.setVisible(false);
 			}
 		});
-		menu.add(inventoryScreenButton);
 		
-		//Search button for menu
-		JButton searchScreenButton = new JButton("Search");
-		searchScreenButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//sets search as visible screen
-				toggleVisibility(searchPanel, mainPanel, posPanel, inventoryPanel,
-						reportPanel, helpPanel);
-			}
-		});
-		menu.add(searchScreenButton);
+		//creates a scrolling text area
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 174, 772, 302);
+		this.add(scrollPane);
 		
-		//Report button for menu
-		JButton reportScreenButton = new JButton("Reports");
-		reportScreenButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//sets reports as visible screen
-				toggleVisibility(reportPanel, mainPanel, posPanel, inventoryPanel, 
-						searchPanel, helpPanel);
-			}
-		});
-		menu.add(reportScreenButton);
+		//creates text area to put in the scrollPane
+		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		scrollPane.setViewportView(textArea);
+		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));		
+	} 
+	
+	private JPanel addItemRadioPanel()
+	{
+		JPanel addItemRadioPanel = new JPanel();
+		addItemRadioPanel.setLayout(null);
 		
-		//Help button for menu
-		JButton helpScreenButton = new JButton("Help");
-		helpScreenButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//sets help as visible screen
-				toggleVisibility(helpPanel, mainPanel, posPanel, inventoryPanel, 
-						searchPanel, reportPanel);
-			}
-		});
-		menu.add(helpScreenButton);
+		JLabel itemNameLabel = new JLabel("Item name:");
+		itemNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemNameLabel.setBounds(10, 12, 114, 29);
+		addItemRadioPanel.add(itemNameLabel);
 		
-		//returns Navigation Layout Menu
-		return menu;
+		itemNameTextField = new JTextField();
+		itemNameTextField.setBounds(103, 5, 179, 35);
+		addItemRadioPanel.add(itemNameTextField);
+		itemNameTextField.setColumns(10);
+		
+		JLabel supplierNameLabel = new JLabel("Supplier name:");
+		supplierNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		supplierNameLabel.setBounds(10, 92, 114, 29);
+		addItemRadioPanel.add(supplierNameLabel);
+		
+		supplierNameTextField = new JTextField();
+		supplierNameTextField.setColumns(10);
+		supplierNameTextField.setBounds(124, 85, 231, 35);
+		addItemRadioPanel.add(supplierNameTextField);
+		
+		itemIDTextField = new JTextField();
+		itemIDTextField.setColumns(10);
+		itemIDTextField.setBounds(376, 5, 146, 35);
+		addItemRadioPanel.add(itemIDTextField);
+		
+		JLabel itemIDLabel = new JLabel("Item ID:");
+		itemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemIDLabel.setBounds(313, 12, 89, 29);
+		addItemRadioPanel.add(itemIDLabel);
+		
+		JLabel itemDescriptionLabel = new JLabel("Item description:");
+		itemDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemDescriptionLabel.setBounds(10, 137, 134, 29);
+		addItemRadioPanel.add(itemDescriptionLabel);
+		
+		JTextField ItemDescriptionTextField = new JTextField();
+		ItemDescriptionTextField.setColumns(10);
+		ItemDescriptionTextField.setBounds(134, 130, 388, 35);
+		addItemRadioPanel.add(ItemDescriptionTextField);
+		
+		JLabel itemPriceLabel = new JLabel("Price:");
+		itemPriceLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemPriceLabel.setBounds(8, 51, 56, 29);
+		addItemRadioPanel.add(itemPriceLabel);
+		
+		minPriceTextField = new JTextField();
+		minPriceTextField.setColumns(10);
+		minPriceTextField.setBounds(63, 44, 100, 35);
+		addItemRadioPanel.add(minPriceTextField);
+		
+		JLabel toLabel = new JLabel("to");
+		toLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		toLabel.setBounds(180, 51, 45, 29);
+		addItemRadioPanel.add(toLabel);
+		
+		maxPriceTextField = new JTextField();
+		maxPriceTextField.setColumns(10);
+		maxPriceTextField.setBounds(208, 44, 100, 35);
+		addItemRadioPanel.add(maxPriceTextField);
+
+		JLabel parStockLabel = new JLabel("Par stock:");
+		parStockLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		parStockLabel.setBounds(328, 51, 87, 29);
+		addItemRadioPanel.add(parStockLabel);
+		
+		JTextField parStockTextField = new JTextField();
+		parStockTextField.setColumns(10);
+		parStockTextField.setBounds(400, 44, 115, 35);
+		addItemRadioPanel.add(parStockTextField);
+		
+		return addItemRadioPanel;
+	}
+
+	private JPanel editItemRadioPanel()
+	{
+		JPanel editItemRadioPanel = new JPanel();
+		editItemRadioPanel.setLayout(null);
+		
+		JLabel itemNameLabel = new JLabel("Item name:");
+		itemNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemNameLabel.setBounds(10, 12, 114, 29);
+		editItemRadioPanel.add(itemNameLabel);
+		
+		itemNameTextField = new JTextField();
+		itemNameTextField.setBounds(103, 5, 179, 35);
+		editItemRadioPanel.add(itemNameTextField);
+		itemNameTextField.setColumns(10);
+		
+		JLabel supplierNameLabel = new JLabel("Supplier name:");
+		supplierNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		supplierNameLabel.setBounds(10, 92, 114, 29);
+		editItemRadioPanel.add(supplierNameLabel);
+		
+		supplierNameTextField = new JTextField();
+		supplierNameTextField.setColumns(10);
+		supplierNameTextField.setBounds(124, 85, 231, 35);
+		editItemRadioPanel.add(supplierNameTextField);
+		
+		itemIDTextField = new JTextField();
+		itemIDTextField.setColumns(10);
+		itemIDTextField.setBounds(376, 5, 146, 35);
+		editItemRadioPanel.add(itemIDTextField);
+		
+		JLabel itemIDLabel = new JLabel("Item ID:");
+		itemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemIDLabel.setBounds(313, 12, 89, 29);
+		editItemRadioPanel.add(itemIDLabel);
+		
+		JLabel itemDescriptionLabel = new JLabel("Item description:");
+		itemDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemDescriptionLabel.setBounds(10, 137, 134, 29);
+		editItemRadioPanel.add(itemDescriptionLabel);
+		
+		JTextField ItemDescriptionTextField = new JTextField();
+		ItemDescriptionTextField.setColumns(10);
+		ItemDescriptionTextField.setBounds(134, 130, 388, 35);
+		editItemRadioPanel.add(ItemDescriptionTextField);
+		
+		JLabel itemPriceLabel = new JLabel("Price:");
+		itemPriceLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemPriceLabel.setBounds(8, 51, 56, 29);
+		editItemRadioPanel.add(itemPriceLabel);
+		
+		minPriceTextField = new JTextField();
+		minPriceTextField.setColumns(10);
+		minPriceTextField.setBounds(63, 44, 100, 35);
+		editItemRadioPanel.add(minPriceTextField);
+		
+		JLabel toLabel = new JLabel("to");
+		toLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		toLabel.setBounds(180, 51, 45, 29);
+		editItemRadioPanel.add(toLabel);
+		
+		maxPriceTextField = new JTextField();
+		maxPriceTextField.setColumns(10);
+		maxPriceTextField.setBounds(208, 44, 100, 35);
+		editItemRadioPanel.add(maxPriceTextField);
+
+		JLabel parStockLabel = new JLabel("Par stock:");
+		parStockLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		parStockLabel.setBounds(328, 51, 87, 29);
+		editItemRadioPanel.add(parStockLabel);
+		
+		JTextField parStockTextField = new JTextField();
+		parStockTextField.setColumns(10);
+		parStockTextField.setBounds(400, 44, 115, 35);
+		editItemRadioPanel.add(parStockTextField);
+		
+		return editItemRadioPanel;
 	}
 	
-	//sets thisScreen to the visible screen and the rest stay invisible
-	private void toggleVisibility(JPanel thisScreen, JPanel otherScreen1, 
-			JPanel otherScreen2, JPanel otherScreen3, JPanel otherScreen4, 
-			JPanel otherScreen5)
+	private JPanel deleteItemRadioPanel()
 	{
-		thisScreen.setVisible(true);
-		otherScreen1.setVisible(false);
-		otherScreen2.setVisible(false);
-		otherScreen3.setVisible(false);
-		otherScreen4.setVisible(false);
-		otherScreen5.setVisible(false);
+		JPanel deleteItemRadioPanel = new JPanel();
+		deleteItemRadioPanel.setLayout(null);
+		
+		JLabel itemNameLabel = new JLabel("Item name:");
+		itemNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemNameLabel.setBounds(85, 12, 114, 29);
+		deleteItemRadioPanel.add(itemNameLabel);
+		
+		itemNameTextField = new JTextField();
+		itemNameTextField.setBounds(173, 5, 179, 35);
+		deleteItemRadioPanel.add(itemNameTextField);
+		itemNameTextField.setColumns(10);
+		
+		itemIDTextField = new JTextField();
+		itemIDTextField.setColumns(10);
+		itemIDTextField.setBounds(189, 85, 146, 35);
+		deleteItemRadioPanel.add(itemIDTextField);
+		
+		JLabel itemIDLabel = new JLabel("Item ID:");
+		itemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemIDLabel.setBounds(115, 92, 89, 29);
+		deleteItemRadioPanel.add(itemIDLabel);
+		
+		JLabel andLabel = new JLabel("AND");
+		andLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		andLabel.setBounds(198, 52, 45, 29);
+		deleteItemRadioPanel.add(andLabel);
+		
+		JCheckBox chckbxConfirmDelete = new JCheckBox("Confirm delete");
+		chckbxConfirmDelete.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		chckbxConfirmDelete.setBounds(125, 129, 199, 37);
+		deleteItemRadioPanel.add(chckbxConfirmDelete);
+		
+		JButton btnDeleteItem = new JButton("Delete Item");
+		btnDeleteItem.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		btnDeleteItem.setBounds(390, 134, 141, 32);
+		deleteItemRadioPanel.add(btnDeleteItem);
+		
+		return deleteItemRadioPanel;
 	}
-}
+} 

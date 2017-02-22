@@ -25,6 +25,7 @@ public class MainApplicationWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					UserScreen login = new UserScreen();
 					MainApplicationWindow window = new MainApplicationWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -61,8 +62,6 @@ public class MainApplicationWindow {
 		menuBar = NavigationMenu();
 		frame.setJMenuBar(menuBar);
 		
-		
-		
 		//Main panel
 		//adds the Main Screen
 		mainPanel = new MainPanel(menuBar);
@@ -83,22 +82,19 @@ public class MainApplicationWindow {
 		layeredPane.add(inventoryPanel);
 		inventoryPanel.setLayout(null);
 
-		
 		//Search Panel
 		//adds the Search Screen
 		searchPanel = new SearchPanel();
 		searchPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(searchPanel);
 		searchPanel.setLayout(null);
-		
-		
+				
 		//Report Panel
 		//adds the Report Screen
 		reportPanel = new ReportPanel();
 		reportPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(reportPanel);
 		reportPanel.setLayout(null);
-		
 		
 		//Help Panel
 		//adds the Help Screen

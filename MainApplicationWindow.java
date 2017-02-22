@@ -25,7 +25,7 @@ public class MainApplicationWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UserScreen login = new UserScreen();
+					LoginScreen login = new LoginScreen();
 					MainApplicationWindow window = new MainApplicationWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {

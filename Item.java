@@ -2,18 +2,31 @@
 public class Item {
 
 	private String name;
-	private int id;
+	private String id;
 	private double price;
 	private int quantity = 0;
-	private int minStock;
+	private int parStock;
+	private String supplier;
+	private String description;
 	
-	public Item(String Name, int Id, double Price, int Quantity, int MinStock)
+	public Item(String n, String i, double p, String s, int par)
 	{
-		this.name = Name;
-		this.id = Id;
-		this.price = Price;
-		this.quantity = Quantity;
-		this.minStock = MinStock;
+		this.name = n;
+		this.id = i;
+		this.price = p;
+		this.supplier = s;
+		this.parStock = par;
+		this.description = "";
+	}
+	
+	public Item(String n, String i, double p, String s, int par, String d)
+	{
+		this.name = n;
+		this.id = i;
+		this.price = p;
+		this.supplier = s;
+		this.parStock = par;
+		this.description = d;
 	}
 	
 	public void setName(String name) {
@@ -25,12 +38,12 @@ public class Item {
 		return name;	
 	}
 	
-	public void setId (int id)
+	public void setId (String id)
 	{
 		this.id = id;
 	}
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 	
@@ -54,14 +67,14 @@ public class Item {
 		return quantity;
 	}
 	
-	public void setMinStock (int minStock)
+	public void setParStock (int par)
 	{
-		this.minStock = minStock;
+		this.parStock = par;
 	}
 	
-	public int getMinStock()
+	public int getParStock()
 	{
-		return minStock;
+		return this.parStock;
 	}
 	
 	public void addQuantity() {
@@ -70,5 +83,21 @@ public class Item {
 	
 	public void substractQuantity() {
 		this.quantity--;
+	}
+	
+	public void setSupplier(String s){
+		this.supplier = s;
+	}
+	
+	public String getSupplier(){
+		return this.supplier;
+	}
+	
+	public void setDescription(String d){
+		this.description = d;
+	}
+	
+	public String getDescription(){
+		return this.description;
 	}
 }

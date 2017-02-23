@@ -17,14 +17,24 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class InventoryPanel extends JPanel{
-	private JTextField itemNameTextField;
-	private JTextField supplierNameTextField;
-	private JTextField itemIDTextField;
-	private JTextField minPriceTextField;
-	private JTextField maxPriceTextField;
+	private JTextField editItemNameTextField, addItemNameTextField, deleteItemNameTextField;
+	private JTextField addSupplierNameTextField, editSupplierNameTextField;
+	private JTextField addItemIDTextField, editItemIDTextField, deleteItemIDTextField;
+	private JTextField addMinPriceTextField, editMinPriceTextField;
+	private JTextField addMaxPriceTextField, editMaxPriceTextField;
+	private JTextField addItemDescription, editItemDescription;
+	private JTextField addParStockTextField, editParStockTextField;
+	private Inventory inventory;
 	
 	public InventoryPanel()
 	{
+		
+		//change this later////
+		//
+			inventory = new Inventory();
+		//
+		///////////////////////
+		
 		//bounds should be set to (0, 0, 772, 476)
 		this.setBounds(0, 0, 772, 476);
 		this.setLayout(null);
@@ -35,6 +45,18 @@ public class InventoryPanel extends JPanel{
 		this.add(informationPanel);		
 		informationPanel.setLayout(null);
 			
+		//creates a scrolling text area
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 174, 772, 302);
+		this.add(scrollPane);
+				
+		//creates text area to put in the scrollPane
+		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		scrollPane.setViewportView(textArea);
+		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));	
+		updateInventoryDisplay(textArea);
+				
 		//inserts radio button panel into information panel
 		JPanel RadioPanel = new JPanel();
 		RadioPanel.setBounds(0, 0, 239, 178);
@@ -74,18 +96,161 @@ public class InventoryPanel extends JPanel{
 		RadioPanel.add(changeInventoryButton);
 		
 		//creates panels that display based on the radio buttons
-		//sets edit item Panel
-		JPanel editItem = editItemRadioPanel();
-		editItem.setBounds(239, 0, 533, 178);
-		informationPanel.add(editItem);
-		editItem.setVisible(false);
 
 		
 		//sets add item Panel
-		JPanel addItem = addItemRadioPanel();
-		addItem.setBounds(239, 0, 533, 178);
-		addItem.setVisible(true);
-		informationPanel.add(addItem);
+		JPanel addItemRadioPanel = new JPanel();
+		addItemRadioPanel.setLayout(null);
+		
+		JLabel addItemNameLabel = new JLabel("Item name:");
+		addItemNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		addItemNameLabel.setBounds(10, 12, 114, 29);
+		addItemRadioPanel.add(addItemNameLabel);
+		
+		addItemNameTextField = new JTextField();
+		addItemNameTextField.setBounds(103, 5, 179, 35);
+		addItemRadioPanel.add(addItemNameTextField);
+		addItemNameTextField.setColumns(10);
+		
+		JLabel addSupplierNameLabel = new JLabel("Supplier name:");
+		addSupplierNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		addSupplierNameLabel.setBounds(10, 92, 114, 29);
+		addItemRadioPanel.add(addSupplierNameLabel);
+		
+		addSupplierNameTextField = new JTextField();
+		addSupplierNameTextField.setColumns(10);
+		addSupplierNameTextField.setBounds(124, 85, 231, 35);
+		addItemRadioPanel.add(addSupplierNameTextField);
+		
+		addItemIDTextField = new JTextField();
+		addItemIDTextField.setColumns(10);
+		addItemIDTextField.setBounds(376, 5, 146, 35);
+		addItemRadioPanel.add(addItemIDTextField);
+		
+		JLabel addItemIDLabel = new JLabel("Item ID:");
+		addItemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		addItemIDLabel.setBounds(313, 12, 89, 29);
+		addItemRadioPanel.add(addItemIDLabel);
+		
+		JLabel addItemDescriptionLabel = new JLabel("Item description:");
+		addItemDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		addItemDescriptionLabel.setBounds(10, 137, 134, 29);
+		addItemRadioPanel.add(addItemDescriptionLabel);
+		
+		addItemDescription = new JTextField();
+		addItemDescription.setColumns(10);
+		addItemDescription.setBounds(134, 130, 388, 35);
+		addItemRadioPanel.add(addItemDescription);
+		
+		JLabel addItemPriceLabel = new JLabel("Price:");
+		addItemPriceLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		addItemPriceLabel.setBounds(8, 51, 56, 29);
+		addItemRadioPanel.add(addItemPriceLabel);
+		
+		addMinPriceTextField = new JTextField();
+		addMinPriceTextField.setColumns(10);
+		addMinPriceTextField.setBounds(63, 44, 100, 35);
+		addItemRadioPanel.add(addMinPriceTextField);
+		
+		JLabel addToLabel = new JLabel("to");
+		addToLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		addToLabel.setBounds(180, 51, 45, 29);
+		addItemRadioPanel.add(addToLabel);
+		
+		addMaxPriceTextField = new JTextField();
+		addMaxPriceTextField.setColumns(10);
+		addMaxPriceTextField.setBounds(208, 44, 100, 35);
+		addItemRadioPanel.add(addMaxPriceTextField);
+
+		JLabel addParStockLabel = new JLabel("Par stock:");
+		addParStockLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		addParStockLabel.setBounds(328, 51, 87, 29);
+		addItemRadioPanel.add(addParStockLabel);
+		
+		addParStockTextField = new JTextField();
+		addParStockTextField.setColumns(10);
+		addParStockTextField.setBounds(400, 44, 115, 35);
+		addItemRadioPanel.add(addParStockTextField);
+		addItemRadioPanel.setBounds(239, 0, 533, 178);
+		addItemRadioPanel.setVisible(true);
+		informationPanel.add(addItemRadioPanel);
+		
+		//sets edit item Panel
+		JPanel editItemRadioPanel = new JPanel();
+		editItemRadioPanel.setLayout(null);
+				
+		JLabel itemNameLabel = new JLabel("Item name:");
+		itemNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemNameLabel.setBounds(10, 12, 114, 29);
+		editItemRadioPanel.add(itemNameLabel);
+				
+		editItemNameTextField = new JTextField();
+		editItemNameTextField.setBounds(103, 5, 179, 35);
+		editItemRadioPanel.add(editItemNameTextField);
+		editItemNameTextField.setColumns(10);
+				
+		JLabel supplierNameLabel = new JLabel("Supplier name:");
+		supplierNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		supplierNameLabel.setBounds(10, 92, 114, 29);
+		editItemRadioPanel.add(supplierNameLabel);
+				
+		editSupplierNameTextField = new JTextField();
+		editSupplierNameTextField.setColumns(10);
+		editSupplierNameTextField.setBounds(124, 85, 231, 35);
+		editItemRadioPanel.add(editSupplierNameTextField);
+				
+		editItemIDTextField = new JTextField();
+		editItemIDTextField.setColumns(10);
+		editItemIDTextField.setBounds(376, 5, 146, 35);
+		editItemRadioPanel.add(editItemIDTextField);
+				
+		JLabel itemIDLabel = new JLabel("Item ID:");
+		itemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemIDLabel.setBounds(313, 12, 89, 29);
+		editItemRadioPanel.add(itemIDLabel);
+				
+		JLabel itemDescriptionLabel = new JLabel("Item description:");
+		itemDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemDescriptionLabel.setBounds(10, 137, 134, 29);
+		editItemRadioPanel.add(itemDescriptionLabel);
+				
+		editItemDescription = new JTextField();
+		editItemDescription.setColumns(10);
+		editItemDescription.setBounds(134, 130, 388, 35);
+		editItemRadioPanel.add(editItemDescription);
+				
+		JLabel itemPriceLabel = new JLabel("Price:");
+		itemPriceLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemPriceLabel.setBounds(8, 51, 56, 29);
+		editItemRadioPanel.add(itemPriceLabel);
+				
+		editMinPriceTextField = new JTextField();
+		editMinPriceTextField.setColumns(10);
+		editMinPriceTextField.setBounds(63, 44, 100, 35);
+		editItemRadioPanel.add(editMinPriceTextField);
+				
+		JLabel toLabel = new JLabel("to");
+		toLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		toLabel.setBounds(180, 51, 45, 29);
+		editItemRadioPanel.add(toLabel);
+				
+		editMaxPriceTextField = new JTextField();
+		editMaxPriceTextField.setColumns(10);
+		editMaxPriceTextField.setBounds(208, 44, 100, 35);
+		editItemRadioPanel.add(editMaxPriceTextField);
+
+		JLabel editParStockLabel = new JLabel("Par stock:");
+		editParStockLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		editParStockLabel.setBounds(328, 51, 87, 29);
+		editItemRadioPanel.add(editParStockLabel);
+				
+		editParStockTextField = new JTextField();
+		editParStockTextField.setColumns(10);
+		editParStockTextField.setBounds(400, 44, 115, 35);
+		editItemRadioPanel.add(editParStockTextField);
+		editItemRadioPanel.setBounds(239, 0, 533, 178);
+		informationPanel.add(editItemRadioPanel);
+		editItemRadioPanel.setVisible(false);
 		
 		//sets delete item Panel
 		JPanel deleteItem = deleteItemRadioPanel();
@@ -97,17 +262,17 @@ public class InventoryPanel extends JPanel{
 		addItemButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addItem.setVisible(true);
+				addItemRadioPanel.setVisible(true);
 				deleteItem.setVisible(false);
-				editItem.setVisible(false);
+				editItemRadioPanel.setVisible(false);
 				changeInventoryButton.setVisible(true);
 			}
 		});
 		editItemButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				editItem.setVisible(true);
-				addItem.setVisible(false);
+				editItemRadioPanel.setVisible(true);
+				addItemRadioPanel.setVisible(false);
 				deleteItem.setVisible(false);
 				changeInventoryButton.setVisible(true);
 			}
@@ -116,179 +281,37 @@ public class InventoryPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				deleteItem.setVisible(true);
-				addItem.setVisible(false);
-				editItem.setVisible(false);
+				addItemRadioPanel.setVisible(false);
+				editItemRadioPanel.setVisible(false);
 				changeInventoryButton.setVisible(false);
 			}
 		});
 		
-		//creates a scrolling text area
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 174, 772, 302);
-		this.add(scrollPane);
+		//////////////////////////////////////////////////
+		//Adds ActionListener for Change Inventory Button
+		//////////////////////////////////////////////////
+		changeInventoryButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(addItemButton.isSelected()){
+					addToInventory();
+				}
+				else if(editItemButton.isSelected()){
+					editInventory();
+				}
+				else if(deleteItemButton.isSelected()){
+					deleteFromInventory();
+				}
+				updateInventoryDisplay(textArea);
+			}
+		});
 		
-		//creates text area to put in the scrollPane
-		JTextArea textArea = new JTextArea();
-		textArea.setEditable(false);
-		scrollPane.setViewportView(textArea);
-		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));		
+			
 	} 
 	
-	private JPanel addItemRadioPanel()
-	{
-		JPanel addItemRadioPanel = new JPanel();
-		addItemRadioPanel.setLayout(null);
-		
-		JLabel itemNameLabel = new JLabel("Item name:");
-		itemNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		itemNameLabel.setBounds(10, 12, 114, 29);
-		addItemRadioPanel.add(itemNameLabel);
-		
-		itemNameTextField = new JTextField();
-		itemNameTextField.setBounds(103, 5, 179, 35);
-		addItemRadioPanel.add(itemNameTextField);
-		itemNameTextField.setColumns(10);
-		
-		JLabel supplierNameLabel = new JLabel("Supplier name:");
-		supplierNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		supplierNameLabel.setBounds(10, 92, 114, 29);
-		addItemRadioPanel.add(supplierNameLabel);
-		
-		supplierNameTextField = new JTextField();
-		supplierNameTextField.setColumns(10);
-		supplierNameTextField.setBounds(124, 85, 231, 35);
-		addItemRadioPanel.add(supplierNameTextField);
-		
-		itemIDTextField = new JTextField();
-		itemIDTextField.setColumns(10);
-		itemIDTextField.setBounds(376, 5, 146, 35);
-		addItemRadioPanel.add(itemIDTextField);
-		
-		JLabel itemIDLabel = new JLabel("Item ID:");
-		itemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		itemIDLabel.setBounds(313, 12, 89, 29);
-		addItemRadioPanel.add(itemIDLabel);
-		
-		JLabel itemDescriptionLabel = new JLabel("Item description:");
-		itemDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		itemDescriptionLabel.setBounds(10, 137, 134, 29);
-		addItemRadioPanel.add(itemDescriptionLabel);
-		
-		JTextField ItemDescriptionTextField = new JTextField();
-		ItemDescriptionTextField.setColumns(10);
-		ItemDescriptionTextField.setBounds(134, 130, 388, 35);
-		addItemRadioPanel.add(ItemDescriptionTextField);
-		
-		JLabel itemPriceLabel = new JLabel("Price:");
-		itemPriceLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		itemPriceLabel.setBounds(8, 51, 56, 29);
-		addItemRadioPanel.add(itemPriceLabel);
-		
-		minPriceTextField = new JTextField();
-		minPriceTextField.setColumns(10);
-		minPriceTextField.setBounds(63, 44, 100, 35);
-		addItemRadioPanel.add(minPriceTextField);
-		
-		JLabel toLabel = new JLabel("to");
-		toLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		toLabel.setBounds(180, 51, 45, 29);
-		addItemRadioPanel.add(toLabel);
-		
-		maxPriceTextField = new JTextField();
-		maxPriceTextField.setColumns(10);
-		maxPriceTextField.setBounds(208, 44, 100, 35);
-		addItemRadioPanel.add(maxPriceTextField);
+	
 
-		JLabel parStockLabel = new JLabel("Par stock:");
-		parStockLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		parStockLabel.setBounds(328, 51, 87, 29);
-		addItemRadioPanel.add(parStockLabel);
-		
-		JTextField parStockTextField = new JTextField();
-		parStockTextField.setColumns(10);
-		parStockTextField.setBounds(400, 44, 115, 35);
-		addItemRadioPanel.add(parStockTextField);
-		
-		return addItemRadioPanel;
-	}
-
-	private JPanel editItemRadioPanel()
-	{
-		JPanel editItemRadioPanel = new JPanel();
-		editItemRadioPanel.setLayout(null);
-		
-		JLabel itemNameLabel = new JLabel("Item name:");
-		itemNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		itemNameLabel.setBounds(10, 12, 114, 29);
-		editItemRadioPanel.add(itemNameLabel);
-		
-		itemNameTextField = new JTextField();
-		itemNameTextField.setBounds(103, 5, 179, 35);
-		editItemRadioPanel.add(itemNameTextField);
-		itemNameTextField.setColumns(10);
-		
-		JLabel supplierNameLabel = new JLabel("Supplier name:");
-		supplierNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		supplierNameLabel.setBounds(10, 92, 114, 29);
-		editItemRadioPanel.add(supplierNameLabel);
-		
-		supplierNameTextField = new JTextField();
-		supplierNameTextField.setColumns(10);
-		supplierNameTextField.setBounds(124, 85, 231, 35);
-		editItemRadioPanel.add(supplierNameTextField);
-		
-		itemIDTextField = new JTextField();
-		itemIDTextField.setColumns(10);
-		itemIDTextField.setBounds(376, 5, 146, 35);
-		editItemRadioPanel.add(itemIDTextField);
-		
-		JLabel itemIDLabel = new JLabel("Item ID:");
-		itemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		itemIDLabel.setBounds(313, 12, 89, 29);
-		editItemRadioPanel.add(itemIDLabel);
-		
-		JLabel itemDescriptionLabel = new JLabel("Item description:");
-		itemDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		itemDescriptionLabel.setBounds(10, 137, 134, 29);
-		editItemRadioPanel.add(itemDescriptionLabel);
-		
-		JTextField ItemDescriptionTextField = new JTextField();
-		ItemDescriptionTextField.setColumns(10);
-		ItemDescriptionTextField.setBounds(134, 130, 388, 35);
-		editItemRadioPanel.add(ItemDescriptionTextField);
-		
-		JLabel itemPriceLabel = new JLabel("Price:");
-		itemPriceLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		itemPriceLabel.setBounds(8, 51, 56, 29);
-		editItemRadioPanel.add(itemPriceLabel);
-		
-		minPriceTextField = new JTextField();
-		minPriceTextField.setColumns(10);
-		minPriceTextField.setBounds(63, 44, 100, 35);
-		editItemRadioPanel.add(minPriceTextField);
-		
-		JLabel toLabel = new JLabel("to");
-		toLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		toLabel.setBounds(180, 51, 45, 29);
-		editItemRadioPanel.add(toLabel);
-		
-		maxPriceTextField = new JTextField();
-		maxPriceTextField.setColumns(10);
-		maxPriceTextField.setBounds(208, 44, 100, 35);
-		editItemRadioPanel.add(maxPriceTextField);
-
-		JLabel parStockLabel = new JLabel("Par stock:");
-		parStockLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		parStockLabel.setBounds(328, 51, 87, 29);
-		editItemRadioPanel.add(parStockLabel);
-		
-		JTextField parStockTextField = new JTextField();
-		parStockTextField.setColumns(10);
-		parStockTextField.setBounds(400, 44, 115, 35);
-		editItemRadioPanel.add(parStockTextField);
-		
-		return editItemRadioPanel;
-	}
+	
 	
 	private JPanel deleteItemRadioPanel()
 	{
@@ -300,15 +323,15 @@ public class InventoryPanel extends JPanel{
 		itemNameLabel.setBounds(85, 12, 114, 29);
 		deleteItemRadioPanel.add(itemNameLabel);
 		
-		itemNameTextField = new JTextField();
-		itemNameTextField.setBounds(173, 5, 179, 35);
-		deleteItemRadioPanel.add(itemNameTextField);
-		itemNameTextField.setColumns(10);
+		deleteItemNameTextField = new JTextField();
+		deleteItemNameTextField.setBounds(173, 5, 179, 35);
+		deleteItemRadioPanel.add(deleteItemNameTextField);
+		deleteItemNameTextField.setColumns(10);
 		
-		itemIDTextField = new JTextField();
-		itemIDTextField.setColumns(10);
-		itemIDTextField.setBounds(189, 85, 146, 35);
-		deleteItemRadioPanel.add(itemIDTextField);
+		deleteItemIDTextField = new JTextField();
+		deleteItemIDTextField.setColumns(10);
+		deleteItemIDTextField.setBounds(189, 85, 146, 35);
+		deleteItemRadioPanel.add(deleteItemIDTextField);
 		
 		JLabel itemIDLabel = new JLabel("Item ID:");
 		itemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -331,5 +354,80 @@ public class InventoryPanel extends JPanel{
 		deleteItemRadioPanel.add(btnDeleteItem);
 		
 		return deleteItemRadioPanel;
+	}
+	
+	private void addToInventory(){
+		String n = addItemNameTextField.getText();
+		String i = addItemIDTextField.getText();
+		String price = addMinPriceTextField.getText();
+		double p = 0;
+		if(!price.equals("")){
+			p = Double.parseDouble(price);
+		}
+		String s = addSupplierNameTextField.getText();
+		String d = addItemDescription.getText();
+		////////Temp Code/////////
+		//
+			int par = 3;
+		//	
+		//////////////////////////	
+			
+		if(n.equals("") || i.equals("") || price.equals("") || s.equals("") ){
+			// Return Warning (required fields empty)
+		}
+		else{
+			if(d.equals("")){
+				inventory.addItem(n, i, p, s, par);
+			}
+			else{
+				inventory.addItem(n, i, p, s, par, d);
+			}
+			
+		}
+	}
+	
+	private void editInventory(){
+		String n = editItemNameTextField.getText();
+		String i = editItemIDTextField.getText();
+		String price = editMinPriceTextField.getText();
+		double p = 0;
+		if(!price.equals("")){
+			p = Double.parseDouble(price);
+		}
+		String s = editSupplierNameTextField.getText();
+		String d = editItemDescription.getText();
+		////////Temp Code/////////
+		//
+			int par = 3;
+		//	
+		//////////////////////////	
+			
+		if(n.equals("")){
+			// Return Warning (required fields empty)
+		}
+		else{
+			int index = inventory.findItemByName(n);
+			if(index >= 0){
+				if(!d.equals("")){
+					inventory.get(index).setDescription(d);
+				}
+				if(!price.equals("")){
+					inventory.get(index).setPrice(p);
+				}
+				if(!s.equals("")){
+					inventory.get(index).setSupplier(s);
+				}
+			}
+		}
+	}
+	
+	private void deleteFromInventory(){
+		
+	}
+	
+	private void updateInventoryDisplay(JTextArea text){
+		if(inventory.size() > 0){
+			text.setText(inventory.toString());
+		}
 	}
 } 

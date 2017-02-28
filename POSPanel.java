@@ -159,8 +159,12 @@ public class POSPanel extends JPanel{
 		
 		JButton btnCheckOut = new JButton("Check Out");
 		btnCheckOut.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnCheckOut.setBounds(151, 84, 106, 37);
+		btnCheckOut.setBounds(151, 82, 106, 37);
 		panel_3.add(btnCheckOut);
+		if (!panel_3.isVisible())
+		{
+			btnCheckOut.setVisible(false);
+		}
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(515, 0, 255, 355);

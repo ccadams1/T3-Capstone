@@ -1,20 +1,15 @@
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JSplitPane;
-import javax.swing.BoxLayout;
+import javax.swing.JDialog;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class SettingsScreen {
-
-	private JFrame frame;
+public class SettingsScreen extends JDialog{
 
 	/**
 	 * Launch the application.
@@ -23,8 +18,7 @@ public class SettingsScreen {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SettingsScreen window = new SettingsScreen();
-					window.frame.setVisible(true);
+					new SettingsScreen();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -43,20 +37,19 @@ public class SettingsScreen {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 200, 400);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		JLabel lblSettings = new JLabel("Settings");
-		lblSettings.setFont(new Font("Tahoma", Font.BOLD, 26));
-		lblSettings.setBounds(71, 0, 114, 29);
-		frame.getContentPane().add(lblSettings);
+		this.setAlwaysOnTop (true);
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
+		this.setModal(true);
+		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		this.setTitle("Settings");
+		this.setSize(200, 400);
+		this.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
-		scrollPane.setBounds(0, 45, 264, 276);
-		frame.getContentPane().add(scrollPane);
+		scrollPane.setBounds(0, 0, 264, 315);
+		this.getContentPane().add(scrollPane);
 		
 		JPanel panel = new JPanel();
 		scrollPane.setViewportView(panel);
@@ -64,20 +57,42 @@ public class SettingsScreen {
 		
 		JPanel panel_1 = new JPanel();
 		panel.add(panel_1);
-		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
 		JButton btnUserInformation = new JButton("Add User");
+		btnUserInformation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new AddUserScreen();
+			}
+		});
 		panel_1.add(btnUserInformation);
 		
-		JPanel panel_4 = new JPanel();
-		panel.add(panel_4);
-		
+		JPanel panel_2 = new JPanel();
+		panel.add(panel_2);
 		JButton btnEditUser = new JButton("Edit User");
-		panel_4.add(btnEditUser);
+		btnEditUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new EditUserScreen();
+			}
+		});
+		panel_2.add(btnEditUser);
 		
 		JPanel panel_3 = new JPanel();
 		panel.add(panel_3);
-		
 		JButton btnRemoveUser = new JButton("Remove User");
+		btnRemoveUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new RemoveUserScreen();
+			}
+		});
+		panel_3.add(btnRemoveUser);
+		
+		JPanel panel_4 = new JPanel();
+		panel.add(panel_4);
+		JButton editBusiness = new JButton("Edit Business Information");
+		editBusiness.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new EditBusinessInformationScreen();
+			}
+		});
+		panel_4.add(editBusiness);
 	}
 }

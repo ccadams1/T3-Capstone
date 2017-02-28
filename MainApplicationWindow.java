@@ -3,8 +3,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-
 import java.awt.CardLayout;
 
 public class MainApplicationWindow {
@@ -49,9 +47,10 @@ public class MainApplicationWindow {
 		//initializes frame and sets layout
 		frame = new JFrame();
 		frame.setBounds(0, 0, 800, 600);
+		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
-		frame.setTitle("T3 Tracking and Inventory for " + "*insert business name here*");
+		frame.setTitle("T3 Tracking and Inventory for " + "*insert business name here");
 		
 		//creates layeredPane Screens to operate on
 		JLayeredPane layeredPane = new JLayeredPane();
@@ -67,13 +66,15 @@ public class MainApplicationWindow {
 		mainPanel = new MainPanel(menuBar);
 		mainPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(mainPanel);
+		mainPanel.setVisible(true);
 		
 		//POS panel
 		//adds the POS Screen
 		posPanel = new POSPanel();
 		posPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(posPanel);
-		posPanel.setLayout(null);		
+		posPanel.setLayout(null);
+		posPanel.setVisible(false);
 		
 		//Inventory panel
 		//adds the Inventory Screen
@@ -81,34 +82,38 @@ public class MainApplicationWindow {
 		inventoryPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(inventoryPanel);
 		inventoryPanel.setLayout(null);
-
+		inventoryPanel.setVisible(false);
+		
 		//Search Panel
 		//adds the Search Screen
 		searchPanel = new SearchPanel();
 		searchPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(searchPanel);
 		searchPanel.setLayout(null);
-				
+		searchPanel.setVisible(false);
+		
 		//Report Panel
 		//adds the Report Screen
 		reportPanel = new ReportPanel();
 		reportPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(reportPanel);
 		reportPanel.setLayout(null);
+		reportPanel.setVisible(false);
 		
 		//Help Panel
 		//adds the Help Screen
 		helpPanel = new HelpPanel();
 		helpPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(helpPanel);
-		helpPanel.setLayout(null);		
+		helpPanel.setLayout(null);	
+		helpPanel.setVisible(false);
 	}
 	
 	public JMenuBar NavigationMenu()
 	{
 		//Create JMenuBar
 		JMenuBar menu = new JMenuBar();
-				
+		
 		//Main button for menu
 		JButton mainScreenButton = new JButton("Main");
 		mainScreenButton.addActionListener(new ActionListener() {

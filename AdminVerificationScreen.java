@@ -9,7 +9,7 @@ import javax.swing.text.PasswordView;
 
 import javax.swing.JPasswordField;
 
-public class LoginScreen extends JDialog{
+public class AdminVerificationScreen extends JDialog{
 	private JPasswordField passwordField;
 	/**
 	 * Launch the application.
@@ -18,7 +18,7 @@ public class LoginScreen extends JDialog{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new LoginScreen();
+					new AdminVerificationScreen();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -29,7 +29,7 @@ public class LoginScreen extends JDialog{
 	/**
 	 * Create the application.
 	 */
-	public LoginScreen() {
+	public AdminVerificationScreen() {
 		initialize();
 	}
 
@@ -43,11 +43,11 @@ public class LoginScreen extends JDialog{
 		this.setVisible(true);
 		this.setModal(true);
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
-		this.setTitle("User Login");
+		this.setTitle("Administrator Verification");
 		
-		//create login Panel
-		JPanel loginPanel = new JPanel();
-		loginPanel.setBounds(0, 0, 572, 171);
+		//create verification Panel
+		JPanel verificationPanel = new JPanel();
+		verificationPanel.setBounds(0, 0, 572, 171);
 		
 		//Username label and textField
 		JLabel usernameLabel = new JLabel("Username:");
@@ -55,25 +55,25 @@ public class LoginScreen extends JDialog{
 		TextField usernameText = new TextField();
 		usernameText.setBounds(212, 13, 243, 36);
 		usernameText.setEditable(true);
-		loginPanel.setLayout(null);
-		loginPanel.add(usernameLabel);
-		loginPanel.add(usernameText);
+		verificationPanel.setLayout(null);
+		verificationPanel.add(usernameLabel);
+		verificationPanel.add(usernameText);
 		
 		//Password label and textField
 		JLabel passwordLabel = new JLabel("Password: ");
 		passwordLabel.setBounds(91, 73, 117, 29);
 		PasswordView passwordText = new PasswordView(null);
-		loginPanel.add(passwordLabel);
+		verificationPanel.add(passwordLabel);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(212, 73, 243, 36);
-		loginPanel.add(passwordField);
+		verificationPanel.add(passwordField);
 	
-		//Submit Login request button
-		JButton loginButton = new JButton("Login");
-		loginButton.setBounds(225, 117, 89, 37);
-		loginPanel.add(loginButton);
+		//Submit Verification request button
+		JButton verificationButton = new JButton("Verify");
+		verificationButton.setBounds(225, 117, 89, 37);
+		verificationPanel.add(verificationButton);
 				
-		getContentPane().add(loginPanel);
+		getContentPane().add(verificationPanel);
 	}
 }

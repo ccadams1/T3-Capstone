@@ -2,28 +2,48 @@ import java.util.ArrayList;
 
 public class Employee {
 	
-	private boolean masterUser, invManager, invUser, posManager, posUser;
 	private String username, password, firstName, lastName, email, phone, address;
+	private String uRole;
+	private String userId;
 	
-	public Employee(String uName, String pWord,String fName,String lName,String eMale){
+	private static int idNum = 123;
+	
+	public Employee(String uName, String pWord,String fName,String lName,String role, String eMale){
+		this.userId = Integer.toString(idNum);
+		idNum++;
 		this.username = uName;
 		this.password = pWord;
 		this.firstName = fName;
 		this.lastName = lName;
+		this.uRole = role;
 		this.email = eMale;
+		this.phone = "";
 		
-		masterUser = false;
-		invManager = false;
-		invUser = false;
-		posManager = false;
-		posUser = false;
+	}
+	
+	public Employee(String uName, String pWord,String fName,String lName,String role, String eMale, String telNum){
+		this.userId = Integer.toString(idNum);
+		idNum++;
+		this.username = uName;
+		this.password = pWord;
+		this.firstName = fName;
+		this.lastName = lName;
+		this.uRole = role;
+		this.email = eMale;
+		this.phone = telNum;
+		
+		
 	}
 	
 	public Employee(){
 		
 	}
 	
-	public String getUser(){
+	public String getUserId(){
+		return this.userId;
+	}
+	
+	public String getUsername(){
 		return this.username;
 	}
 	
@@ -39,6 +59,10 @@ public class Employee {
 		return this.lastName;
 	}
 	
+	public String getRole(){
+		return this.uRole;
+	}
+	
 	public String getEmail(){
 		return this.email;
 	}
@@ -51,7 +75,7 @@ public class Employee {
 		return this.address;
 	}
 	
-	public void setUser(String uName){
+	public void setUsername(String uName){
 		this.username = uName;
 	}
 	
@@ -67,6 +91,10 @@ public class Employee {
 		this.lastName = lName;
 	}
 	
+	public void setRole(String role){
+		this.uRole = role;
+	}
+	
 	public void setEmail(String eMale){
 		this.email = eMale;
 	}
@@ -79,25 +107,15 @@ public class Employee {
 		this.address = add;
 	}
 	
-	public void setMasterUser(boolean bool){
-		this.masterUser = bool;
+	public void print(){
+		String s = "";
+		s += "Username: " + this.username + "\n";
+		s += "Password: " + this.password + "\n";
+		s += "First Name: " + this.firstName + "\n";
+		s += "Last Name: " + this.lastName + "\n";
+		s += "Employee Role: " + this.uRole + "\n";
+		s += "Email Address: " + this.email + "\n";
+		s += "Phone Number: " + this.phone + "\n";
+		System.out.println(s);
 	}
-	
-	public void setInvManager(boolean bool){
-		this.invManager = bool;
-	}
-	
-	public void setInvUser(boolean bool){
-		this.invUser = bool;
-	}
-	
-	public void setPosManager(boolean bool){
-		this.posManager = bool;
-	}
-	
-	public void setPosUser(boolean bool){
-		this.posUser = bool;
-	}
-	
-	
 }

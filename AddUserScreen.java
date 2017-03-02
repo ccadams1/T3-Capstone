@@ -18,6 +18,7 @@ public class AddUserScreen extends JDialog {
 	private JTextField textField_4;
 	private JTextField textField_5;
 	private JTextField textField_6;
+	
 
 	/**
 	 * Launch the application.
@@ -130,6 +131,11 @@ public class AddUserScreen extends JDialog {
 		getContentPane().add(textField_6);
 		
 		JComboBox comboBox = new JComboBox();
+		////////////////Temp code for testing purposes/////////////
+		comboBox.addItem("");
+		comboBox.addItem("test");
+		comboBox.setSelectedItem("");
+		///////////////////////////////////////////////////////////
 		comboBox.setBounds(158, 207, 191, 35);
 		getContentPane().add(comboBox);
 		
@@ -141,5 +147,50 @@ public class AddUserScreen extends JDialog {
 		});
 		btnAddUser.setBounds(99, 322, 155, 37);
 		getContentPane().add(btnAddUser);
+		
+		btnAddUser.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String text = textField.getText();
+				String text_1 = textField_1.getText();
+				String text_2 = textField_2.getText();
+				String text_3 = textField_3.getText();
+				String text_4 = textField_4.getText();
+				////////////temp code for user role////////////////////////////////////
+				String userRole = (String) comboBox.getSelectedItem();
+				///////////////////////////////////////////////////////////////////////
+				String text_5 = textField_5.getText();
+				String text_6 = textField_6.getText();
+				
+				
+				if(text.equals("") || text_1.equals("") || text_2.equals("") || 
+						text_3.equals("") || text_4.equals("") || text_5.equals("") ||
+						userRole.equals("")){
+					// Return Warning (required fields empty)
+				}
+				else if(!text_1.equals(text_2)){
+					// Return Warning (passwords must match)
+				}
+				else if(text_6.equals("")){
+					Employee temp = new Employee(text, text_1, text_3, text_4, 
+							userRole, text_5);
+					//Insert code to add Employee to EmployeeList
+					
+					//Temp code to test functionality
+					temp.print();
+				}
+				else{
+					Employee temp = new Employee(text, text_1, text_3, text_4, userRole,
+							text_5, text_6);
+					//Insert code to add Employee to EmployeeList
+					
+					//Temp code to test functionality
+					temp.print();
+				}
+				
+				
+			}
+		});
 	}
 }

@@ -26,6 +26,14 @@ public class EditUserScreen extends JDialog {
 	private JTextField textField_5;
 	private JTextField textField_6;
 	private JTextField textField_7;
+	private JTextArea textArea;
+	
+	/////Test Purposes only/////////
+	private EmployeeList employees;
+	private Employee emp1, emp2, emp3;
+	///////////////////////////////////
+	
+	
 
 	/**
 	 * Launch the application.
@@ -45,7 +53,7 @@ public class EditUserScreen extends JDialog {
 	/**
 	 * Create the application.
 	 */
-	public EditUserScreen() {
+	public EditUserScreen()	{
 		initialize();
 	}
 
@@ -138,17 +146,25 @@ public class EditUserScreen extends JDialog {
 		getContentPane().add(textField_6);
 		
 		JComboBox comboBox = new JComboBox();
+		////////////////Temp code for testing purposes/////////////
+		comboBox.addItem("");
+		comboBox.addItem("test");
+		comboBox.addItem("test2");
+		comboBox.setSelectedItem("");
+		///////////////////////////////////////////////////////////
 		comboBox.setBounds(158, 238, 191, 35);
 		getContentPane().add(comboBox);
 		
-		JButton btnAddUser = new JButton("Edit User");
-		btnAddUser.addActionListener(new ActionListener() {
+		JButton btnEditUser = new JButton("Edit User");
+		/*
+		btnEditUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new AdminVerificationScreen();
 			}
 		});
-		btnAddUser.setBounds(99, 356, 155, 37);
-		getContentPane().add(btnAddUser);
+		*/
+		
+		
 		
 		JLabel lblUserId = new JLabel("User ID:");
 		lblUserId.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -165,8 +181,85 @@ public class EditUserScreen extends JDialog {
 		scrollPane.setBounds(0, 404, 372, 117);
 		getContentPane().add(scrollPane);
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
+		
+		//////////////////TEST PURPOSES ONLY////////////////
+		employees = new EmployeeList();
+		emp1 = new Employee("first", "pass", "WillyJames", "Huff", "CEO", "@yahoo", "919");
+		emp2 = new Employee("second", "random", "Rackem", "Willy", "Manager", "@aol", "684");
+		emp3 = new Employee("third", "pword", "Funky", "Chicken", "janitor", "@gmail", "123");
+		employees.addEmployee(emp1);
+		employees.addEmployee(emp2);
+		employees.addEmployee(emp3);
+		textArea.setText(employees.toString());
+		
+		/////////////////////////////////////////////////////
+		
+		btnEditUser.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String text = textField.getText();
+				String text_1 = textField_1.getText();
+				String text_2 = textField_2.getText();
+				String text_3 = textField_3.getText();
+				String text_4 = textField_4.getText();
+				String text_5 = textField_5.getText();
+				String text_6 = textField_6.getText();
+				String text_7 = textField_7.getText();
+				////////////temp code for user role////////////////////////////////////
+				String combo = (String) comboBox.getSelectedItem();
+				///////////////////////////////////////////////////////////////////////
+
+				if(text_7.equals("")){
+					//Return warning (User Id Required)
+					return;
+				}
+				int index = -1;
+				for(int i = 0; i < employees.size(); i++){
+					if(employees.get(i).getUserId().equals(text_7)){
+						index = i;
+					}
+				}
+				if(index >= 0){
+					if(!text.equals("")){
+						employees.get(index).setUsername(text);
+					}
+					if(!text_1.equals("")){
+						if(text_1.equals(text_2)){
+							employees.get(index).setPassword(text_1);
+						}
+						else{
+							//Return warning (Passwords Dont Match)
+						}
+					}
+					if(!text_3.equals("")){
+						employees.get(index).setFirstName(text_3);
+					}
+					if(!text_4.equals("")){
+						employees.get(index).setLastName(text_4);
+					}
+					if(!text_5.equals("")){
+						employees.get(index).setEmail(text_5);
+					}
+					if(!text_6.equals("")){
+						employees.get(index).setPhone(text_6);
+					}
+					if(!combo.equals("")){
+						employees.get(index).setRole(combo);
+					}
+					updateDisplay();
+				}
+			}
+			
+		});
+		
+		btnEditUser.setBounds(99, 356, 155, 37);
+		getContentPane().add(btnEditUser);
+	}
+	
+	private void updateDisplay(){
+		textArea.setText(employees.toString());
 	}
 }

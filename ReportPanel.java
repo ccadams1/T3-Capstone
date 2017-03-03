@@ -292,7 +292,7 @@ public class ReportPanel extends JPanel{
 		public void actionPerformed(ActionEvent e)
 		{
 		String textAreaString = "";
-		
+		//BUSINESS CONDITIONS ONLY
 		if(businessCheckBox.isSelected() && !inventoryCheckBox.isSelected() && !salesCheckBox.isSelected())
 		{
 			businessCheck1.setSelected(true);
@@ -307,6 +307,19 @@ public class ReportPanel extends JPanel{
 			businessCheck10.setSelected(true);
 			businessCheck11.setSelected(true);
 			businessCheck12.setSelected(true);
+			InventoryCheck1.setSelected(false);
+			InventoryCheck2.setSelected(false);
+			InventoryCheck3.setSelected(false);
+			InventoryCheck4.setSelected(false);
+			InventoryCheck5.setSelected(false);
+			InventoryCheck6.setSelected(false);
+			salesCheck1.setSelected(false);
+			salesCheck2.setSelected(false);
+			salesCheck3.setSelected(false);
+			salesCheck4.setSelected(false);
+			salesCheck5.setSelected(false);
+			salesCheck6.setSelected(false);
+			
 			//inventoryCheckBox.setEnabled(false);
 			//salesCheckBox.setEnabled(false);
 			
@@ -388,8 +401,11 @@ public class ReportPanel extends JPanel{
 			salesCheck3.setSelected(false);
 			salesCheck4.setSelected(false);
 			salesCheck5.setSelected(false);
+			salesCheck6.setSelected(false);
 			
-			textAreaString += "\t \t \tInventory Report \t \n \n \n";
+			textAreaString += "Inventory Report \n";
+			textAreaString += "-------------------------------------------------------------------------------- \n";
+			
 			if (InventoryCheck1.isSelected()) {
 				textAreaString += "Item Name: \t";
 				//textAreaString += inventoryObj.getName();
@@ -423,11 +439,36 @@ public class ReportPanel extends JPanel{
 		//SALES CONDITIONS ONLY
 		else if(salesCheckBox.isSelected() && !inventoryCheckBox.isSelected() && !businessCheckBox.isSelected())
 		{
-			textAreaString += "\t \t \tSales Report\n \n \n";
+			businessCheck1.setSelected(false);
+			businessCheck2.setSelected(false);
+			businessCheck3.setSelected(false);
+			businessCheck4.setSelected(false);
+			businessCheck5.setSelected(false);
+			businessCheck6.setSelected(false);
+			businessCheck7.setSelected(false);
+			businessCheck8.setSelected(false);
+			businessCheck9.setSelected(false);
+			businessCheck10.setSelected(false);
+			businessCheck11.setSelected(false);
+			businessCheck12.setSelected(false);
+			InventoryCheck1.setSelected(false);
+			InventoryCheck2.setSelected(false);
+			InventoryCheck3.setSelected(false);
+			InventoryCheck4.setSelected(false);
+			InventoryCheck5.setSelected(false);
+			InventoryCheck6.setSelected(false);
+			salesCheck1.setSelected(true);
+			salesCheck2.setSelected(true);
+			salesCheck3.setSelected(true);
+			salesCheck4.setSelected(true);
+			salesCheck5.setSelected(true);
+			salesCheck6.setSelected(true);
+			textAreaString += "Sales Report\n";
+			textAreaString += "-------------------------------------------------------------------------------- \n \n";
+			
 			textAreaString += "Sales: ";
 			textArea.setText(textAreaString);
-			inventoryCheckBox.setEnabled(false);
-			businessCheckBox.setEnabled(false);
+			
 		}
 		//BUSINESS AND INVENTORY CONDITIONS
 		else if(businessCheckBox.isSelected() && inventoryCheckBox.isSelected() && !salesCheckBox.isSelected())
@@ -444,6 +485,18 @@ public class ReportPanel extends JPanel{
 			businessCheck10.setSelected(true);
 			businessCheck11.setSelected(true);
 			businessCheck12.setSelected(true);
+			InventoryCheck1.setSelected(true);
+			InventoryCheck2.setSelected(true);
+			InventoryCheck3.setSelected(true);
+			InventoryCheck4.setSelected(true);
+			InventoryCheck5.setSelected(true);
+			InventoryCheck6.setSelected(true);
+			salesCheck1.setSelected(false);
+			salesCheck2.setSelected(false);
+			salesCheck3.setSelected(false);
+			salesCheck4.setSelected(false);
+			salesCheck5.setSelected(false);
+			salesCheck6.setSelected(false);
 
 				textAreaString += "\t \t \tLong Business Name \n";
 				textAreaString += "Street Address \n";
@@ -469,7 +522,9 @@ public class ReportPanel extends JPanel{
 				textAreaString += "Owner First/Last Name \n \n";
 				//textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
 			
-				textAreaString += "\t \t \tInventory Report\n \n \n";
+				textAreaString += "Inventory Report\n";
+				textAreaString += "-------------------------------------------------------------------------------- \n";
+				
 				
 				if (InventoryCheck1.isSelected()) {
 					textAreaString += "Item Name: \t";
@@ -499,6 +554,154 @@ public class ReportPanel extends JPanel{
 		    textArea.setText(textAreaString);
 		}
 		
+		//SALES AND INVENTORY CONDITIONS
+		else if(inventoryCheckBox.isSelected() && salesCheckBox.isSelected() && !businessCheckBox.isSelected())
+		{
+			businessCheck1.setSelected(false);
+			businessCheck2.setSelected(false);
+			businessCheck3.setSelected(false);
+			businessCheck4.setSelected(false);
+			businessCheck5.setSelected(false);
+			businessCheck6.setSelected(false);
+			businessCheck7.setSelected(false);
+			businessCheck8.setSelected(false);
+			businessCheck9.setSelected(false);
+			businessCheck10.setSelected(false);
+			businessCheck11.setSelected(false);
+			businessCheck12.setSelected(false);
+			InventoryCheck1.setSelected(true);
+			InventoryCheck2.setSelected(true);
+			InventoryCheck3.setSelected(true);
+			InventoryCheck4.setSelected(true);
+			InventoryCheck5.setSelected(true);
+			InventoryCheck6.setSelected(true);
+			salesCheck1.setSelected(true);
+			salesCheck2.setSelected(true);
+			salesCheck3.setSelected(true);
+			salesCheck4.setSelected(true);
+			salesCheck5.setSelected(true);
+			salesCheck6.setSelected(true);
+
+			textAreaString += "\t \t \tInventory Report\n";
+			textAreaString += "-------------------------------------------------------------------------------- \n";
+			
+						
+				if (InventoryCheck1.isSelected()) {
+					textAreaString += "Item Name: \t";
+					//textAreaString += inventoryObj.getName();
+				}
+				if (InventoryCheck2.isSelected()) {
+					textAreaString += "Item ID: \t";
+					//textAreaString += inventoryObj.getId();
+				}
+				if (InventoryCheck3.isSelected()) {
+					textAreaString += "Price: \t";
+					//textAreaString += inventoryObj.getPrice();
+				}
+				if (InventoryCheck5.isSelected()) {
+					textAreaString += "Supplier Name: \t";
+					//textAreaString += inventoryObj.getSupplier();
+				}
+				if (InventoryCheck6.isSelected()) {
+					textAreaString += "Par Stock: \n";
+					//textAreaString += inventoryObj.getParStock();
+				}
+				if (InventoryCheck4.isSelected()) {
+					textAreaString += "Item Description: \n";
+					//textAreaString += inventoryObj.getDescription();
+				}
+					textAreaString += "\n \nSales Report\n";
+					textAreaString += "-------------------------------------------------------------------------------- \n";
+					
+					textAreaString += "Sales: ";
+
+				    textArea.setText(textAreaString);
+				}
+		
+		//SALES AND BUSINESS CONDITIONS
+		else if(salesCheckBox.isSelected() && businessCheckBox.isSelected() && !inventoryCheckBox.isSelected())
+		{
+			businessCheck1.setSelected(true);
+			businessCheck2.setSelected(true);
+			businessCheck3.setSelected(true);
+			businessCheck4.setSelected(true);
+			businessCheck5.setSelected(true);
+			businessCheck6.setSelected(true);
+			businessCheck7.setSelected(true);
+			businessCheck8.setSelected(true);
+			businessCheck9.setSelected(true);
+			businessCheck10.setSelected(true);
+			businessCheck11.setSelected(true);
+			businessCheck12.setSelected(true);
+			InventoryCheck1.setSelected(false);
+			InventoryCheck2.setSelected(false);
+			InventoryCheck3.setSelected(false);
+			InventoryCheck4.setSelected(false);
+			InventoryCheck5.setSelected(false);
+			InventoryCheck6.setSelected(false);
+			salesCheck1.setSelected(true);
+			salesCheck2.setSelected(true);
+			salesCheck3.setSelected(true);
+			salesCheck4.setSelected(true);
+			salesCheck5.setSelected(true);
+			salesCheck6.setSelected(true);
+					
+			if(businessCheck1.isSelected()) {
+				textAreaString += "\t \t \tLong Business Name \n";
+			}
+			if(businessCheck2.isSelected()) {
+				textAreaString += "Street Address \n";
+				//textAreaString += businessObj.getStAdress1();
+				}
+			if(businessCheck3.isSelected()) {
+				textAreaString += "Street Address Line 2 \n";
+				//textAreaString += businessObj.getStAdress2();
+				}
+			if(businessCheck4.isSelected()) {
+				textAreaString += "City, State, Zip Code \n \n";
+				//textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n";	    
+				}
+			if(businessCheck5.isSelected()) {
+				textAreaString += "Logo \n";
+				//textAreaString += businessObj.getLogo1();
+				}
+			if(businessCheck6.isSelected()) {
+				textAreaString += "Logo 2 \n";
+				//textAreaString += businessObj.getLogo2();
+				}
+			if(businessCheck7.isSelected()) {
+				textAreaString += "Phone Number \n";
+				//textAreaString += businessObj.getPhone1();
+				}
+			if(businessCheck8.isSelected()) {
+				textAreaString += "Phone Number 2 \n";
+				//textAreaString += businessObj.getPhone2();
+				}
+			if(businessCheck9.isSelected()) {
+				textAreaString += "Website \n";
+				//textAreaString += businessObj.getWebsite();
+				}
+			if(businessCheck10.isSelected()) {
+				textAreaString += "E-mail \n";
+				//textAreaString += businessObj.getEmail();
+				}
+			if(businessCheck11.isSelected()) {
+				textAreaString += "Fax Number \n";
+				//textAreaString += businessObj.getFax();
+				}
+			if(businessCheck12.isSelected()) {
+				textAreaString += "Owner First/Last Name \n \n";
+				//textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
+				}
+				
+			textAreaString += "\n \nSales Report\n";
+			textAreaString += "-------------------------------------------------------------------------------- \n";
+			
+			textAreaString += "Sales: ";
+					
+		    textArea.setText(textAreaString);
+				}
+		
 		//SALES BUSINESS AND INVENTORY CONDITIONS
 		else if(salesCheckBox.isSelected() && businessCheckBox.isSelected() && inventoryCheckBox.isSelected())
 		{
@@ -514,6 +717,7 @@ public class ReportPanel extends JPanel{
 			businessCheck10.setSelected(true);
 			businessCheck11.setSelected(true);
 			businessCheck12.setSelected(true);
+			
 			InventoryCheck1.setSelected(true);
 			InventoryCheck2.setSelected(true);
 			InventoryCheck3.setSelected(true);
@@ -525,6 +729,7 @@ public class ReportPanel extends JPanel{
 			salesCheck3.setSelected(true);
 			salesCheck4.setSelected(true);
 			salesCheck5.setSelected(true);
+			salesCheck6.setSelected(true);
 			
 			if(businessCheck1.isSelected()) {
 				textAreaString += "\t \t \tLong Business Name \n";
@@ -573,7 +778,8 @@ public class ReportPanel extends JPanel{
 				textAreaString += "Owner First/Last Name \n \n";
 				//textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
 			}
-			textAreaString += "\t \t \tInventory Report\n \n \n";
+			textAreaString += "Inventory Report\n";
+			textAreaString += "-------------------------------------------------------------------------------- \n";
 			
 			if (InventoryCheck1.isSelected()) {
 				textAreaString += "Item Name: \t";
@@ -599,7 +805,9 @@ public class ReportPanel extends JPanel{
 				textAreaString += "Item Description: \n";
 				//textAreaString += inventoryObj.getDescription();
 			}
-			textAreaString += "\t \t \tSales Report\n \n \n";
+			textAreaString += "\n \nSales Report\n";
+			textAreaString += "-------------------------------------------------------------------------------- \n";
+			
 			textAreaString += "Sales: ";
 			
 		    textArea.setText(textAreaString);

@@ -328,47 +328,47 @@ public class ReportPanel extends JPanel{
 			}
 			if(businessCheck2.isSelected()) {
 				textAreaString += "Street Address \n";
-				//textAreaString += businessObj.getStAdress1();
+				textAreaString += businessObj.getStAdress1();
 			}
 			if(businessCheck3.isSelected()) {
 				textAreaString += "Street Address Line 2 \n";
-				//textAreaString += businessObj.getStAdress2();
+				textAreaString += businessObj.getStAdress2();
 			}
 			if(businessCheck4.isSelected()) {
 				textAreaString += "City, State, Zip Code \n \n";
-				//textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n";	    
+				textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n";	    
 			}
 			if(businessCheck5.isSelected()) {
 				textAreaString += "Logo \n";
-				//textAreaString += businessObj.getLogo1();
+				textAreaString += businessObj.getLogo1();
 			}
 			if(businessCheck6.isSelected()) {
 				textAreaString += "Logo 2 \n";
-				//textAreaString += businessObj.getLogo2();
+				textAreaString += businessObj.getLogo2();
 			}
 			if(businessCheck7.isSelected()) {
 				textAreaString += "Phone Number \n";
-				//textAreaString += businessObj.getPhone1();
+				textAreaString += businessObj.getPhone1();
 			}
 			if(businessCheck8.isSelected()) {
 				textAreaString += "Phone Number 2 \n";
-				//textAreaString += businessObj.getPhone2();
+				textAreaString += businessObj.getPhone2();
 			}
 			if(businessCheck9.isSelected()) {
 				textAreaString += "Website \n";
-				//textAreaString += businessObj.getWebsite();
+				textAreaString += businessObj.getWebsite();
 			}
 			if(businessCheck10.isSelected()) {
 				textAreaString += "E-mail \n";
-				//textAreaString += businessObj.getEmail();
+				textAreaString += businessObj.getEmail();
 			}
 			if(businessCheck11.isSelected()) {
 				textAreaString += "Fax Number \n";
-				//textAreaString += businessObj.getFax();
+				textAreaString += businessObj.getFax();
 			}
 			if(businessCheck12.isSelected()) {
 				textAreaString += "Owner First/Last Name \n \n";
-				//textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
+				textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
 			}
 			textArea.setText(textAreaString);
 		}
@@ -408,27 +408,27 @@ public class ReportPanel extends JPanel{
 			
 			if (InventoryCheck1.isSelected()) {
 				textAreaString += "Item Name: \t";
-				//textAreaString += inventoryObj.getName();
+				textAreaString += inventoryObj.getName();
 			}
 			if (InventoryCheck2.isSelected()) {
 				textAreaString += "Item ID: \t";
-				//textAreaString += inventoryObj.getId();
+				textAreaString += inventoryObj.getId();
 			}
 			if (InventoryCheck3.isSelected()) {
 				textAreaString += "Price: \t";
-				//textAreaString += inventoryObj.getPrice();
+				textAreaString += inventoryObj.getPrice();
 			}
 			if (InventoryCheck5.isSelected()) {
 				textAreaString += "Supplier Name: \t";
-				//textAreaString += inventoryObj.getSupplier();
+				textAreaString += inventoryObj.getSupplier();
 			}
 			if (InventoryCheck6.isSelected()) {
 				textAreaString += "Par Stock: \n";
-				//textAreaString += inventoryObj.getParStock();
+				textAreaString += inventoryObj.getParStock();
 			}
 			if (InventoryCheck4.isSelected()) {
 				textAreaString += "Item Description: \n";
-				//textAreaString += inventoryObj.getDescription();
+				textAreaString += inventoryObj.getDescription();
 			}
 			
 		    textArea.setText(textAreaString);
@@ -500,27 +500,27 @@ public class ReportPanel extends JPanel{
 
 				textAreaString += "\t \t \tLong Business Name \n";
 				textAreaString += "Street Address \n";
-				//textAreaString += businessObj.getStAdress1();
+				textAreaString += businessObj.getStAdress1();
 				textAreaString += "Street Address Line 2 \n";
-				//textAreaString += businessObj.getStAdress2();
+				textAreaString += businessObj.getStAdress2();
 				textAreaString += "City, State, Zip Code \n \n";
-				//textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n";	    
+				textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n";	    
 				textAreaString += "Logo \n";
-				//textAreaString += businessObj.getLogo1();
+				textAreaString += businessObj.getLogo1();
 				textAreaString += "Logo 2 \n";
-				//textAreaString += businessObj.getLogo2();
+				textAreaString += businessObj.getLogo2();
 				textAreaString += "Phone Number \n";
-				//textAreaString += businessObj.getPhone1();
+				textAreaString += businessObj.getPhone1();
 				textAreaString += "Phone Number 2 \n";
-				//textAreaString += businessObj.getPhone2();
+				textAreaString += businessObj.getPhone2();
 				textAreaString += "Website \n";
-				//textAreaString += businessObj.getWebsite();
+				textAreaString += businessObj.getWebsite();
 				textAreaString += "E-mail \n";
-				//textAreaString += businessObj.getEmail();
+				textAreaString += businessObj.getEmail();
 				textAreaString += "Fax Number \n";
-				//textAreaString += businessObj.getFax();
+				textAreaString += businessObj.getFax();
 				textAreaString += "Owner First/Last Name \n \n";
-				//textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
+				textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
 			
 				textAreaString += "Inventory Report\n";
 				textAreaString += "-------------------------------------------------------------------------------- \n";
@@ -528,27 +528,27 @@ public class ReportPanel extends JPanel{
 				
 				if (InventoryCheck1.isSelected()) {
 					textAreaString += "Item Name: \t";
-					//textAreaString += inventoryObj.getName();
+					textAreaString += inventoryObj.getName();
 				}
 				if (InventoryCheck2.isSelected()) {
 					textAreaString += "Item ID: \t";
-					//textAreaString += inventoryObj.getId();
+					textAreaString += inventoryObj.getId();
 				}
 				if (InventoryCheck3.isSelected()) {
 					textAreaString += "Price: \t";
-					//textAreaString += inventoryObj.getPrice();
+					textAreaString += inventoryObj.getPrice();
 				}
 				if (InventoryCheck5.isSelected()) {
 					textAreaString += "Supplier Name: \t";
-					//textAreaString += inventoryObj.getSupplier();
+					textAreaString += inventoryObj.getSupplier();
 				}
 				if (InventoryCheck6.isSelected()) {
 					textAreaString += "Par Stock: \n";
-					//textAreaString += inventoryObj.getParStock();
+					textAreaString += inventoryObj.getParStock();
 				}
 				if (InventoryCheck4.isSelected()) {
 					textAreaString += "Item Description: \n";
-					//textAreaString += inventoryObj.getDescription();
+					textAreaString += inventoryObj.getDescription();
 				}
 
 		    textArea.setText(textAreaString);
@@ -588,27 +588,27 @@ public class ReportPanel extends JPanel{
 						
 				if (InventoryCheck1.isSelected()) {
 					textAreaString += "Item Name: \t";
-					//textAreaString += inventoryObj.getName();
+					textAreaString += inventoryObj.getName();
 				}
 				if (InventoryCheck2.isSelected()) {
 					textAreaString += "Item ID: \t";
-					//textAreaString += inventoryObj.getId();
+					textAreaString += inventoryObj.getId();
 				}
 				if (InventoryCheck3.isSelected()) {
 					textAreaString += "Price: \t";
-					//textAreaString += inventoryObj.getPrice();
+					textAreaString += inventoryObj.getPrice();
 				}
 				if (InventoryCheck5.isSelected()) {
 					textAreaString += "Supplier Name: \t";
-					//textAreaString += inventoryObj.getSupplier();
+					textAreaString += inventoryObj.getSupplier();
 				}
 				if (InventoryCheck6.isSelected()) {
 					textAreaString += "Par Stock: \n";
-					//textAreaString += inventoryObj.getParStock();
+					textAreaString += inventoryObj.getParStock();
 				}
 				if (InventoryCheck4.isSelected()) {
 					textAreaString += "Item Description: \n";
-					//textAreaString += inventoryObj.getDescription();
+					textAreaString += inventoryObj.getDescription();
 				}
 					textAreaString += "\n \nSales Report\n";
 					textAreaString += "-------------------------------------------------------------------------------- \n";
@@ -651,47 +651,47 @@ public class ReportPanel extends JPanel{
 			}
 			if(businessCheck2.isSelected()) {
 				textAreaString += "Street Address \n";
-				//textAreaString += businessObj.getStAdress1();
+				textAreaString += businessObj.getStAdress1();
 				}
 			if(businessCheck3.isSelected()) {
 				textAreaString += "Street Address Line 2 \n";
-				//textAreaString += businessObj.getStAdress2();
+				textAreaString += businessObj.getStAdress2();
 				}
 			if(businessCheck4.isSelected()) {
 				textAreaString += "City, State, Zip Code \n \n";
-				//textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n";	    
+				textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n";	    
 				}
 			if(businessCheck5.isSelected()) {
 				textAreaString += "Logo \n";
-				//textAreaString += businessObj.getLogo1();
+				textAreaString += businessObj.getLogo1();
 				}
 			if(businessCheck6.isSelected()) {
 				textAreaString += "Logo 2 \n";
-				//textAreaString += businessObj.getLogo2();
+				textAreaString += businessObj.getLogo2();
 				}
 			if(businessCheck7.isSelected()) {
 				textAreaString += "Phone Number \n";
-				//textAreaString += businessObj.getPhone1();
+				textAreaString += businessObj.getPhone1();
 				}
 			if(businessCheck8.isSelected()) {
 				textAreaString += "Phone Number 2 \n";
-				//textAreaString += businessObj.getPhone2();
+				textAreaString += businessObj.getPhone2();
 				}
 			if(businessCheck9.isSelected()) {
 				textAreaString += "Website \n";
-				//textAreaString += businessObj.getWebsite();
+				textAreaString += businessObj.getWebsite();
 				}
 			if(businessCheck10.isSelected()) {
 				textAreaString += "E-mail \n";
-				//textAreaString += businessObj.getEmail();
+				textAreaString += businessObj.getEmail();
 				}
 			if(businessCheck11.isSelected()) {
 				textAreaString += "Fax Number \n";
-				//textAreaString += businessObj.getFax();
+				textAreaString += businessObj.getFax();
 				}
 			if(businessCheck12.isSelected()) {
 				textAreaString += "Owner First/Last Name \n \n";
-				//textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
+				textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
 				}
 				
 			textAreaString += "\n \nSales Report\n";
@@ -736,74 +736,74 @@ public class ReportPanel extends JPanel{
 			}
 			if(businessCheck2.isSelected()) {
 				textAreaString += "Street Address \n";
-				//textAreaString += businessObj.getStAdress1();
+				textAreaString += businessObj.getStAdress1();
 			}
 			if(businessCheck3.isSelected()) {
 				textAreaString += "Street Address Line 2 \n";
-				//textAreaString += businessObj.getStAdress2();
+				textAreaString += businessObj.getStAdress2();
 			}
 			if(businessCheck4.isSelected()) {
 				textAreaString += "City, State, Zip Code \n \n";
-				//textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n";	    
+				textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n";	    
 			}
 			if(businessCheck5.isSelected()) {
 				textAreaString += "Logo \n";
-				//textAreaString += businessObj.getLogo1();
+				textAreaString += businessObj.getLogo1();
 			}
 			if(businessCheck6.isSelected()) {
 				textAreaString += "Logo 2 \n";
-				//textAreaString += businessObj.getLogo2();
+				textAreaString += businessObj.getLogo2();
 			}
 			if(businessCheck7.isSelected()) {
 				textAreaString += "Phone Number \n";
-				//textAreaString += businessObj.getPhone1();
+				textAreaString += businessObj.getPhone1();
 			}
 			if(businessCheck8.isSelected()) {
 				textAreaString += "Phone Number 2 \n";
-				//textAreaString += businessObj.getPhone2();
+				textAreaString += businessObj.getPhone2();
 			}
 			if(businessCheck9.isSelected()) {
 				textAreaString += "Website \n";
-				//textAreaString += businessObj.getWebsite();
+				textAreaString += businessObj.getWebsite();
 			}
 			if(businessCheck10.isSelected()) {
 				textAreaString += "E-mail \n";
-				//textAreaString += businessObj.getEmail();
+				textAreaString += businessObj.getEmail();
 			}
 			if(businessCheck11.isSelected()) {
 				textAreaString += "Fax Number \n";
-				//textAreaString += businessObj.getFax();
+				textAreaString += businessObj.getFax();
 			}
 			if(businessCheck12.isSelected()) {
 				textAreaString += "Owner First/Last Name \n \n";
-				//textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
+				textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
 			}
 			textAreaString += "Inventory Report\n";
 			textAreaString += "-------------------------------------------------------------------------------- \n";
 			
 			if (InventoryCheck1.isSelected()) {
 				textAreaString += "Item Name: \t";
-				//textAreaString += inventoryObj.getName();
+				textAreaString += inventoryObj.getName();
 			}
 			if (InventoryCheck2.isSelected()) {
 				textAreaString += "Item ID: \t";
-				//textAreaString += inventoryObj.getId();
+				textAreaString += inventoryObj.getId();
 			}
 			if (InventoryCheck3.isSelected()) {
 				textAreaString += "Price: \t";
-				//textAreaString += inventoryObj.getPrice();
+				textAreaString += inventoryObj.getPrice();
 			}
 			if (InventoryCheck5.isSelected()) {
 				textAreaString += "Supplier Name: \t";
-				//textAreaString += inventoryObj.getSupplier();
+				textAreaString += inventoryObj.getSupplier();
 			}
 			if (InventoryCheck6.isSelected()) {
 				textAreaString += "Par Stock: \n";
-				//textAreaString += inventoryObj.getParStock();
+				textAreaString += inventoryObj.getParStock();
 			}
 			if (InventoryCheck4.isSelected()) {
 				textAreaString += "Item Description: \n";
-				//textAreaString += inventoryObj.getDescription();
+				textAreaString += inventoryObj.getDescription();
 			}
 			textAreaString += "\n \nSales Report\n";
 			textAreaString += "-------------------------------------------------------------------------------- \n";

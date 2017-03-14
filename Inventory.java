@@ -3,10 +3,13 @@ import java.util.List;
 
 public class Inventory {
 	
-	private List<Item> items;
+	private List<Item> items = new ArrayList<Item>();
 	
 	public Inventory(){
-		items = new ArrayList<Item>();
+	}
+	
+	public void populate(List<Item> items){
+		this.items = items;
 	}
 	
 	public int size(){
@@ -17,8 +20,8 @@ public class Inventory {
 		return items.get(i);
 	}
 	
-	public void addItem(String n, String i, double p, String s, int par){
-		Item temp = new Item(n, i, p, s, par);
+	public void addItem(String n, String i, double p, String s, int q, int par, String d){
+		Item temp = new Item(n, i, p, s, q, par, d);
 		items.add(temp);
 	}
 	
@@ -56,6 +59,14 @@ public class Inventory {
 			s += "\n";
 		}
 		return s;
+	}
+
+	public List<Item> getList() {
+		return items;
+	}
+	
+	public void setList(List<Item> items){
+		this.items = items;
 	}
 	
 	

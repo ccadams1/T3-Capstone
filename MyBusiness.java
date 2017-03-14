@@ -18,8 +18,13 @@ public class MyBusiness {
 	private String ownerFirstName;
 	private String ownerLastName;
 	
-	public MyBusiness (String bizName, String stAddress1, String stAddress2, String city, String state, int zipCode,
-			File logo1, File logo2, int phone1, int phone2, String website, String email, int fax,
+	public MyBusiness (){
+		
+	}
+	
+	public MyBusiness (String bizName, String stAddress1, String stAddress2, 
+			String city, String state, int zipCode, File logo1, File logo2, 
+			int phone1, int phone2, String website, String email, int fax,
 			String ownerFirstName, String ownerLastName)
 	{
 		this.bizName = bizName;

@@ -1,5 +1,3 @@
-import java.io.File;
-
 public class Customer {
 
 	private String prettyCode;
@@ -34,6 +32,9 @@ public class Customer {
 		this.fax = fax;
 	}
 	
+	public Customer() {
+	}
+
 	public void setPrettyCode (String prettyCode)
 	{
 		this.prettyCode = prettyCode;
@@ -59,7 +60,7 @@ public class Customer {
 		this.lName = lName;
 	}
 	
-	public String getlName()
+	public String getLName()
 	{
 		return lName.toString();
 	}

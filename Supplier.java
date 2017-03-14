@@ -34,7 +34,9 @@ public class Supplier {
 		this.fax = fax;
 	}
 	
-	
+	public Supplier() {
+	}
+
 	public void setName (String name)
 	{
 		this.name = name;

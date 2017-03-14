@@ -187,9 +187,9 @@ public class EditUserScreen extends JDialog {
 		
 		//////////////////TEST PURPOSES ONLY////////////////
 		employees = new EmployeeList();
-		emp1 = new Employee("first", "pass", "WillyJames", "Huff", "CEO", "@yahoo", "919");
-		emp2 = new Employee("second", "random", "Rackem", "Willy", "Manager", "@aol", "684");
-		emp3 = new Employee("third", "pword", "Funky", "Chicken", "janitor", "@gmail", "123");
+		emp1 = new Employee("1", "first", "pass", "WillyJames", "Huff", "CEO", "@yahoo", "919");
+		emp2 = new Employee("2", "second", "random", "Rackem", "Willy", "Manager", "@aol", "684");
+		emp3 = new Employee("3", "third", "pword", "Funky", "Chicken", "janitor", "@gmail", "123");
 		employees.addEmployee(emp1);
 		employees.addEmployee(emp2);
 		employees.addEmployee(emp3);

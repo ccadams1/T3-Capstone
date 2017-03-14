@@ -56,7 +56,7 @@ public class InventoryPanel extends JPanel{
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));	
-		updateInventoryDisplay(textArea);
+		//updateInventoryDisplay(textArea);
 				
 		//inserts radio button panel into information panel
 		JPanel RadioPanel = new JPanel();
@@ -370,16 +370,19 @@ public class InventoryPanel extends JPanel{
 		if(!parStock.equals("")){
 			par = Integer.parseInt(parStock);
 		}
+		
+		//work on this
+		int q = 0;
 			
 		if(n.equals("") || id.equals("") || price.equals("") || s.equals("") ){
 			// Return Warning (required fields empty)
 		}
 		else{
 			if(d.equals("")){
-				inventory.addItem(n, id, p, s, par);
+				inventory.addItem(n, id, p, s, par, d);
 			}
 			else{
-				inventory.addItem(n, id, p, s, par, d);
+				inventory.addItem(n, id, p, s, q, par, d);
 			}
 			
 		}

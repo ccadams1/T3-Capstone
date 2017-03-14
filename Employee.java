@@ -1,46 +1,37 @@
-import java.util.ArrayList;
-
 public class Employee {
 	
-	private String username, password, firstName, lastName, email, phone, address;
-	private String uRole;
-	private String userId;
-	
-	private static int idNum = 123;
-	
-	public Employee(String uName, String pWord,String fName,String lName,String role, String eMale){
-		this.userId = Integer.toString(idNum);
-		idNum++;
-		this.username = uName;
-		this.password = pWord;
-		this.firstName = fName;
-		this.lastName = lName;
-		this.uRole = role;
-		this.email = eMale;
-		this.phone = "";
+	private String username, password, firstName;
+	private String lastName, email, uRole;
+	private String userID, phone, address;
 		
-	}
-	
-	public Employee(String uName, String pWord,String fName,String lName,String role, String eMale, String telNum){
-		this.userId = Integer.toString(idNum);
-		idNum++;
-		this.username = uName;
-		this.password = pWord;
-		this.firstName = fName;
-		this.lastName = lName;
-		this.uRole = role;
-		this.email = eMale;
-		this.phone = telNum;
-		
-		
-	}
-	
 	public Employee(){
 		
 	}
 	
+	public Employee(String userID, String uName, String pWord,String fName,String lName,String role, String email, String phone){
+		this.userID = userID;
+		this.username = uName;
+		this.password = pWord;
+		this.firstName = fName;
+		this.lastName = lName;
+		this.uRole = role;
+		this.email = email;
+		this.phone = phone;
+	}
+	
+	public Employee(String uName, String pWord,String fName,String lName,String role, String email, String phone){
+		this.userID = "";
+		this.username = uName;
+		this.password = pWord;
+		this.firstName = fName;
+		this.lastName = lName;
+		this.uRole = role;
+		this.email = email;
+		this.phone = phone;
+	}
+	
 	public String getUserId(){
-		return this.userId;
+		return this.userID;
 	}
 	
 	public String getUsername(){

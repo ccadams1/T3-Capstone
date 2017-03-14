@@ -1,6 +1,7 @@
 import java.awt.EventQueue;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -8,18 +9,21 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Toolkit;
+
 import javax.swing.JComboBox;
 
 public class AddUserScreen extends JDialog {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
+	private static final long serialVersionUID = 1L;
+	private JTextField usernameTextField;
+	private JTextField passwordTextField;
+	private JTextField retypePasswordTextField;
+	private JTextField firstNameTextField;
+	private JTextField lastNameTextField;
+	private JTextField emailTextField;
+	private JTextField phoneTextField;
+	public EmployeeList employees = new EmployeeList();
 	
-
 	/**
 	 * Launch the application.
 	 */
@@ -55,32 +59,32 @@ public class AddUserScreen extends JDialog {
 		this.setTitle("Add User");
 		this.getContentPane().setLayout(null);
 		
-		JLabel lblUsername = new JLabel("Username:");
+		JLabel lblUsername = new JLabel("Username:*");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUsername.setBounds(11, 24, 149, 29);
 		getContentPane().add(lblUsername);
 		
-		JLabel lblPassword = new JLabel("Password:");
+		JLabel lblPassword = new JLabel("Password:*");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPassword.setBounds(11, 62, 149, 29);
 		getContentPane().add(lblPassword);
 		
-		JLabel lblRetypePassword = new JLabel("Retype Password:");
+		JLabel lblRetypePassword = new JLabel("Retype Password:*");
 		lblRetypePassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblRetypePassword.setBounds(11, 100, 149, 29);
 		getContentPane().add(lblRetypePassword);
 		
-		JLabel lblFirstName = new JLabel("First name:");
+		JLabel lblFirstName = new JLabel("First name:*");
 		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblFirstName.setBounds(11, 138, 149, 29);
 		getContentPane().add(lblFirstName);
 		
-		JLabel lblLastName = new JLabel("Last name:");
+		JLabel lblLastName = new JLabel("Last name:*");
 		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblLastName.setBounds(11, 176, 149, 29);
 		getContentPane().add(lblLastName);
 		
-		JLabel lblEmployeeRole = new JLabel("Employee role:");
+		JLabel lblEmployeeRole = new JLabel("Employee role:*");
 		lblEmployeeRole.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblEmployeeRole.setBounds(11, 214, 149, 29);
 		getContentPane().add(lblEmployeeRole);
@@ -95,102 +99,106 @@ public class AddUserScreen extends JDialog {
 		lblPhoneNumber.setBounds(11, 290, 149, 29);
 		getContentPane().add(lblPhoneNumber);
 		
-		textField = new JTextField();
-		textField.setBounds(158, 17, 191, 35);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		usernameTextField = new JTextField();
+		usernameTextField.setBounds(158, 17, 191, 35);
+		getContentPane().add(usernameTextField);
+		usernameTextField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(158, 55, 191, 35);
-		getContentPane().add(textField_1);
+		passwordTextField = new JTextField();
+		passwordTextField.setColumns(10);
+		passwordTextField.setBounds(158, 55, 191, 35);
+		getContentPane().add(passwordTextField);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(158, 93, 191, 35);
-		getContentPane().add(textField_2);
+		retypePasswordTextField = new JTextField();
+		retypePasswordTextField.setColumns(10);
+		retypePasswordTextField.setBounds(158, 93, 191, 35);
+		getContentPane().add(retypePasswordTextField);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(158, 131, 191, 35);
-		getContentPane().add(textField_3);
+		firstNameTextField = new JTextField();
+		firstNameTextField.setColumns(10);
+		firstNameTextField.setBounds(158, 131, 191, 35);
+		getContentPane().add(firstNameTextField);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(158, 169, 191, 35);
-		getContentPane().add(textField_4);
+		lastNameTextField = new JTextField();
+		lastNameTextField.setColumns(10);
+		lastNameTextField.setBounds(158, 169, 191, 35);
+		getContentPane().add(lastNameTextField);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(158, 245, 191, 35);
-		getContentPane().add(textField_5);
+		emailTextField = new JTextField();
+		emailTextField.setColumns(10);
+		emailTextField.setBounds(158, 245, 191, 35);
+		getContentPane().add(emailTextField);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(158, 283, 191, 35);
-		getContentPane().add(textField_6);
+		phoneTextField = new JTextField();
+		phoneTextField.setColumns(10);
+		phoneTextField.setBounds(158, 283, 191, 35);
+		getContentPane().add(phoneTextField);
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> empRoleComboBox = new JComboBox<String>();
 		////////////////Temp code for testing purposes/////////////
-		comboBox.addItem("");
-		comboBox.addItem("test");
-		comboBox.setSelectedItem("");
+		empRoleComboBox.addItem("");
+		empRoleComboBox.addItem("Inventory Manager");
+		empRoleComboBox.addItem("Inventory User");
+		empRoleComboBox.addItem("POS Manager");
+		empRoleComboBox.addItem("POS User");
+		empRoleComboBox.setSelectedItem("");
 		///////////////////////////////////////////////////////////
-		comboBox.setBounds(158, 207, 191, 35);
-		getContentPane().add(comboBox);
+		empRoleComboBox.setBounds(158, 207, 191, 35);
+		getContentPane().add(empRoleComboBox);
 		
 		JButton btnAddUser = new JButton("Add User");
 		btnAddUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AdminVerificationScreen();
-			}
-		});
-		btnAddUser.setBounds(99, 322, 155, 37);
-		getContentPane().add(btnAddUser);
-		
-		btnAddUser.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String text = textField.getText();
-				String text_1 = textField_1.getText();
-				String text_2 = textField_2.getText();
-				String text_3 = textField_3.getText();
-				String text_4 = textField_4.getText();
+				String text = usernameTextField.getText();
+				String text_1 = passwordTextField.getText();
+				String text_2 = retypePasswordTextField.getText();
+				String text_3 = firstNameTextField.getText();
+				String text_4 = lastNameTextField.getText();
 				////////////temp code for user role////////////////////////////////////
-				String userRole = (String) comboBox.getSelectedItem();
+				String userRole = (String) empRoleComboBox.getSelectedItem();
 				///////////////////////////////////////////////////////////////////////
-				String text_5 = textField_5.getText();
-				String text_6 = textField_6.getText();
+				String text_5 = emailTextField.getText();
+				String text_6 = phoneTextField.getText();
 				
 				
 				if(text.equals("") || text_1.equals("") || text_2.equals("") || 
-						text_3.equals("") || text_4.equals("") || text_5.equals("") ||
+						text_3.equals("") || text_4.equals("") || 
 						userRole.equals("")){
-					// Return Warning (required fields empty)
+					System.out.println(userRole);
+					setWarningMsg("Please enter information in the *required boxes.");
+				}
+				else if(text_1.length() < 8){
+					setWarningMsg("Password is too small.");
+				}
+				else if(text_1.length() > 16){
+					setWarningMsg("Password is too large.");
 				}
 				else if(!text_1.equals(text_2)){
-					// Return Warning (passwords must match)
-				}
-				else if(text_6.equals("")){
-					Employee temp = new Employee(text, text_1, text_3, text_4, 
-							userRole, text_5);
-					//Insert code to add Employee to EmployeeList
-					
-					//Temp code to test functionality
-					temp.print();
+					setWarningMsg("Passwords do not match.");
 				}
 				else{
 					Employee temp = new Employee(text, text_1, text_3, text_4, userRole,
 							text_5, text_6);
-					//Insert code to add Employee to EmployeeList
+					
+					new AdminVerificationScreen();
+					//require boolean of verification to add employee
+					employees.addEmployee(temp);
 					
 					//Temp code to test functionality
 					temp.print();
 				}
-				
-				
 			}
 		});
+		btnAddUser.setBounds(99, 322, 155, 37);
+		getContentPane().add(btnAddUser);
+	}
+	
+
+public void setWarningMsg(String text){
+    Toolkit.getDefaultToolkit().beep();
+    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
+    JDialog dialog = optionPane.createDialog("Warning!");
+    dialog.setAlwaysOnTop(true);
+    dialog.setVisible(true);
 	}
 }

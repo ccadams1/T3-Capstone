@@ -1,15 +1,15 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeList {
 	
-	private ArrayList<Employee> employees;
+	private List<Employee> employees = new ArrayList<Employee>();
 	
 	public EmployeeList(){
-		employees = new ArrayList<Employee>();
 	}
 	
-	public void populate(){
-		//code to populate list from database connection
+	public void populate(List<Employee> employees){
+		this.employees = employees;
 	}
 	
 	public int size(){
@@ -41,6 +41,7 @@ public class EmployeeList {
 	}
 	
 	public void addEmployee(Employee emp){
+		emp.print();
 		employees.add(emp);
 	}
 	
@@ -79,7 +80,8 @@ public class EmployeeList {
 		}
 		return s;
 	}
-	
-	
-	
+
+	public List<Employee> getList() {
+		return employees;
+	}
 }

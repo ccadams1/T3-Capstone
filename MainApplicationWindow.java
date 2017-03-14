@@ -1,12 +1,18 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 import javax.swing.*;
 import java.awt.CardLayout;
 
 public class MainApplicationWindow {
-
+	private static Connection connection = null;
+	private static CustomerList customers;
+	private static Inventory inventory;
+	private static SupplierList suppliers;
+	private static EmployeeList employees;
+	private static MyBusiness myBusiness;
 	private JFrame frame;
 	private JPanel mainPanel;
 	private JPanel posPanel;
@@ -23,7 +29,15 @@ public class MainApplicationWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginScreen login = new LoginScreen();
+					DatabaseConnection database = new DatabaseConnection();
+					connection = database.getConnection();
+					PullDatabase pull = new PullDatabase(connection);
+					//myBusiness = pull.getMyBusinessData();
+					//customers.populate(pull.getCustomers());
+					//employees.populate(pull.getEmployees());
+					//inventory.populate(pull.getInventory());
+					//suppliers.populate(pull.getSuppliers());
+					new LoginScreen();
 					MainApplicationWindow window = new MainApplicationWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -202,5 +216,13 @@ public class MainApplicationWindow {
 		otherScreen3.setVisible(false);
 		otherScreen4.setVisible(false);
 		otherScreen5.setVisible(false);
+	}
+
+	public static Connection getConnection() {
+		return connection;
+	}
+
+	public static void setConnection(Connection connection) {
+		MainApplicationWindow.connection = connection;
 	}
 }

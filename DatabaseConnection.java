@@ -1,35 +1,46 @@
+import java.sql.*;
+
 public class DatabaseConnection {
+	public static String username;
+	public static String password;
+	public static String serverName = "t3tisvr.database.windows.net";
+	public static String portNumber = "1433";
 	
-	public DatabaseConnection(){
-		//establish database connection
+	public DatabaseConnection()
+	{
+		DatabaseConnection.username = "t3tiadmin@t3tisvr";
+		DatabaseConnection.password = "T3!admin";
 	}
 	
-	public Inventory getInventory(){
-		//code to retrieve inventory from database
+	public DatabaseConnection(String username, String password)
+	{
+		DatabaseConnection.username = username;
+		DatabaseConnection.password = password;
+	}
+	
+	//Connect to your database.
+	//Replace server name, username, and password with your credentials
+	public Connection getConnection() throws SQLException{
+		String connectionString =
+			"jdbc:sqlserver://t3tisvr.database.windows.net:1433;"
+			+ "database=T3_TI_WTCC;" + "user=" + username + ";"
+			+ "password=" + password + ";"
+			+ "encrypt=true;"
+			+ "trustServerCertificate=false;"
+			+ "hostNameInCertificate=*.database.windows.net;"
+			+ "loginTimeout=30;";
 		
-		//filler code
-			Inventory fake = new Inventory();
-			return fake;
-		//
+		//Declare the JDBC objects.
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection(connectionString);
+			System.out.println("Connected to database");
+		}
+		catch (Exception e) {
+			e.printStackTrace();	
+			System.out.println("Connection issue");
+		}
+		
+		return connection;
 	}
-	
-	public void updateQuantity(int id, int i){
-		//This code will update the value in the database for specified quantity
-	}
-	
-	public void updateName(int id, String s){
-		//This code will update the value in the database for specified name
-	}
-	
-	public void updatePrice(int id, double d){
-		//This code will update the value in the database for specified price
-	}
-	
-	public void updateMinimumQuantity(int id, int i){
-		//This code will update the value in the database for specified quantity
-	}
-	
-	public void updateId(int id, int i){
-		//This code will update the value in the database for specified ID
-	}
-}
+} 

@@ -15,7 +15,7 @@ public class Customer {
 	private int fax;
 	
 	public Customer (String prettyCode, String fName, String lName, String stAddress1, String stAddress2, String city, String state, int zipCode,
-			int phone1, int phone2, String website, String email, int fax)
+			int phone1, int phone2, String email, int fax)
 	{
 		this.prettyCode = prettyCode;
 		this.fName = fName;
@@ -27,7 +27,6 @@ public class Customer {
 		this.zipCode = zipCode;
 		this.phone1 = phone1;
 		this.phone2 = phone2;
-		this.website = website;
 		this.email = email;
 		this.fax = fax;
 	}
@@ -131,16 +130,6 @@ public class Customer {
 	public int getPhone2()
 	{
 		return phone2;
-	}
-	
-	public void setWebsite( String website)
-	{
-		this.website = website;
-	}
-
-	public String getWebsite()
-	{
-		return website.toString();
 	}
 	
 	public void setEmail (String email)

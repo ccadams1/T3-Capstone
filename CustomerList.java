@@ -3,13 +3,13 @@ import java.util.List;
 
 public class CustomerList {
 	
-	private List<Customer> customers = new ArrayList<Customer>();
+	public List<Customer> customers = new ArrayList<Customer>();
 	
 	public CustomerList(){
 	}
 	
-	public void populate(List<Customer> suppliers){
-		this.customers = suppliers;
+	public void populate(List<Customer> customer){
+		this.customers = customer;
 	}
 	
 	public int size(){

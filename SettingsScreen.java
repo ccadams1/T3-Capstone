@@ -7,13 +7,14 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class SettingsScreen extends JDialog{
 
 	/**
 	 * Launch the application.
-	 */
+	 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -25,18 +26,18 @@ public class SettingsScreen extends JDialog{
 			}
 		});
 	}
-
+*/
 	/**
 	 * Create the application.
 	 */
-	public SettingsScreen() {
-		initialize();
+	public SettingsScreen(ArrayList<Object> data) {
+		initialize(data);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(ArrayList<Object> data) {
 		this.setAlwaysOnTop (true);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
@@ -90,7 +91,7 @@ public class SettingsScreen extends JDialog{
 		JButton editBusiness = new JButton("Edit Business Information");
 		editBusiness.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new EditBusinessInformationScreen();
+				new EditBusinessInformationScreen(data);
 			}
 		});
 		panel_4.add(editBusiness);

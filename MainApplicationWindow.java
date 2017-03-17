@@ -2,17 +2,20 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import java.awt.CardLayout;
 
 public class MainApplicationWindow {
+	private static ArrayList<Object> allData = new ArrayList<Object>();
 	private static Connection connection = null;
-	private static CustomerList customers;
-	private static Inventory inventory;
-	private static SupplierList suppliers;
-	private static EmployeeList employees;
-	private static MyBusiness myBusiness;
+	private static CustomerList customers = new CustomerList();
+	private static Inventory inventory = new Inventory();
+	private static SupplierList suppliers = new SupplierList();
+	private static EmployeeList employees = new EmployeeList();
+	private static MyBusiness myBusiness = new MyBusiness();
 	private JFrame frame;
 	private JPanel mainPanel;
 	private JPanel posPanel;
@@ -32,13 +35,23 @@ public class MainApplicationWindow {
 					DatabaseConnection database = new DatabaseConnection();
 					connection = database.getConnection();
 					PullDatabase pull = new PullDatabase(connection);
-					//myBusiness = pull.getMyBusinessData();
+					myBusiness = pull.getMyBusinessData();
 					//customers.populate(pull.getCustomers());
 					//employees.populate(pull.getEmployees());
 					//inventory.populate(pull.getInventory());
 					//suppliers.populate(pull.getSuppliers());
+					Item testItem1 = new Item("test item 1", "first test", "1", 10, "JELLIOTT", 6, 10, "first item to test everything");
+					Item testItem2 = new Item("test item 2", "second test", "2", 20, "JELLIOTT", 1, 10, "second item to test everything");
+					inventory.addItem(testItem1);
+					inventory.addItem(testItem2);
+					allData.add(connection);
+					allData.add(customers);
+					allData.add(employees);
+					allData.add(inventory);
+					allData.add(myBusiness);
+					allData.add(suppliers);
 					new LoginScreen();
-					MainApplicationWindow window = new MainApplicationWindow();
+					MainApplicationWindow window = new MainApplicationWindow(allData);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,14 +63,14 @@ public class MainApplicationWindow {
 	/**
 	 * Create the application.
 	 */
-	public MainApplicationWindow() {
-		initialize();
+	public MainApplicationWindow(ArrayList<Object> data) {
+		initialize(data);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(ArrayList<Object> data) {
 		//initializes frame and sets layout
 		frame = new JFrame();
 		frame.setBounds(0, 0, 800, 600);
@@ -77,14 +90,14 @@ public class MainApplicationWindow {
 		
 		//Main panel
 		//adds the Main Screen
-		mainPanel = new MainPanel(menuBar);
+		mainPanel = new MainPanel(menuBar, data);
 		mainPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(mainPanel);
 		mainPanel.setVisible(true);
 		
 		//POS panel
 		//adds the POS Screen
-		posPanel = new POSPanel();
+		posPanel = new POSPanel(data);
 		posPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(posPanel);
 		posPanel.setLayout(null);
@@ -92,7 +105,7 @@ public class MainApplicationWindow {
 		
 		//Inventory panel
 		//adds the Inventory Screen
-		inventoryPanel = new InventoryPanel();
+		inventoryPanel = new InventoryPanel(data);
 		inventoryPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(inventoryPanel);
 		inventoryPanel.setLayout(null);
@@ -100,7 +113,7 @@ public class MainApplicationWindow {
 		
 		//Search Panel
 		//adds the Search Screen
-		searchPanel = new SearchPanel();
+		searchPanel = new SearchPanel(data);
 		searchPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(searchPanel);
 		searchPanel.setLayout(null);
@@ -108,7 +121,7 @@ public class MainApplicationWindow {
 		
 		//Report Panel
 		//adds the Report Screen
-		reportPanel = new ReportPanel();
+		reportPanel = new ReportPanel(data);
 		reportPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(reportPanel);
 		reportPanel.setLayout(null);
@@ -211,6 +224,7 @@ public class MainApplicationWindow {
 			JPanel otherScreen5)
 	{
 		thisScreen.setVisible(true);
+		thisScreen.validate();
 		otherScreen1.setVisible(false);
 		otherScreen2.setVisible(false);
 		otherScreen3.setVisible(false);

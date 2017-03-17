@@ -10,6 +10,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -56,10 +57,10 @@ public class ReportPanel extends JPanel{
 	JCheckBox salesCheck5;
 	JCheckBox salesCheck6;
 		
-	public ReportPanel()
+	public ReportPanel(ArrayList<Object> data)
 	{
-		MyBusiness businessObj = new MyBusiness();
-		Inventory inventory = new Inventory();
+		MyBusiness businessObj = (MyBusiness) data.get(4);
+		Inventory inventory = (Inventory) data.get(3);
 		List<Item> items = inventory.getList();
 
 		//bounds should be set to (0, 0, 772, 476)

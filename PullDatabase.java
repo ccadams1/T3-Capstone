@@ -17,6 +17,7 @@ public class PullDatabase {
 		this.connection = connection;
 	}
 	
+	//customer code complete
 	public List<Customer> getCustomers()
 	{
 		String query = "SELECT pretty_code, fname, lname, st_address1, "
@@ -39,12 +40,11 @@ public class PullDatabase {
 				int zip_code = rs.getInt("zip_code");
 				int phone1 = rs.getInt("phone1");
 				int phone2 = rs.getInt("phone2");
-				String website = rs.getString("website");
 				String email = rs.getString("email");
 				int fax = rs.getInt("fax");
 				Customer c = new Customer(prettyCode, fName, lName, st_address1,
 						st_address2, city, state, zip_code, phone1, phone2, 
-						website, email, fax);
+						email, fax);
 				customers.add(c);
 			}
 		}
@@ -56,12 +56,11 @@ public class PullDatabase {
 		return customers;
 	}
 	
+	
 	public List<Employee> getEmployees()
 	{
-		String query = "SELECT URE_id, LoginName, PasswordHash, "
-				+ "FirstName, LastName, "
-				+ "USER_ROLE, "
-				+ "email, phone1 FROM USER"; 
+		String query = "SELECT UserID, LoginName, PasswordHash, FirstName, "
+				+ "LastName, URE_ID, email, phone1 FROM USERS"; 
 		
 		try{
 			Statement stmt = connection.createStatement();
@@ -69,12 +68,12 @@ public class PullDatabase {
 			
 			while(rs.next())
 			{
-				String userID = rs.getString("URE_id");
+				String userID = rs.getString("UserID");
 				String username = rs.getString("LoginName");
 				String password = rs.getString("PasswordHash");
 				String firstName = rs.getString("FirstName");
 				String lastName = rs.getString("LastName");
-				String role = rs.getString("USER_ROLE");
+				String role = rs.getString("URE_ID");
 				String email = rs.getString("email");
 				String phone = rs.getString("phone1");
 				Employee e = new Employee(userID, username, password, firstName, lastName, role, email, phone);
@@ -91,8 +90,12 @@ public class PullDatabase {
 	
 	public List<Item> getInventory()
 	{
-		String query = "SELECT item_name, pretty_name, invID, price, supplier, num_in_stock, "
-				+ "parStock, item_description FROM INVENTORY"; 
+		String query = "SELECT I.invID, I.pretty_name, I.item_name, O.supplier_price, S.name, "
+				+ "I.num_in_stock, I.reorder_amt, I.item_description "
+				+ "FROM INVENTORY I LEFT OUTER JOIN INVENTORY_ORDER O "
+				+ "ON I.invID = O.INV_id LEFT OUTER JOIN INVENTORY_PRICE P "
+				+ "ON I.invID = P.INV_id LEFT OUTER JOIN SUPPLIER S "
+				+ "ON O.SUP_id = S.supID"; 
 		
 		try{
 			Statement stmt = connection.createStatement();
@@ -100,14 +103,14 @@ public class PullDatabase {
 			
 			while(rs.next())
 			{
-				String item_name = rs.getString("item_name");
-				String pretty_name = rs.getString("pretty_name");
-				String invID = rs.getString("invID");
-				Double price = rs.getDouble("price");
-				String supplier = rs.getString("supplier");
-				int quantity = rs.getInt("num_in_stock");
-				int parStock = rs.getInt("parStock");
-				String item_description = rs.getString("item_description");
+				String item_name = rs.getString("I.item_name");
+				String pretty_name = rs.getString("I.pretty_name");
+				String invID = rs.getString("I.invID");
+				Double price = rs.getDouble("O.supplier_price");
+				String supplier = rs.getString("S.name");
+				int quantity = rs.getInt("I.num_in_stock");
+				int parStock = rs.getInt("I.reorder_amt");
+				String item_description = rs.getString("I.item_description");
 				Item i = new Item(item_name, pretty_name, invID, price, supplier, quantity, 
 						parStock, item_description);
 				items.add(i);
@@ -121,6 +124,7 @@ public class PullDatabase {
 		return items;
 	}
 	
+	//MyBusiness code complete
 	public MyBusiness getMyBusinessData()
 	{
 		MyBusiness data = null;
@@ -134,24 +138,26 @@ public class PullDatabase {
 			ResultSet rs = stmt.executeQuery(query);
 
 			
-			String bizName = rs.getString("bizName");
-			String stAddress1 = rs.getString("stAddress1");
-			String stAddress2 = rs.getString("stAddress2");
-			String city = rs.getString("city");
-			String state = rs.getString("state");
-			int zipCode = rs.getInt("zipCode");
-			File logo1 = (File) rs.getObject("logo1");
-			File logo2 = (File) rs.getObject("logo2");
-			int phone1 = rs.getInt("phone1");
-			int phone2 = rs.getInt("phone2");
-			String website = rs.getString("website");
-			String email = rs.getString("email");
-			int fax = rs.getInt("fax");
-			String ownerFirstName = rs.getString("ownerFirstName");
-			String ownerLastName = rs.getString("ownerLastName");
-			data = new MyBusiness(bizName, stAddress1, stAddress2, city, state, zipCode,
-					logo1, logo2, phone1, phone2, website, email, fax, ownerFirstName,
-					ownerLastName);
+			while(rs.next()){
+				String bizName = rs.getString("biz_Name");
+				String stAddress1 = rs.getString("st_address1");
+				String stAddress2 = rs.getString("st_address2");
+				String city = rs.getString("city");
+				String state = rs.getString("state");
+				int zipCode = rs.getInt("zip_code");
+				File logo1 = null;//(File) rs.getObject("logo1");
+				File logo2 = null;//(File) rs.getObject("logo2");
+				int phone1 = rs.getInt("phone1");
+				int phone2 = rs.getInt("phone2");
+				String website = rs.getString("website");
+				String email = rs.getString("email");
+				int fax = rs.getInt("fax");
+				String ownerFirstName = rs.getString("owner_fname");
+				String ownerLastName = rs.getString("owner_lname");
+				data = new MyBusiness(bizName, stAddress1, stAddress2, city, state, zipCode,
+						logo1, logo2, phone1, phone2, website, email, fax, ownerFirstName,
+						ownerLastName);
+			}
 		}
 		catch (SQLException e)
 		{
@@ -161,6 +167,7 @@ public class PullDatabase {
 		return data;
 	}
 	
+	//supplier code complete
 	public List<Supplier> getSuppliers()
 	{
 		String query = "SELECT name, pretty_code, st_address1, st_address2, "

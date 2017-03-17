@@ -3,6 +3,7 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -17,6 +18,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class InventoryPanel extends JPanel{
+	private static final long serialVersionUID = 1L;
 	private JTextField editItemNameTextField, addItemNameTextField, deleteItemNameTextField;
 	private JTextField addSupplierNameTextField, editSupplierNameTextField;
 	private JTextField addItemIDTextField, editItemIDTextField, deleteItemIDTextField;
@@ -27,14 +29,9 @@ public class InventoryPanel extends JPanel{
 	private JCheckBox chckbxConfirmDelete;
 	private Inventory inventory;
 	
-	public InventoryPanel()
+	public InventoryPanel(ArrayList<Object> data)
 	{
-		
-		//change this later////
-		//
-			inventory = new Inventory();
-		//
-		///////////////////////
+		inventory = (Inventory) data.get(3);
 		
 		//bounds should be set to (0, 0, 772, 476)
 		this.setBounds(0, 0, 772, 476);
@@ -56,7 +53,7 @@ public class InventoryPanel extends JPanel{
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));	
-		//updateInventoryDisplay(textArea);
+		updateInventoryDisplay(textArea);
 				
 		//inserts radio button panel into information panel
 		JPanel RadioPanel = new JPanel();

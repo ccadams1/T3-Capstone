@@ -4,20 +4,28 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class SearchPanel extends JPanel{
+	private CustomerList customers = new CustomerList();
+	private Inventory inventory = new Inventory();
+	private SupplierList suppliers = new SupplierList();
 	private JTextField itemNameTextField;
 	private JTextField supplierNameTextField;
 	private JTextField itemIDTextField;
 	private JTextField minPriceTextField;
 	private JTextField maxPriceTextField;
 	
-	public SearchPanel()
+	public SearchPanel(ArrayList<Object> data)
 	{
+		customers = (CustomerList) data.get(1);
+		inventory = (Inventory) data.get(3);
+		suppliers = (SupplierList) data.get(5);
+		
 		//bounds should be set to (0, 0, 772, 476)
 		this.setBounds(0, 0, 772, 476);
 		this.setLayout(null);

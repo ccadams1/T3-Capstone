@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
@@ -16,7 +17,7 @@ public class MainPanel extends JPanel{
 	private JButton settings, changeUser;
 	public static JPanel pos;
 
-	public MainPanel(JMenuBar menuBar){
+	public MainPanel(JMenuBar menuBar, ArrayList<Object> data){
 		//Create JFrame and GridLayout
 		this.setLayout(null);
 		this.setBounds(0, 0, 772, 476);
@@ -79,7 +80,7 @@ public class MainPanel extends JPanel{
 		settings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//sets main as visible screen
-				SettingsScreen setting = new SettingsScreen();
+				SettingsScreen setting = new SettingsScreen(data);
 			}
 		});
 		

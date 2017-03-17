@@ -30,6 +30,10 @@ public class Inventory {
 		items.add(temp);
 	}
 	
+	public void addItem(Item i){
+		items.add(i);
+	}
+	
 	public int findItemByName(String n){
 		int index = -1;
 		for(int i = 0; i < items.size(); i++){

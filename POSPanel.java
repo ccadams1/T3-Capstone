@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -13,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.event.AncestorListener;
 
 public class POSPanel extends JPanel{
 	private Inventory inventory = new Inventory();
@@ -109,22 +112,30 @@ public class POSPanel extends JPanel{
 		panel_2.setBorder(null);
 		panel_2.setLayout(new GridLayout(6, 1, 0, 0));
 
-		for(int x = 0; x < inventory.size(); x++)
-		{
-			POSButton button = new POSButton(inventory.get(x), panel_2);
-			button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					JPanel newPanel = button.getCheckPanel();
-					newPanel.setVisible(true);
-					JPanel spacer = new JPanel();
-					spacer.setSize(235,1);
-					panel_2.add(spacer);
-					panel_2.add(newPanel);
-					panel_2.remove(spacer);
-					panel_2.validate();
+		this.addComponentListener(new ComponentAdapter(){
+			public void componentShown(ComponentEvent e){
+				panel_1.removeAll();
+				panel_2.removeAll();
+				panel_1.revalidate();
+				panel_2.revalidate();
+				for(int x = 0; x < inventory.size(); x++)
+				{
+					POSButton button = new POSButton(inventory.get(x), panel_2);
+					button.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							JPanel newPanel = button.getCheckPanel();
+							newPanel.setVisible(true);
+							JPanel spacer = new JPanel();
+							spacer.setSize(235,1);
+							panel_2.add(spacer);
+							panel_2.add(newPanel);
+							panel_2.remove(spacer);
+							panel_2.validate();
+						}
+					});
+					panel_1.add(button);
 				}
-			});
-			panel_1.add(button);
-		}
+			}
+		});
 	}
 } 

@@ -151,4 +151,20 @@ public class Customer {
 	{
 		return fax;
 	}
+	
+	public String toString()
+	{
+		String string = "";
+		string += prettyCode + " ";
+		string += fName + " ";
+		string += lName + " ";
+		string += city + " ";
+		string += state + " ";
+		string += zipCode + " ";
+		string += phone1 + " ";
+		string += phone2 + " ";
+		string += email + " ";
+		string += fax + " ";
+		return string;
+	}
 }

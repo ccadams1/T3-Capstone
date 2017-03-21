@@ -168,10 +168,10 @@ public class AddUserScreen extends JDialog {
 					setWarningMsg("Please enter information in the *required boxes.");
 				}
 				else if(text_1.length() < 8){
-					setWarningMsg("Password is too small.");
+					setWarningMsg("Password is too small. Password minimum is 8 characters.");
 				}
 				else if(text_1.length() > 16){
-					setWarningMsg("Password is too large.");
+					setWarningMsg("Password is too large. Password maximum is 16 characters.");
 				}
 				else if(!text_1.equals(text_2)){
 					setWarningMsg("Passwords do not match.");

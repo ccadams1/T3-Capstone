@@ -3,14 +3,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PullDatabase {
 	private Connection connection;
-	private static List<Customer> customers;
-	private static List<Employee> employees;
-	private static List<Item> items;
-	private static List<Supplier> suppliers;
+	private static ArrayList<Customer> customers = new ArrayList<Customer>();
+	private static ArrayList<Employee> employees = new ArrayList<Employee>();
+	private static ArrayList<Item> items = new ArrayList<Item>();
+	private static ArrayList<Supplier> suppliers = new ArrayList<Supplier>();
 	
 	
 	public PullDatabase(Connection connection){
@@ -18,7 +19,7 @@ public class PullDatabase {
 	}
 	
 	//customer code complete
-	public List<Customer> getCustomers()
+	public ArrayList<Customer> getCustomers()
 	{
 		String query = "SELECT pretty_code, fname, lname, st_address1, "
 				+ "st_address2, city, state, zip_code, phone1, phone2, "
@@ -45,7 +46,9 @@ public class PullDatabase {
 				Customer c = new Customer(prettyCode, fName, lName, st_address1,
 						st_address2, city, state, zip_code, phone1, phone2, 
 						email, fax);
+				System.out.println(c.toString());
 				customers.add(c);
+				System.out.println("added");
 			}
 		}
 		catch (SQLException e)
@@ -57,7 +60,7 @@ public class PullDatabase {
 	}
 	
 	
-	public List<Employee> getEmployees()
+	public ArrayList<Employee> getEmployees()
 	{
 		String query = "SELECT UserID, LoginName, PasswordHash, FirstName, "
 				+ "LastName, URE_ID, email, phone1 FROM USERS"; 
@@ -77,7 +80,9 @@ public class PullDatabase {
 				String email = rs.getString("email");
 				String phone = rs.getString("phone1");
 				Employee e = new Employee(userID, username, password, firstName, lastName, role, email, phone);
+				System.out.println(e.toString());
 				employees.add(e);
+				System.out.println("added");
 			}
 		}
 		catch (SQLException e)
@@ -88,7 +93,7 @@ public class PullDatabase {
 		return employees;
 	}
 	
-	public List<Item> getInventory()
+	public ArrayList<Item> getInventory()
 	{
 		String query = "SELECT I.invID, I.pretty_name, I.item_name, O.supplier_price, S.name, "
 				+ "I.num_in_stock, I.reorder_amt, I.item_description "
@@ -103,17 +108,19 @@ public class PullDatabase {
 			
 			while(rs.next())
 			{
-				String item_name = rs.getString("I.item_name");
-				String pretty_name = rs.getString("I.pretty_name");
-				String invID = rs.getString("I.invID");
-				Double price = rs.getDouble("O.supplier_price");
-				String supplier = rs.getString("S.name");
-				int quantity = rs.getInt("I.num_in_stock");
-				int parStock = rs.getInt("I.reorder_amt");
-				String item_description = rs.getString("I.item_description");
+				String item_name = rs.getString("item_name");
+				String pretty_name = rs.getString("pretty_name");
+				String invID = rs.getString("invID");
+				Double price = rs.getDouble("supplier_price");
+				String supplier = rs.getString("name");
+				int quantity = rs.getInt("num_in_stock");
+				int parStock = rs.getInt("reorder_amt");
+				String item_description = rs.getString("item_description");
 				Item i = new Item(item_name, pretty_name, invID, price, supplier, quantity, 
 						parStock, item_description);
+				System.out.println(i.toString());
 				items.add(i);
+				System.out.println("added");
 			}
 		}
 		catch (SQLException e)
@@ -168,7 +175,7 @@ public class PullDatabase {
 	}
 	
 	//supplier code complete
-	public List<Supplier> getSuppliers()
+	public ArrayList<Supplier> getSuppliers()
 	{
 		String query = "SELECT name, pretty_code, st_address1, st_address2, "
 				+ "city, state, zip_code, logo, phone1, phone2, website, "
@@ -196,7 +203,9 @@ public class PullDatabase {
 				Supplier s = new Supplier(name, pretty_code, st_address1, st_address2,
 						city, state, zip_code, logo, phone1, phone2, website,
 						email, fax);
+				System.out.println(s.toString());
 				suppliers.add(s);
+				System.out.println("added");
 			}
 		}
 		catch (SQLException e)

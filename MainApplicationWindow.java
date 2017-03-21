@@ -36,14 +36,14 @@ public class MainApplicationWindow {
 					connection = database.getConnection();
 					PullDatabase pull = new PullDatabase(connection);
 					myBusiness = pull.getMyBusinessData();
-					//customers.populate(pull.getCustomers());
-					//employees.populate(pull.getEmployees());
-					//inventory.populate(pull.getInventory());
-					//suppliers.populate(pull.getSuppliers());
-					Item testItem1 = new Item("test item 1", "first test", "1", 10, "JELLIOTT", 6, 10, "first item to test everything");
-					Item testItem2 = new Item("test item 2", "second test", "2", 20, "JELLIOTT", 1, 10, "second item to test everything");
-					inventory.addItem(testItem1);
-					inventory.addItem(testItem2);
+					customers.populate(pull.getCustomers());
+					employees.populate(pull.getEmployees());
+					inventory.populate(pull.getInventory());
+					suppliers.populate(pull.getSuppliers());
+					//Item testItem1 = new Item("test item 1", "first test", "1", 10, "JELLIOTT", 6, 10, "first item to test everything");
+					//Item testItem2 = new Item("test item 2", "second test", "2", 20, "JELLIOTT", 1, 10, "second item to test everything");
+					//inventory.addItem(testItem1);
+					//inventory.addItem(testItem2);
 					allData.add(connection);
 					allData.add(customers);
 					allData.add(employees);
@@ -85,7 +85,7 @@ public class MainApplicationWindow {
 		
 		//Navigation Menu
 		//creates navigation menu
-		menuBar = NavigationMenu();
+		menuBar = NavigationMenu(data);
 		frame.setJMenuBar(menuBar);
 		
 		//Main panel
@@ -136,7 +136,7 @@ public class MainApplicationWindow {
 		helpPanel.setVisible(false);
 	}
 	
-	public JMenuBar NavigationMenu()
+	public JMenuBar NavigationMenu(ArrayList<Object> data)
 	{
 		//Create JMenuBar
 		JMenuBar menu = new JMenuBar();
@@ -148,6 +148,7 @@ public class MainApplicationWindow {
 				//sets main as visible screen
 				toggleVisibility(mainPanel, posPanel, inventoryPanel, searchPanel,
 						reportPanel, helpPanel);
+				mainPanel.revalidate();
 			}
 		});
 		menu.add(mainScreenButton);
@@ -159,6 +160,7 @@ public class MainApplicationWindow {
 				//sets POS as visible screen
 				toggleVisibility(posPanel, mainPanel, inventoryPanel, searchPanel,
 						reportPanel, helpPanel);
+				posPanel.revalidate();
 			}
 		});
 		menu.add(posScreenButton);
@@ -170,6 +172,7 @@ public class MainApplicationWindow {
 				//sets inventory as visible screen
 				toggleVisibility(inventoryPanel, mainPanel, posPanel, searchPanel,
 						reportPanel, helpPanel);
+				inventoryPanel.revalidate();
 			}
 		});
 		menu.add(inventoryScreenButton);
@@ -181,6 +184,7 @@ public class MainApplicationWindow {
 				//sets search as visible screen
 				toggleVisibility(searchPanel, mainPanel, posPanel, inventoryPanel,
 						reportPanel, helpPanel);
+				searchPanel.revalidate();
 			}
 		});
 		menu.add(searchScreenButton);
@@ -192,6 +196,7 @@ public class MainApplicationWindow {
 				//sets reports as visible screen
 				toggleVisibility(reportPanel, mainPanel, posPanel, inventoryPanel, 
 						searchPanel, helpPanel);
+				reportPanel.revalidate();
 			}
 		});
 		menu.add(reportScreenButton);
@@ -203,6 +208,7 @@ public class MainApplicationWindow {
 				//sets help as visible screen
 				toggleVisibility(helpPanel, mainPanel, posPanel, inventoryPanel, 
 						searchPanel, reportPanel);
+				helpPanel.revalidate();
 			}
 		});
 		menu.add(helpScreenButton);

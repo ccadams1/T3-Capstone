@@ -3,12 +3,12 @@ import java.util.List;
 
 public class SupplierList {
 	
-	private List<Supplier> suppliers = new ArrayList<Supplier>();
+	private ArrayList<Supplier> suppliers = new ArrayList<Supplier>();
 	
 	public SupplierList(){
 	}
 	
-	public void populate(List<Supplier> suppliers){
+	public void populate(ArrayList<Supplier> suppliers){
 		this.suppliers = suppliers;
 	}
 	

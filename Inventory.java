@@ -3,12 +3,12 @@ import java.util.List;
 
 public class Inventory {
 	
-	private List<Item> items = new ArrayList<Item>();
+	private ArrayList<Item> items = new ArrayList<Item>();
 	
 	public Inventory(){
 	}
 	
-	public void populate(List<Item> items){
+	public void populate(ArrayList<Item> items){
 		this.items = items;
 	}
 	
@@ -69,7 +69,7 @@ public class Inventory {
 		return items;
 	}
 	
-	public void setList(List<Item> items){
+	public void setList(ArrayList<Item> items){
 		this.items = items;
 	}
 	

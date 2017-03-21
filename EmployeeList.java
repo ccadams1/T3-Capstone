@@ -3,12 +3,12 @@ import java.util.List;
 
 public class EmployeeList {
 	
-	private List<Employee> employees = new ArrayList<Employee>();
+	private ArrayList<Employee> employees = new ArrayList<Employee>();
 	
 	public EmployeeList(){
 	}
 	
-	public void populate(List<Employee> employees){
+	public void populate(ArrayList<Employee> employees){
 		this.employees = employees;
 	}
 	

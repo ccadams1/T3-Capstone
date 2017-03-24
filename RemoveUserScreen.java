@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Dialog.ModalityType;
@@ -19,10 +21,10 @@ public class RemoveUserScreen extends JDialog {
 
 	private JTextField usernameTextField;
 	private JTextField userIDTextField;
+	private EmployeeList employees;
 
 	/**
 	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -35,17 +37,16 @@ public class RemoveUserScreen extends JDialog {
 		});
 	}
 
-	/**
 	 * Create the application.
 	 */
-	public RemoveUserScreen() {
-		initialize();
+	public RemoveUserScreen(ArrayList<Object> data) {
+		initialize(data);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(ArrayList<Object> data) {
 		this.setAlwaysOnTop (true);
 		this.setSize(450,300);
 		this.setLocationRelativeTo(null);
@@ -54,6 +55,9 @@ public class RemoveUserScreen extends JDialog {
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		this.setTitle("Remove User");
 		this.getContentPane().setLayout(null);
+		
+		employees = (EmployeeList) data.get(2);
+		Connection connect = (Connection) data.get(0);
 		
 		JLabel usernameLabel = new JLabel("Username:");
 		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -79,7 +83,7 @@ public class RemoveUserScreen extends JDialog {
 		btnRemoveUser.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnRemoveUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AdminVerificationScreen();
+				//new AdminVerificationScreen();
 			}
 		});
 		btnRemoveUser.setBounds(263, 34, 150, 37);

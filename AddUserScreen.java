@@ -7,6 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -26,7 +28,6 @@ public class AddUserScreen extends JDialog {
 	
 	/**
 	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -39,17 +40,17 @@ public class AddUserScreen extends JDialog {
 		});
 	}
 
-	/**
+
 	 * Create the application.
 	 */
-	public AddUserScreen() {
-		initialize();
+	public AddUserScreen(ArrayList<Object> data) {
+		initialize(data);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(ArrayList<Object> data) {
 		this.setAlwaysOnTop (true);
 		this.setSize(400,450);
 		this.setLocationRelativeTo(null);
@@ -58,6 +59,9 @@ public class AddUserScreen extends JDialog {
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		this.setTitle("Add User");
 		this.getContentPane().setLayout(null);
+		
+		employees = (EmployeeList) data.get(2);
+		Connection connect = (Connection) data.get(0);
 		
 		JLabel lblUsername = new JLabel("Username:*");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -168,10 +172,10 @@ public class AddUserScreen extends JDialog {
 					setWarningMsg("Please enter information in the *required boxes.");
 				}
 				else if(text_1.length() < 8){
-					setWarningMsg("Password is too small. Password minimum is 8 characters.");
+					setWarningMsg("Password is too small.");
 				}
 				else if(text_1.length() > 16){
-					setWarningMsg("Password is too large. Password maximum is 16 characters.");
+					setWarningMsg("Password is too large.");
 				}
 				else if(!text_1.equals(text_2)){
 					setWarningMsg("Passwords do not match.");
@@ -180,12 +184,10 @@ public class AddUserScreen extends JDialog {
 					Employee temp = new Employee(text, text_1, text_3, text_4, userRole,
 							text_5, text_6);
 					
-					new AdminVerificationScreen();
+					//new AdminVerificationScreen();
 					//require boolean of verification to add employee
 					employees.addEmployee(temp);
 					
-					//Temp code to test functionality
-					temp.print();
 				}
 			}
 		});

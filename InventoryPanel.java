@@ -3,6 +3,9 @@ import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -28,10 +31,12 @@ public class InventoryPanel extends JPanel{
 	private JTextField addParStockTextField, editParStockTextField;
 	private JCheckBox chckbxConfirmDelete;
 	private Inventory inventory;
+	private Connection connect;
 	
 	public InventoryPanel(ArrayList<Object> data)
 	{
 		inventory = (Inventory) data.get(3);
+		connect = (Connection) data.get(0);
 		
 		//bounds should be set to (0, 0, 772, 476)
 		this.setBounds(0, 0, 772, 476);
@@ -332,7 +337,6 @@ public class InventoryPanel extends JPanel{
 				else if(editItemButton.isSelected()){
 					editInventory();
 				}
-				
 				updateInventoryDisplay(textArea);
 			}
 		});
@@ -387,7 +391,6 @@ public class InventoryPanel extends JPanel{
 	
 	private void editInventory(){
 		String n = editItemNameTextField.getText();
-		String id = editItemIDTextField.getText();
 		String price = editMinPriceTextField.getText();
 		double p = 0;
 		if(!price.equals("")){
@@ -408,17 +411,49 @@ public class InventoryPanel extends JPanel{
 		else{
 			int index = inventory.findItemByName(n);
 			if(index >= 0){
+				int counter = 0;
+				String query = "UPDATE INVENTROY SET ";
 				if(!d.equals("")){
 					inventory.get(index).setDescription(d);
+					query += "item_description = " + d;
+					counter++;
 				}
 				if(!price.equals("")){
 					inventory.get(index).setPrice(p);
+					if(counter > 0){
+						query += ", ";
+					}
+					//need price in the database for inventory items
+					query += "item_price = " + p;
+					counter++;
 				}
 				if(!s.equals("")){
 					inventory.get(index).setSupplier(s);
+					if(counter > 0){
+						query += ", ";
+					}
+					query += "supplier_name = " + s;
+					counter++;
 				}
 				if(!parStock.equals("")){
 					inventory.get(index).setParStock(par);
+					if(counter > 0){
+						query += ", ";
+					}
+					query += "reorder_amt = " + parStock;
+					counter++;
+				}
+			//	query += " WHERE "
+				if(counter > 0){
+					/*
+					try{
+						Statement stmt = connect.createStatement();
+						stmt.executeQuery(query);
+					}
+					catch (SQLException e){
+						System.out.println(e);
+					}
+					*/
 				}
 			}
 		}
@@ -431,7 +466,18 @@ public class InventoryPanel extends JPanel{
 		int index = inventory.findItemByName(n);
 		if(index >= 0){
 			if(inventory.get(index).getId().equals(id) && check == true){
+				String query = "DELETE FROM INVENTORY "
+						+ "WHERE invID = " + inventory.get(index).getId();
 				inventory.removeItem(index);
+				/*
+				try{
+					Statement stmt = connect.createStatement();
+					stmt.executeQuery(query);
+				}
+				catch (SQLException e){
+					System.out.println(e);
+				}
+				*/
 			}
 		}
 	}
@@ -439,4 +485,5 @@ public class InventoryPanel extends JPanel{
 	private void updateInventoryDisplay(JTextArea text){
 		text.setText(inventory.toString());
 	}
+	
 } 

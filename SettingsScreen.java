@@ -61,7 +61,7 @@ public class SettingsScreen extends JDialog{
 		JButton btnUserInformation = new JButton("Add User");
 		btnUserInformation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AddUserScreen();
+				new AddUserScreen(data);
 			}
 		});
 		panel_1.add(btnUserInformation);
@@ -71,7 +71,7 @@ public class SettingsScreen extends JDialog{
 		JButton btnEditUser = new JButton("Edit User");
 		btnEditUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new EditUserScreen();
+				new EditUserScreen(data);
 			}
 		});
 		panel_2.add(btnEditUser);
@@ -81,7 +81,7 @@ public class SettingsScreen extends JDialog{
 		JButton btnRemoveUser = new JButton("Remove User");
 		btnRemoveUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new RemoveUserScreen();
+				new RemoveUserScreen(data);
 			}
 		});
 		panel_3.add(btnRemoveUser);

@@ -9,6 +9,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Dialog.ModalityType;
@@ -27,22 +31,19 @@ public class EditUserScreen extends JDialog {
 	private JTextField textField_6;
 	private JTextField textField_7;
 	private JTextArea textArea;
-	
-	/////Test Purposes only/////////
 	private EmployeeList employees;
-	private Employee emp1, emp2, emp3;
-	///////////////////////////////////
+	
 	
 	
 
 	/**
 	 * Launch the application.
-	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new EditUserScreen();
+					new EditUserScreen(data);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,17 +51,17 @@ public class EditUserScreen extends JDialog {
 		});
 	}
 
-	/**
+	
 	 * Create the application.
 	 */
-	public EditUserScreen()	{
-		initialize();
+	public EditUserScreen(ArrayList<Object> data)	{
+		initialize(data);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(ArrayList<Object> data) {
 		this.setAlwaysOnTop (true);
 		this.setSize(400,600);
 		this.setLocationRelativeTo(null);
@@ -69,6 +70,9 @@ public class EditUserScreen extends JDialog {
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		this.setTitle("Edit User");
 		this.getContentPane().setLayout(null);
+		
+		employees = (EmployeeList) data.get(2);
+		Connection connect = (Connection) data.get(0);
 		
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -184,18 +188,7 @@ public class EditUserScreen extends JDialog {
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
-		
-		//////////////////TEST PURPOSES ONLY////////////////
-		employees = new EmployeeList();
-		emp1 = new Employee("1", "first", "pass", "WillyJames", "Huff", "CEO", "@yahoo", "919");
-		emp2 = new Employee("2", "second", "random", "Rackem", "Willy", "Manager", "@aol", "684");
-		emp3 = new Employee("3", "third", "pword", "Funky", "Chicken", "janitor", "@gmail", "123");
-		employees.addEmployee(emp1);
-		employees.addEmployee(emp2);
-		employees.addEmployee(emp3);
 		textArea.setText(employees.toString());
-		
-		/////////////////////////////////////////////////////
 		
 		btnEditUser.addActionListener(new ActionListener(){
 			@Override
@@ -223,12 +216,22 @@ public class EditUserScreen extends JDialog {
 					}
 				}
 				if(index >= 0){
+					int counter = 0;
+					String query = "UPDATE USER SET ";
+					String queryTail = "";
 					if(!text.equals("")){
 						employees.get(index).setUsername(text);
+						queryTail += "LoginName = " + text;
+						counter++;
 					}
 					if(!text_1.equals("")){
 						if(text_1.equals(text_2)){
 							employees.get(index).setPassword(text_1);
+							if(counter > 0){
+								queryTail += ", ";
+							}
+							queryTail += "PasswordHash = " + text_1;
+							counter++;
 						}
 						else{
 							//Return warning (Passwords Dont Match)
@@ -236,18 +239,54 @@ public class EditUserScreen extends JDialog {
 					}
 					if(!text_3.equals("")){
 						employees.get(index).setFirstName(text_3);
+						if(counter > 0){
+							queryTail += ", ";
+						}
+						queryTail += "FirstName = " + text_3;
+						counter++;
 					}
 					if(!text_4.equals("")){
 						employees.get(index).setLastName(text_4);
+						if(counter > 0){
+							queryTail += ", ";
+						}
+						queryTail += "LastName = " + text_4;
+						counter++;
 					}
 					if(!text_5.equals("")){
 						employees.get(index).setEmail(text_5);
+						if(counter > 0){
+							queryTail += ", ";
+						}
+						queryTail += "email = " + text_5;
+						counter++;
 					}
 					if(!text_6.equals("")){
 						employees.get(index).setPhone(text_6);
+						if(counter > 0){
+							queryTail += ", ";
+						}
+						queryTail += "phone1 = " + text_6;
+						counter++;
 					}
 					if(!combo.equals("")){
 						employees.get(index).setRole(combo);
+						if(counter > 0){
+							queryTail += ", ";
+						}
+	// Set role?					queryTail += ""
+					}
+					query += queryTail + " WHERE UserID = " + text_7;
+					if(counter > 0){
+						/*
+						try{
+							Statement stmt = connect.createStatement();
+							stmt.executeQuery(query);
+						}
+						catch (SQLException e1){
+							System.out.println(e1);
+						}
+						*/
 					}
 					updateDisplay();
 				}

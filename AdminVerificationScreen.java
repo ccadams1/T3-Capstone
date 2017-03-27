@@ -1,49 +1,65 @@
-import java.awt.EventQueue;
 import java.awt.TextField;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.text.PasswordView;
-
 import javax.swing.JPasswordField;
+import javax.swing.WindowConstants;
 
 public class AdminVerificationScreen extends JDialog{
+	private static final long serialVersionUID = 1L;
 	private JPasswordField passwordField;
+	public EmployeeList employees = new EmployeeList();
+	public Employee currentUser = new Employee(); 
+	public Employee admin = new Employee();
+	public boolean verify;
+	
 	/**
 	 * Launch the application.
-	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new AdminVerificationScreen();
+					new AdminVerificationScreen(data);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-
+	 */
 	/**
 	 * Create the application.
 	 */
-	public AdminVerificationScreen() {
-		initialize();
+	public AdminVerificationScreen(ArrayList<Object> data, boolean verify) {
+		initialize(data, verify);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		this.setAlwaysOnTop (true);
-		this.setSize(600,250);
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
-		this.setModal(true);
-		this.setModalityType(ModalityType.APPLICATION_MODAL);
-		this.setTitle("Administrator Verification");
+	private void initialize(ArrayList<Object> data, boolean verification) {
+		employees = (EmployeeList) data.get(2);
+		currentUser = (Employee) data.get(6);
+		admin = employees.get(0);
+				
+		JDialog adminVeri = new JDialog();
+		adminVeri.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+		adminVeri.setAlwaysOnTop (true);
+		adminVeri.setSize(600,250);
+		adminVeri.setLocationRelativeTo(null);
+		adminVeri.setVisible(true);
+		adminVeri.setModal(true);
+		adminVeri.setModalityType(ModalityType.APPLICATION_MODAL);
+		adminVeri.setTitle("Administrator Verification");
 		
 		//create verification Panel
 		JPanel verificationPanel = new JPanel();
@@ -62,7 +78,6 @@ public class AdminVerificationScreen extends JDialog{
 		//Password label and textField
 		JLabel passwordLabel = new JLabel("Password: ");
 		passwordLabel.setBounds(91, 73, 117, 29);
-		PasswordView passwordText = new PasswordView(null);
 		verificationPanel.add(passwordLabel);
 		
 		passwordField = new JPasswordField();
@@ -72,8 +87,61 @@ public class AdminVerificationScreen extends JDialog{
 		//Submit Verification request button
 		JButton verificationButton = new JButton("Verify");
 		verificationButton.setBounds(225, 117, 89, 37);
-		verificationPanel.add(verificationButton);
+		verificationButton.addActionListener(new ActionListener(){
+			@SuppressWarnings("deprecation")
+			public void actionPerformed(ActionEvent arg0) {
+				String username = usernameText.getText();
+				String password = passwordField.getText();
 				
-		getContentPane().add(verificationPanel);
+				if(!username.equals(admin.getUsername()))
+				{
+					setWarningMsg("Invalid Username. Note Usernames and "
+							+ "Passwords are case sensitive");
+				}
+				else
+				{
+					if(!password.equals(admin.getPassword()))
+					{
+						setWarningMsg("Invalid Password.");
+					}
+					else
+					{
+						changedVerification();
+						System.out.println("Administrator verified");
+						adminVeri.revalidate();
+					}					
+				}
+			}
+		});
+		verificationPanel.add(verificationButton);
+		adminVeri.add(verificationPanel);
+		
+		if (currentUser.getUserId()=="1"){
+			changedVerification();
+			System.out.println("is Admin");
+		}
+		
+		if(this.verify){
+			verification = verify; 
+			adminVeri.dispose();
+		}
+	}
+	
+	public void changedVerification()
+	{
+		verify = true;
+	}
+
+	public void setWarningMsg(String text){
+	    Toolkit.getDefaultToolkit().beep();
+	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
+	    JDialog dialog = optionPane.createDialog("Warning!");
+	    dialog.setAlwaysOnTop(true);
+	    dialog.setVisible(true);
+	}
+
+	//temp code
+	public boolean getVerification() {
+		return false;
 	}
 }

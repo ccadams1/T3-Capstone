@@ -1,20 +1,19 @@
-import java.awt.EventQueue;
-
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-import javax.swing.JComboBox;
+import java.awt.Toolkit;
 
 public class EditBusinessInformationScreen extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -30,10 +29,11 @@ public class EditBusinessInformationScreen extends JDialog {
 	private JTextField websiteTextField;
 	private JTextField ownerFirstNameTextField;
 	private JTextField ownerLastNameTextField;
+	private static boolean verified = false;
 
 	/**
 	 * Launch the application.
-	 
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -45,7 +45,7 @@ public class EditBusinessInformationScreen extends JDialog {
 			}
 		});
 	}
-*/
+ */
 	/**
 	 * Create the application.
 	 */
@@ -200,15 +200,33 @@ public class EditBusinessInformationScreen extends JDialog {
 		ownerLastNameTextField.setColumns(10);
 		ownerLastNameTextField.setBounds(158, 439, 191, 35);
 		getContentPane().add(ownerLastNameTextField);
+		ownerLastNameTextField.setText(info.getOwnerLastName());
 		
 		JButton btnAddUser = new JButton("Save Changes");
 		btnAddUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AdminVerificationScreen();
-				//save all data
-				saveData(connect, info);
+				AdminVerificationScreen adminveri = new AdminVerificationScreen(data, verified);
+				adminveri.addWindowListener(new WindowAdapter(){
+					@Override
+					public void windowClosed(WindowEvent e){
+						System.out.println("Closed");
+						if (!verified)
+						{
+							setWarningMsg("Administrator not verified. No "
+									+ "information was saved.");
+						}
+						else
+						{
+							//save all data
+							saveData(connect, info);
+							System.out.println("data saved");
+							verified = false;
+						}
+					}
+				});
 			}
 		});
+		
 		btnAddUser.setBounds(98, 490, 181, 37);
 		getContentPane().add(btnAddUser);
 	}
@@ -250,5 +268,13 @@ public class EditBusinessInformationScreen extends JDialog {
 		info.setWebsite(websiteTextField.getText());
 		info.setOwnerFirstName(ownerFirstNameTextField.getText());
 		info.setOwnerLastName(ownerLastNameTextField.getText());
+	}
+	
+	public void setWarningMsg(String text){
+	    Toolkit.getDefaultToolkit().beep();
+	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.PLAIN_MESSAGE);
+	    JDialog dialog = optionPane.createDialog("Warning!");
+	    dialog.setAlwaysOnTop(true);
+	    dialog.setVisible(true);
 	}
 }

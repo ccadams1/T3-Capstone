@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -15,15 +16,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.event.AncestorListener;
 
 public class POSPanel extends JPanel{
+	private static final long serialVersionUID = 1L;
 	private Inventory inventory = new Inventory();
 	private JPanel panel_2;
 	private double subtotalValue = 0.00;
 	private double discountValue = 0.00;
 	private double taxesValue = 0.00;
 	private double totalValue = 0.00;
+	private JLabel subtotalValueText = new JLabel();
+	private JLabel discountValueText = new JLabel();
+	private JLabel taxesValueText = new JLabel();
+	private JLabel totalValueText = new JLabel();
 	
 	public POSPanel(ArrayList<Object> data)
 	{
@@ -137,5 +142,23 @@ public class POSPanel extends JPanel{
 				}
 			}
 		});
+	}
+
+	public JPanel getPanel_2() {
+		return panel_2;
+	}
+
+	public void setPanel_2(JPanel panel_2) {
+		this.panel_2 = panel_2;
+	}
+	
+	public void setTotal()
+	{
+		
+		
+		subtotalValueText.setText("$" + subtotalValue);
+		discountValueText.setText("$" + discountValue);
+		taxesValueText.setText("$" + taxesValue);
+		totalValueText.setText("$" + totalValue);
 	}
 } 

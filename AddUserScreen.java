@@ -1,5 +1,3 @@
-import java.awt.EventQueue;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -7,12 +5,13 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Toolkit;
-
 import javax.swing.JComboBox;
 
 public class AddUserScreen extends JDialog {
@@ -28,6 +27,7 @@ public class AddUserScreen extends JDialog {
 	
 	/**
 	 * Launch the application.
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -39,8 +39,8 @@ public class AddUserScreen extends JDialog {
 			}
 		});
 	}
-
-
+ */
+	/**
 	 * Create the application.
 	 */
 	public AddUserScreen(ArrayList<Object> data) {
@@ -59,7 +59,7 @@ public class AddUserScreen extends JDialog {
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		this.setTitle("Add User");
 		this.getContentPane().setLayout(null);
-		
+
 		employees = (EmployeeList) data.get(2);
 		Connection connect = (Connection) data.get(0);
 		
@@ -139,55 +139,62 @@ public class AddUserScreen extends JDialog {
 		getContentPane().add(phoneTextField);
 		
 		JComboBox<String> empRoleComboBox = new JComboBox<String>();
-		////////////////Temp code for testing purposes/////////////
 		empRoleComboBox.addItem("");
 		empRoleComboBox.addItem("Inventory Manager");
 		empRoleComboBox.addItem("Inventory User");
 		empRoleComboBox.addItem("POS Manager");
 		empRoleComboBox.addItem("POS User");
 		empRoleComboBox.setSelectedItem("");
-		///////////////////////////////////////////////////////////
 		empRoleComboBox.setBounds(158, 207, 191, 35);
 		getContentPane().add(empRoleComboBox);
 		
 		JButton btnAddUser = new JButton("Add User");
 		btnAddUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String text = usernameTextField.getText();
-				String text_1 = passwordTextField.getText();
-				String text_2 = retypePasswordTextField.getText();
-				String text_3 = firstNameTextField.getText();
-				String text_4 = lastNameTextField.getText();
-				////////////temp code for user role////////////////////////////////////
+				String username = usernameTextField.getText();
+				String password = passwordTextField.getText();
+				String retypePassword = retypePasswordTextField.getText();
+				String fName = firstNameTextField.getText();
+				String lName = lastNameTextField.getText();
 				String userRole = (String) empRoleComboBox.getSelectedItem();
-				///////////////////////////////////////////////////////////////////////
-				String text_5 = emailTextField.getText();
-				String text_6 = phoneTextField.getText();
+				String email = emailTextField.getText();
+				String phone = phoneTextField.getText();
 				
-				
-				if(text.equals("") || text_1.equals("") || text_2.equals("") || 
-						text_3.equals("") || text_4.equals("") || 
+				if(username.equals("") || password.equals("") || retypePassword.equals("") || 
+						fName.equals("") || lName.equals("") || 
 						userRole.equals("")){
-					System.out.println(userRole);
 					setWarningMsg("Please enter information in the *required boxes.");
 				}
-				else if(text_1.length() < 8){
+				else if(password.length() < 8){
 					setWarningMsg("Password is too small.");
 				}
-				else if(text_1.length() > 16){
+				else if(password.length() > 16){
 					setWarningMsg("Password is too large.");
 				}
-				else if(!text_1.equals(text_2)){
+				else if(!password.equals(retypePassword)){
 					setWarningMsg("Passwords do not match.");
 				}
 				else{
-					Employee temp = new Employee(text, text_1, text_3, text_4, userRole,
-							text_5, text_6);
-					
-					//new AdminVerificationScreen();
-					//require boolean of verification to add employee
-					employees.addEmployee(temp);
-					
+					Employee temp = new Employee(username, password, fName, lName, userRole,
+							email, phone);
+					boolean temps = true; //temp code
+					AdminVerificationScreen adminveri = new AdminVerificationScreen(data, temps);
+					adminveri.addWindowListener(new WindowAdapter(){
+						public void windowClosing(WindowEvent e){
+							if (adminveri.getVerification())
+							{
+								employees.addEmployee(temp);
+									
+								//Temp code to test functionality
+								temp.print();
+							}
+							else
+							{
+								setWarningMsg("Administrator not verified. No "
+										+ "information was saved.");
+							}
+						}
+					});
 				}
 			}
 		});
@@ -196,11 +203,11 @@ public class AddUserScreen extends JDialog {
 	}
 	
 
-public void setWarningMsg(String text){
-    Toolkit.getDefaultToolkit().beep();
-    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
-    JDialog dialog = optionPane.createDialog("Warning!");
-    dialog.setAlwaysOnTop(true);
-    dialog.setVisible(true);
+	public void setWarningMsg(String text){
+	    Toolkit.getDefaultToolkit().beep();
+	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
+	    JDialog dialog = optionPane.createDialog("Warning!");
+	    dialog.setAlwaysOnTop(true);
+	    dialog.setVisible(true);
 	}
 }

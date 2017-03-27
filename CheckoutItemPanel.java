@@ -1,5 +1,3 @@
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -29,7 +27,7 @@ public class CheckoutItemPanel{
 		ciPanel.setLayout(null);
 		ciPanel.setVisible(true);
 		
-		JLabel lblItemName = new JLabel(item.getPrettyName());
+		JLabel lblItemName = new JLabel(item.getName());
 		lblItemName.setBounds(3, 13, 79, 20);
 		lblItemName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		ciPanel.add(lblItemName);

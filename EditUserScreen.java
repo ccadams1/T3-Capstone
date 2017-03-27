@@ -1,27 +1,22 @@
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.sql.Connection; 
+import java.sql.SQLException; 
+import java.sql.Statement; 
+import java.util.ArrayList; 
 import java.awt.Font;
-import java.awt.Dialog.ModalityType;
-
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 
 public class EditUserScreen extends JDialog {
+	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -31,14 +26,10 @@ public class EditUserScreen extends JDialog {
 	private JTextField textField_6;
 	private JTextField textField_7;
 	private JTextArea textArea;
+	
 	private EmployeeList employees;
-	
-	
-	
 
-	/**
-	 * Launch the application.
-	
+	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -51,7 +42,7 @@ public class EditUserScreen extends JDialog {
 		});
 	}
 
-	
+	/**
 	 * Create the application.
 	 */
 	public EditUserScreen(ArrayList<Object> data)	{
@@ -71,7 +62,7 @@ public class EditUserScreen extends JDialog {
 		this.setTitle("Edit User");
 		this.getContentPane().setLayout(null);
 		
-		employees = (EmployeeList) data.get(2);
+		employees = (EmployeeList) data.get(2); 
 		Connection connect = (Connection) data.get(0);
 		
 		JLabel lblUsername = new JLabel("Username:");
@@ -149,13 +140,13 @@ public class EditUserScreen extends JDialog {
 		textField_6.setBounds(158, 315, 191, 35);
 		getContentPane().add(textField_6);
 		
-		JComboBox comboBox = new JComboBox();
-		////////////////Temp code for testing purposes/////////////
+		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.addItem("");
-		comboBox.addItem("test");
-		comboBox.addItem("test2");
+		comboBox.addItem("Inventory Manager");
+		comboBox.addItem("Inventory User");
+		comboBox.addItem("POS Manager");
+		comboBox.addItem("POS User");
 		comboBox.setSelectedItem("");
-		///////////////////////////////////////////////////////////
 		comboBox.setBounds(158, 238, 191, 35);
 		getContentPane().add(comboBox);
 		
@@ -167,8 +158,6 @@ public class EditUserScreen extends JDialog {
 			}
 		});
 		*/
-		
-		
 		
 		JLabel lblUserId = new JLabel("User ID:");
 		lblUserId.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -189,7 +178,7 @@ public class EditUserScreen extends JDialog {
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
 		textArea.setText(employees.toString());
-		
+				
 		btnEditUser.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -201,59 +190,72 @@ public class EditUserScreen extends JDialog {
 				String text_5 = textField_5.getText();
 				String text_6 = textField_6.getText();
 				String text_7 = textField_7.getText();
-				////////////temp code for user role////////////////////////////////////
 				String combo = (String) comboBox.getSelectedItem();
-				///////////////////////////////////////////////////////////////////////
 
 				if(text_7.equals("")){
 					//Return warning (User Id Required)
 					return;
 				}
 				int index = -1;
-				for(int i = 0; i < employees.size(); i++){
-					if(employees.get(i).getUserId().equals(text_7)){
+				
+				for(int i = 0; i < employees.size(); i++)
+				{
+					if(employees.get(i).getUserId().equals(text_7))
+					{
 						index = i;
 					}
 				}
-				if(index >= 0){
+				if(index >= 0)
+				{
 					int counter = 0;
 					String query = "UPDATE USER SET ";
 					String queryTail = "";
-					if(!text.equals("")){
+					
+					if(!text.equals(""))
+					{
 						employees.get(index).setUsername(text);
 						queryTail += "LoginName = " + text;
 						counter++;
 					}
-					if(!text_1.equals("")){
-						if(text_1.equals(text_2)){
+					if(!text_1.equals(""))
+					{
+						if(text_1.equals(text_2))
+						{
 							employees.get(index).setPassword(text_1);
-							if(counter > 0){
+							if(counter > 0)
+							{
 								queryTail += ", ";
 							}
 							queryTail += "PasswordHash = " + text_1;
 							counter++;
 						}
-						else{
+						else
+						{
 							//Return warning (Passwords Dont Match)
 						}
 					}
-					if(!text_3.equals("")){
+					if(!text_3.equals(""))
+					{
 						employees.get(index).setFirstName(text_3);
-						if(counter > 0){
+						if(counter > 0)
+						{
 							queryTail += ", ";
 						}
 						queryTail += "FirstName = " + text_3;
 						counter++;
 					}
-					if(!text_4.equals("")){
+					if(!text_4.equals(""))
+					{
 						employees.get(index).setLastName(text_4);
-						if(counter > 0){
+						if(counter > 0)
+						{
 							queryTail += ", ";
 						}
 						queryTail += "LastName = " + text_4;
 						counter++;
 					}
-					if(!text_5.equals("")){
+					if(!text_5.equals(""))
+					{
 						employees.get(index).setEmail(text_5);
 						if(counter > 0){
 							queryTail += ", ";
@@ -261,15 +263,18 @@ public class EditUserScreen extends JDialog {
 						queryTail += "email = " + text_5;
 						counter++;
 					}
-					if(!text_6.equals("")){
+					if(!text_6.equals(""))
+					{
 						employees.get(index).setPhone(text_6);
-						if(counter > 0){
+						if(counter > 0)
+						{
 							queryTail += ", ";
 						}
 						queryTail += "phone1 = " + text_6;
 						counter++;
 					}
-					if(!combo.equals("")){
+					if(!combo.equals(""))
+					{
 						employees.get(index).setRole(combo);
 						if(counter > 0){
 							queryTail += ", ";
@@ -277,7 +282,8 @@ public class EditUserScreen extends JDialog {
 	// Set role?					queryTail += ""
 					}
 					query += queryTail + " WHERE UserID = " + text_7;
-					if(counter > 0){
+					if(counter > 0)
+					{
 						/*
 						try{
 							Statement stmt = connect.createStatement();
@@ -291,13 +297,12 @@ public class EditUserScreen extends JDialog {
 					updateDisplay();
 				}
 			}
-			
 		});
-		
+
 		btnEditUser.setBounds(99, 356, 155, 37);
 		getContentPane().add(btnEditUser);
 	}
-	
+
 	private void updateDisplay(){
 		textArea.setText(employees.toString());
 	}

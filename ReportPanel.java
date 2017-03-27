@@ -4,8 +4,6 @@ import java.awt.GridLayout;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.FileNotFoundException;
@@ -13,7 +11,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -72,9 +69,6 @@ public class ReportPanel extends JPanel{
 		informationPanel.setBounds(0, 0, 772, 178);
 		this.add(informationPanel);		
 		informationPanel.setLayout(null);
-		
-		//creates a button group for radio buttons to operate
-		ButtonGroup radioButtons = new ButtonGroup();
 
 		//sets customer search Panel
 		JPanel rep = reportInfoPanel();
@@ -337,7 +331,6 @@ public class ReportPanel extends JPanel{
 		            	printWriter.close();
 					} 
 		            catch (FileNotFoundException e){
-					// TODO Auto-generated catch block
 						e.printStackTrace();      			
 					}
 	            }

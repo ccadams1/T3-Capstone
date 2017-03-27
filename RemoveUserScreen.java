@@ -18,25 +18,27 @@ import java.awt.Dialog.ModalityType;
 import javax.swing.JScrollPane;
 
 public class RemoveUserScreen extends JDialog {
-
+	private static final long serialVersionUID = 1L;
 	private JTextField usernameTextField;
 	private JTextField userIDTextField;
 	private EmployeeList employees;
 
 	/**
 	 * Launch the application.
+	 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new RemoveUserScreen();
+					new RemoveUserScreen(ArrayList<Object> data);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-
+*/
+	/**
 	 * Create the application.
 	 */
 	public RemoveUserScreen(ArrayList<Object> data) {
@@ -83,7 +85,8 @@ public class RemoveUserScreen extends JDialog {
 		btnRemoveUser.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnRemoveUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//new AdminVerificationScreen();
+				boolean temps = true; //temp code
+				new AdminVerificationScreen(data, temps);
 			}
 		});
 		btnRemoveUser.setBounds(263, 34, 150, 37);

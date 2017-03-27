@@ -1,8 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,7 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
 public class NotificationWindow extends JFrame {
-
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel, ackPane;
 	private JScrollPane scroll;
 	private JTextPane textPane;

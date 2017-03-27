@@ -167,4 +167,12 @@ public class Customer {
 		string += fax + " ";
 		return string;
 	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
 }

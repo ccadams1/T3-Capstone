@@ -1,7 +1,6 @@
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.JScrollPane;

@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
@@ -11,6 +10,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class SearchPanel extends JPanel{
+	private static final long serialVersionUID = 1L;
 	private CustomerList customers = new CustomerList();
 	private Inventory inventory = new Inventory();
 	private SupplierList suppliers = new SupplierList();
@@ -22,9 +22,9 @@ public class SearchPanel extends JPanel{
 	
 	public SearchPanel(ArrayList<Object> data)
 	{
-		customers = (CustomerList) data.get(1);
-		inventory = (Inventory) data.get(3);
-		suppliers = (SupplierList) data.get(5);
+		setCustomers((CustomerList) data.get(1));
+		setInventory((Inventory) data.get(3));
+		setSuppliers((SupplierList) data.get(5));
 		
 		//bounds should be set to (0, 0, 772, 476)
 		this.setBounds(0, 0, 772, 476);
@@ -324,5 +324,29 @@ public class SearchPanel extends JPanel{
 		supplierRadioPanel.add(supplierWebsiteTextField);
 		
 		return supplierRadioPanel;
+	}
+
+	public Inventory getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
+	}
+
+	public CustomerList getCustomers() {
+		return customers;
+	}
+
+	public void setCustomers(CustomerList customers) {
+		this.customers = customers;
+	}
+
+	public SupplierList getSuppliers() {
+		return suppliers;
+	}
+
+	public void setSuppliers(SupplierList suppliers) {
+		this.suppliers = suppliers;
 	}
 } 

@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,18 +5,18 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 public class MainPanel extends JPanel{
-		
+	private static final long serialVersionUID = 1L;
 	private JPanel buttons, bottomPanel;
 	private JButton sales, inventory, reports, search, help;			
 	private JButton settings, changeUser;
 	public static JPanel pos;
 
 	public MainPanel(JMenuBar menuBar, ArrayList<Object> data){
+		
 		//Create JFrame and GridLayout
 		this.setLayout(null);
 		this.setBounds(0, 0, 772, 476);
@@ -80,7 +79,7 @@ public class MainPanel extends JPanel{
 		settings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//sets main as visible screen
-				SettingsScreen setting = new SettingsScreen(data);
+				new SettingsScreen(data);
 			}
 		});
 		
@@ -88,7 +87,7 @@ public class MainPanel extends JPanel{
 		changeUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//sets main as visible screen
-				LoginScreen newUser = new LoginScreen();
+				new LoginScreen(data);
 			}
 		});
 		

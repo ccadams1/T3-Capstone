@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PullDatabase {
 	private Connection connection;
@@ -80,7 +79,7 @@ public class PullDatabase {
 				String email = rs.getString("email");
 				String phone = rs.getString("phone1");
 				Employee e = new Employee(userID, username, password, firstName, lastName, role, email, phone);
-				System.out.println(e.toString());
+				e.print();
 				employees.add(e);
 				System.out.println("added");
 			}

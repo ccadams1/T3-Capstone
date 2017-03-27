@@ -1,9 +1,6 @@
-import java.awt.EventQueue;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.awt.GridLayout;
-import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import java.awt.event.ActionListener;
@@ -11,6 +8,7 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class SettingsScreen extends JDialog{
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Launch the application.

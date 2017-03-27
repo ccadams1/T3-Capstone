@@ -2,7 +2,6 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -16,6 +15,7 @@ public class MainApplicationWindow {
 	private static SupplierList suppliers = new SupplierList();
 	private static EmployeeList employees = new EmployeeList();
 	private static MyBusiness myBusiness = new MyBusiness();
+	private static Employee currentUser = new Employee();
 	private JFrame frame;
 	private JPanel mainPanel;
 	private JPanel posPanel;
@@ -40,17 +40,18 @@ public class MainApplicationWindow {
 					employees.populate(pull.getEmployees());
 					inventory.populate(pull.getInventory());
 					suppliers.populate(pull.getSuppliers());
-					//Item testItem1 = new Item("test item 1", "first test", "1", 10, "JELLIOTT", 6, 10, "first item to test everything");
-					//Item testItem2 = new Item("test item 2", "second test", "2", 20, "JELLIOTT", 1, 10, "second item to test everything");
-					//inventory.addItem(testItem1);
-					//inventory.addItem(testItem2);
+					currentUser = null;
 					allData.add(connection);
 					allData.add(customers);
 					allData.add(employees);
 					allData.add(inventory);
 					allData.add(myBusiness);
 					allData.add(suppliers);
-					new LoginScreen();
+					allData.add(currentUser);
+					new LoginScreen(allData);
+					for(int x = 0; x < employees.size();x++){
+						System.out.println(employees.get(x).getPassword());
+					}
 					MainApplicationWindow window = new MainApplicationWindow(allData);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -77,7 +78,7 @@ public class MainApplicationWindow {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
-		frame.setTitle("T3 Tracking and Inventory for " + "*insert business name here");
+		frame.setTitle("T3 Tracking and Inventory for " + myBusiness.getBizName());
 		
 		//creates layeredPane Screens to operate on
 		JLayeredPane layeredPane = new JLayeredPane();
@@ -134,6 +135,8 @@ public class MainApplicationWindow {
 		layeredPane.add(helpPanel);
 		helpPanel.setLayout(null);	
 		helpPanel.setVisible(false);
+		
+		
 	}
 	
 	public JMenuBar NavigationMenu(ArrayList<Object> data)

@@ -24,19 +24,17 @@ public class InventoryPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JTextField editItemNameTextField, addItemNameTextField, deleteItemNameTextField;
 	private JTextField addSupplierNameTextField, editSupplierNameTextField;
-	private JTextField addItemIDTextField, editItemIDTextField, deleteItemIDTextField;
-	private JTextField addMinPriceTextField, editMinPriceTextField;
+	private JTextField addQuantityTextField, editItemIDTextField, deleteItemIDTextField;
+	private JTextField addPriceTextField, editMinPriceTextField;
 	private JTextField addMaxPriceTextField, editMaxPriceTextField;
 	private JTextField addItemDescription, editItemDescription;
 	private JTextField addParStockTextField, editParStockTextField;
 	private JCheckBox chckbxConfirmDelete;
 	private Inventory inventory;
-	private Connection connect;
 	
 	public InventoryPanel(ArrayList<Object> data)
 	{
 		inventory = (Inventory) data.get(3);
-		connect = (Connection) data.get(0);
 		
 		//bounds should be set to (0, 0, 772, 476)
 		this.setBounds(0, 0, 772, 476);
@@ -125,15 +123,15 @@ public class InventoryPanel extends JPanel{
 		addSupplierNameTextField.setBounds(124, 85, 231, 35);
 		addItemRadioPanel.add(addSupplierNameTextField);
 		
-		addItemIDTextField = new JTextField();
-		addItemIDTextField.setColumns(10);
-		addItemIDTextField.setBounds(376, 5, 146, 35);
-		addItemRadioPanel.add(addItemIDTextField);
+		addQuantityTextField = new JTextField();
+		addQuantityTextField.setColumns(10);
+		addQuantityTextField.setBounds(376, 5, 146, 35);
+		addItemRadioPanel.add(addQuantityTextField);
 		
-		JLabel addItemIDLabel = new JLabel("Item ID:");
-		addItemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		addItemIDLabel.setBounds(313, 12, 89, 29);
-		addItemRadioPanel.add(addItemIDLabel);
+		JLabel addQuantityLabel = new JLabel("Quantity:");
+		addQuantityLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		addQuantityLabel.setBounds(310, 12, 89, 29);
+		addItemRadioPanel.add(addQuantityLabel);
 		
 		JLabel addItemDescriptionLabel = new JLabel("Item description:");
 		addItemDescriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -150,29 +148,20 @@ public class InventoryPanel extends JPanel{
 		addItemPriceLabel.setBounds(8, 51, 56, 29);
 		addItemRadioPanel.add(addItemPriceLabel);
 		
-		addMinPriceTextField = new JTextField();
-		addMinPriceTextField.setColumns(10);
-		addMinPriceTextField.setBounds(63, 44, 100, 35);
-		addItemRadioPanel.add(addMinPriceTextField);
-		
-		JLabel addToLabel = new JLabel("to");
-		addToLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		addToLabel.setBounds(180, 51, 45, 29);
-		addItemRadioPanel.add(addToLabel);
-		
-		addMaxPriceTextField = new JTextField();
-		addMaxPriceTextField.setColumns(10);
-		addMaxPriceTextField.setBounds(208, 44, 100, 35);
-		addItemRadioPanel.add(addMaxPriceTextField);
+		addPriceTextField = new JTextField();
+		addPriceTextField.setColumns(10);
+		addPriceTextField.setBounds(63, 44, 100, 35);
+		addItemRadioPanel.add(addPriceTextField);
 
 		JLabel addParStockLabel = new JLabel("Par stock:");
 		addParStockLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		addParStockLabel.setBounds(328, 51, 87, 29);
+		addParStockLabel.setBounds(310, 51, 87, 29);
 		addItemRadioPanel.add(addParStockLabel);
 		
 		addParStockTextField = new JTextField();
 		addParStockTextField.setColumns(10);
-		addParStockTextField.setBounds(400, 44, 115, 35);
+		addParStockTextField.setBounds(382, 44, 115, 35);
+		
 		addItemRadioPanel.add(addParStockTextField);
 		addItemRadioPanel.setBounds(239, 0, 533, 178);
 		addItemRadioPanel.setVisible(true);
@@ -184,11 +173,11 @@ public class InventoryPanel extends JPanel{
 				
 		JLabel itemNameLabel = new JLabel("Item name:");
 		itemNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		itemNameLabel.setBounds(10, 12, 114, 29);
+		itemNameLabel.setBounds(240, 12, 114, 29);
 		editItemRadioPanel.add(itemNameLabel);
 				
 		editItemNameTextField = new JTextField();
-		editItemNameTextField.setBounds(103, 5, 179, 35);
+		editItemNameTextField.setBounds(333, 5, 179, 35);
 		editItemRadioPanel.add(editItemNameTextField);
 		editItemNameTextField.setColumns(10);
 				
@@ -204,12 +193,12 @@ public class InventoryPanel extends JPanel{
 				
 		editItemIDTextField = new JTextField();
 		editItemIDTextField.setColumns(10);
-		editItemIDTextField.setBounds(376, 5, 146, 35);
+		editItemIDTextField.setBounds(73, 5, 146, 35);
 		editItemRadioPanel.add(editItemIDTextField);
 				
 		JLabel itemIDLabel = new JLabel("Item ID:");
 		itemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		itemIDLabel.setBounds(313, 12, 89, 29);
+		itemIDLabel.setBounds(10, 12, 89, 29);
 		editItemRadioPanel.add(itemIDLabel);
 				
 		JLabel itemDescriptionLabel = new JLabel("Item description:");
@@ -337,6 +326,7 @@ public class InventoryPanel extends JPanel{
 				else if(editItemButton.isSelected()){
 					editInventory();
 				}
+				
 				updateInventoryDisplay(textArea);
 			}
 		});
@@ -358,8 +348,12 @@ public class InventoryPanel extends JPanel{
 	
 	private void addToInventory(){
 		String n = addItemNameTextField.getText();
-		String id = addItemIDTextField.getText();
-		String price = addMinPriceTextField.getText();
+		String quantity = addQuantityTextField.getText();
+		int q = 0;
+		if(!quantity.equals("")){
+			q = Integer.parseInt(quantity);
+		}
+		String price = addPriceTextField.getText();
 		double p = 0;
 		if(!price.equals("")){
 			p = Double.parseDouble(price);
@@ -371,21 +365,15 @@ public class InventoryPanel extends JPanel{
 		if(!parStock.equals("")){
 			par = Integer.parseInt(parStock);
 		}
-		
-		//work on this
-		int q = 0;
 			
-		if(n.equals("") || id.equals("") || price.equals("") || s.equals("") ){
+		if(n.equals("") || price.equals("") || s.equals("") ){
 			// Return Warning (required fields empty)
 		}
 		else{
-			if(d.equals("")){
-				inventory.addItem(n, id, p, s, par, d);
-			}
-			else{
-				inventory.addItem(n, id, p, s, q, par, d);
-			}
-			
+			//update the inventory
+			//pull id from inventory
+			String id = "0"; 
+			inventory.addItem(n, id, p, s, q, par, d);			
 		}
 	}
 	
@@ -410,41 +398,50 @@ public class InventoryPanel extends JPanel{
 		}
 		else{
 			int index = inventory.findItemByName(n);
-			if(index >= 0){
+			if(index >= 0)
+			{
 				int counter = 0;
 				String query = "UPDATE INVENTROY SET ";
-				if(!d.equals("")){
+				if(!d.equals(""))
+				{
 					inventory.get(index).setDescription(d);
 					query += "item_description = " + d;
 					counter++;
 				}
-				if(!price.equals("")){
+				if(!price.equals(""))
+				{
 					inventory.get(index).setPrice(p);
-					if(counter > 0){
+					if(counter > 0)
+					{
 						query += ", ";
 					}
 					//need price in the database for inventory items
 					query += "item_price = " + p;
 					counter++;
 				}
-				if(!s.equals("")){
+				if(!s.equals(""))
+				{
 					inventory.get(index).setSupplier(s);
-					if(counter > 0){
+					if(counter > 0)
+					{
 						query += ", ";
 					}
 					query += "supplier_name = " + s;
 					counter++;
 				}
-				if(!parStock.equals("")){
+				if(!parStock.equals(""))
+				{
 					inventory.get(index).setParStock(par);
-					if(counter > 0){
+					if(counter > 0)
+					{
 						query += ", ";
 					}
 					query += "reorder_amt = " + parStock;
 					counter++;
 				}
 			//	query += " WHERE "
-				if(counter > 0){
+				if(counter > 0)
+				{
 					/*
 					try{
 						Statement stmt = connect.createStatement();
@@ -485,5 +482,4 @@ public class InventoryPanel extends JPanel{
 	private void updateInventoryDisplay(JTextArea text){
 		text.setText(inventory.toString());
 	}
-	
 } 

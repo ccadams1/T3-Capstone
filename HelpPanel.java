@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -20,7 +19,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class HelpPanel extends JPanel{
-	
+	private static final long serialVersionUID = 1L;
 	private int startLine, lastLine, numLines;
 	//private JTextArea textArea;
 	

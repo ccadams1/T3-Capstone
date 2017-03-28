@@ -16,9 +16,9 @@ public class CustomerList {
 		return customers.size();
 	}
 	
-	public boolean checkForSupplier(String prettyCode){
+	public boolean checkForSupplier(String Id){
 		for(int i = 0; i < customers.size(); i++){
-			if(customers.get(i).getPrettyCode().equals(prettyCode)){
+			if(customers.get(i).getID().equals(Id)){
 				return true;
 			}
 		}
@@ -49,7 +49,7 @@ public class CustomerList {
 		return null;
 	}
 
-	public List<Customer> getList() {
+	public ArrayList<Customer> getList() {
 		return customers;
 	}
 }

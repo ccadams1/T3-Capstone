@@ -47,7 +47,7 @@ public class SupplierList {
 		return null;
 	}
 
-	public List<Supplier> getList() {
+	public ArrayList<Supplier> getList() {
 		return suppliers;
 	}
 }

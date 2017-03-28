@@ -1,6 +1,6 @@
 public class Customer {
 
-	private String prettyCode;
+	private String ID;
 	private String fName;
 	private String lName;
 	private String stAddress1;
@@ -14,10 +14,10 @@ public class Customer {
 	private String email;
 	private int fax;
 	
-	public Customer (String prettyCode, String fName, String lName, String stAddress1, String stAddress2, String city, String state, int zipCode,
+	public Customer (String ID, String fName, String lName, String stAddress1, String stAddress2, String city, String state, int zipCode,
 			int phone1, int phone2, String email, int fax)
 	{
-		this.prettyCode = prettyCode;
+		this.ID = ID;
 		this.fName = fName;
 		this.lName = lName;
 		this.stAddress1 = stAddress1;
@@ -34,14 +34,14 @@ public class Customer {
 	public Customer() {
 	}
 
-	public void setPrettyCode (String prettyCode)
+	public void setID (String ID)
 	{
-		this.prettyCode = prettyCode;
+		this.ID = ID;
 	}
 	
-	public String getPrettyCode()
+	public String getID()
 	{
-		return prettyCode.toString();
+		return ID.toString();
 	}
 	
 	public void setFName (String fName)
@@ -155,7 +155,7 @@ public class Customer {
 	public String toString()
 	{
 		String string = "";
-		string += prettyCode + " ";
+		string += ID + " ";
 		string += fName + " ";
 		string += lName + " ";
 		string += city + " ";

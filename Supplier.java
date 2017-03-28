@@ -3,7 +3,7 @@ import java.io.File;
 public class Supplier {
 
 	private String name;
-	private String prettyCode;
+	private String Id;
 	private String stAddress1;
 	private String stAddress2;
 	private String city;
@@ -16,11 +16,11 @@ public class Supplier {
 	private String email;
 	private int fax;
 	
-	public Supplier (String name, String prettyCode, String stAddress1, String stAddress2, String city, String state, int zipCode,
+	public Supplier (String name, String Id, String stAddress1, String stAddress2, String city, String state, int zipCode,
 			File logo1, int phone1, int phone2, String website, String email, int fax)
 	{
 		this.name = name;
-		this.prettyCode = prettyCode;
+		this.Id = Id;
 		this.stAddress1 = stAddress1;
 		this.stAddress2 = stAddress2;
 		this.city = city;
@@ -47,14 +47,14 @@ public class Supplier {
 		return name.toString();
 	}
 	
-	public void setPrettyCode (String prettyCode)
+	public void setID (String Id)
 	{
-		this.prettyCode = prettyCode;
+		this.Id = Id;
 	}
 	
-	public String getPrettyCode()
+	public String getID()
 	{
-		return prettyCode.toString();
+		return Id;
 	}
 	
 	public void setStAdress1 (String stAddress1)

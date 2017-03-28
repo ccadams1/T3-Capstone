@@ -14,17 +14,32 @@ public class SearchPanel extends JPanel{
 	private CustomerList customers = new CustomerList();
 	private Inventory inventory = new Inventory();
 	private SupplierList suppliers = new SupplierList();
-	private JTextField itemNameTextField;
+	private JRadioButton customerRadioButton = new JRadioButton();
+	private JRadioButton inventoryRadioButton = new JRadioButton();
+	private JRadioButton supplierRadioButton = new JRadioButton();
+	private JTextField customerFirstNameTextField;
+	private JTextField customerLastNameTextField;
+	private JTextField customerIDTextField;
+	private JTextField customerPhoneNumberTextField;
+	private JTextField customerAddressTextField;
+	private JTextField customerEmailAddressTextField;
+	private JTextField inventoryItemNameTextField;
+	private JTextField inventorySupplierNameTextField;
+	private JTextField inventoryItemIDTextField;
+	private JTextField inventoryMinPriceTextField;
+	private JTextField inventoryMaxPriceTextField;
 	private JTextField supplierNameTextField;
-	private JTextField itemIDTextField;
-	private JTextField minPriceTextField;
-	private JTextField maxPriceTextField;
+	private JTextField supplierIDTextField;
+	private JTextField supplierPhoneNumberTextField;
+	private JTextField supplierAddressTextField;
+	private JTextField supplierEmailTextField;
+	private JTextField supplierWebsiteTextField;
 	
 	public SearchPanel(ArrayList<Object> data)
 	{
-		setCustomers((CustomerList) data.get(1));
-		setInventory((Inventory) data.get(3));
-		setSuppliers((SupplierList) data.get(5));
+		customers = (CustomerList) data.get(1);
+		inventory = (Inventory) data.get(3);
+		suppliers = (SupplierList) data.get(5);
 		
 		//bounds should be set to (0, 0, 772, 476)
 		this.setBounds(0, 0, 772, 476);
@@ -47,14 +62,14 @@ public class SearchPanel extends JPanel{
 		ButtonGroup radioButtons = new ButtonGroup();
 		
 		//creates a customer button and adds it to RadioPanel and ButtonGroup
-		JRadioButton customerRadioButton = new JRadioButton("Customer Information");
+		customerRadioButton = new JRadioButton("Customer Information");
 		customerRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		customerRadioButton.setBounds(18, 30, 203, 28);
 		RadioPanel.add(customerRadioButton);
 		radioButtons.add(customerRadioButton);
 			
 		//creates an inventory button and adds it to RadioPanel and ButtonGroup
-		JRadioButton inventoryRadioButton = new JRadioButton("Inventory Information");
+		inventoryRadioButton = new JRadioButton("Inventory Information");
 		inventoryRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		inventoryRadioButton.setSelected(true);
 		inventoryRadioButton.setBounds(18, 63, 203, 32);
@@ -62,17 +77,11 @@ public class SearchPanel extends JPanel{
 		radioButtons.add(inventoryRadioButton);
 		
 		//creates a supplier button and adds it to RadioPanel and ButtonGroup
-		JRadioButton supplierRadioButton = new JRadioButton("Supplier Information");
+		supplierRadioButton = new JRadioButton("Supplier Information");
 		supplierRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		supplierRadioButton.setBounds(18, 96, 203, 32);
 		RadioPanel.add(supplierRadioButton);
 		radioButtons.add(supplierRadioButton);
-			
-		//adds search button to RadioPanel
-		JButton btnSearch = new JButton("Search");
-		btnSearch.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		btnSearch.setBounds(18, 134, 191, 31);
-		RadioPanel.add(btnSearch);
 		
 		//creates panels that display based on the radio buttons
 		//sets inventory search Panel
@@ -127,7 +136,24 @@ public class SearchPanel extends JPanel{
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
-		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));		
+		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));
+		
+		//adds search button to RadioPanel
+		JButton btnSearch = new JButton("Search");
+		btnSearch.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		btnSearch.setBounds(18, 134, 191, 31);
+		btnSearch.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textArea.setText(null);
+				ArrayList results = getResults();
+				for (int x = 0; x < results.size(); x++)
+				{
+					textArea.append(results.get(x).toString() + "\n");
+				}
+			}
+		});
+		RadioPanel.add(btnSearch);
 	} 
 	
 	private JPanel customerRadioPanel()
@@ -140,7 +166,7 @@ public class SearchPanel extends JPanel{
 		customerFirstNameLabel.setBounds(10, 12, 179, 29);
 		customerRadioPanel.add(customerFirstNameLabel);
 		
-		JTextField customerFirstNameTextField = new JTextField();
+		customerFirstNameTextField = new JTextField();
 		customerFirstNameTextField.setBounds(165, 5, 114, 35);
 		customerRadioPanel.add(customerFirstNameTextField);
 		customerFirstNameTextField.setColumns(10);
@@ -150,17 +176,17 @@ public class SearchPanel extends JPanel{
 		customerIDLabel.setBounds(8, 51, 128, 29);
 		customerRadioPanel.add(customerIDLabel);
 		
-		JTextField phoneNumberTextField = new JTextField();
-		phoneNumberTextField.setColumns(10);
-		phoneNumberTextField.setBounds(368, 44, 128, 35);
-		customerRadioPanel.add(phoneNumberTextField);
+		customerPhoneNumberTextField = new JTextField();
+		customerPhoneNumberTextField.setColumns(10);
+		customerPhoneNumberTextField.setBounds(368, 44, 128, 35);
+		customerRadioPanel.add(customerPhoneNumberTextField);
 		
 		JLabel customerAddressLabel = new JLabel("Customer address: ");
 		customerAddressLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		customerAddressLabel.setBounds(10, 92, 146, 29);
 		customerRadioPanel.add(customerAddressLabel);
 		
-		JTextField customerAddressTextField = new JTextField();
+		customerAddressTextField = new JTextField();
 		customerAddressTextField.setColumns(10);
 		customerAddressTextField.setBounds(154, 85, 342, 35);
 		customerRadioPanel.add(customerAddressTextField);
@@ -170,13 +196,13 @@ public class SearchPanel extends JPanel{
 		customerEmailAddressLabel.setBounds(10, 132, 114, 29);
 		customerRadioPanel.add(customerEmailAddressLabel);
 		
-		JTextField customerEmailAddressTextField = new JTextField();
+		customerEmailAddressTextField = new JTextField();
 		customerEmailAddressTextField.setToolTipText("Minimum price");
 		customerEmailAddressTextField.setColumns(10);
 		customerEmailAddressTextField.setBounds(124, 125, 214, 35);
 		customerRadioPanel.add(customerEmailAddressTextField);
 		
-		JTextField customerLastNameTextField = new JTextField();
+		customerLastNameTextField = new JTextField();
 		customerLastNameTextField.setColumns(10);
 		customerLastNameTextField.setBounds(382, 5, 114, 35);
 		customerRadioPanel.add(customerLastNameTextField);
@@ -191,7 +217,7 @@ public class SearchPanel extends JPanel{
 		phoneNumberLabel.setBounds(246, 51, 128, 29);
 		customerRadioPanel.add(phoneNumberLabel);
 		
-		JTextField customerIDTextField = new JTextField();
+		customerIDTextField = new JTextField();
 		customerIDTextField.setColumns(10);
 		customerIDTextField.setBounds(114, 44, 110, 35);
 		customerRadioPanel.add(customerIDTextField);
@@ -209,10 +235,10 @@ public class SearchPanel extends JPanel{
 		itemNameLabel.setBounds(10, 12, 114, 29);
 		inventoryRadioPanel.add(itemNameLabel);
 		
-		itemNameTextField = new JTextField();
-		itemNameTextField.setBounds(103, 5, 179, 35);
-		inventoryRadioPanel.add(itemNameTextField);
-		itemNameTextField.setColumns(10);
+		inventoryItemNameTextField = new JTextField();
+		inventoryItemNameTextField.setBounds(103, 5, 179, 35);
+		inventoryRadioPanel.add(inventoryItemNameTextField);
+		inventoryItemNameTextField.setColumns(10);
 		
 		JLabel itemPriceLabel = new JLabel("Price:");
 		itemPriceLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -224,35 +250,37 @@ public class SearchPanel extends JPanel{
 		supplierNameLabel.setBounds(10, 92, 114, 29);
 		inventoryRadioPanel.add(supplierNameLabel);
 		
-		supplierNameTextField = new JTextField();
-		supplierNameTextField.setColumns(10);
-		supplierNameTextField.setBounds(124, 85, 231, 35);
-		inventoryRadioPanel.add(supplierNameTextField);
+		inventorySupplierNameTextField = new JTextField();
+		inventorySupplierNameTextField.setColumns(10);
+		inventorySupplierNameTextField.setBounds(124, 85, 231, 35);
+		inventoryRadioPanel.add(inventorySupplierNameTextField);
 		
-		itemIDTextField = new JTextField();
-		itemIDTextField.setColumns(10);
-		itemIDTextField.setBounds(376, 5, 146, 35);
-		inventoryRadioPanel.add(itemIDTextField);
+		inventoryItemIDTextField = new JTextField();
+		inventoryItemIDTextField.setColumns(10);
+		inventoryItemIDTextField.setBounds(376, 5, 146, 35);
+		inventoryRadioPanel.add(inventoryItemIDTextField);
 		
 		JLabel itemIDLabel = new JLabel("Item ID:");
 		itemIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		itemIDLabel.setBounds(313, 12, 89, 29);
 		inventoryRadioPanel.add(itemIDLabel);
 		
-		minPriceTextField = new JTextField();
-		minPriceTextField.setColumns(10);
-		minPriceTextField.setBounds(63, 44, 119, 35);
-		inventoryRadioPanel.add(minPriceTextField);
+		inventoryMinPriceTextField = new JTextField();
+		inventoryMinPriceTextField.setColumns(10);
+		inventoryMinPriceTextField.setBounds(63, 44, 119, 35);
+		inventoryMinPriceTextField.setText(" ");
+		inventoryRadioPanel.add(inventoryMinPriceTextField);
 		
 		JLabel toLabel = new JLabel("to");
 		toLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		toLabel.setBounds(199, 47, 45, 29);
 		inventoryRadioPanel.add(toLabel);
 		
-		maxPriceTextField = new JTextField();
-		maxPriceTextField.setColumns(10);
-		maxPriceTextField.setBounds(227, 44, 119, 35);
-		inventoryRadioPanel.add(maxPriceTextField);
+		inventoryMaxPriceTextField = new JTextField();
+		inventoryMaxPriceTextField.setColumns(10);
+		inventoryMaxPriceTextField.setBounds(227, 44, 119, 35);
+		inventoryMaxPriceTextField.setText(" ");
+		inventoryRadioPanel.add(inventoryMaxPriceTextField);
 		
 		return inventoryRadioPanel;
 	}
@@ -282,7 +310,7 @@ public class SearchPanel extends JPanel{
 		supplierEmailLabel.setBounds(10, 92, 114, 29);
 		supplierRadioPanel.add(supplierEmailLabel);
 		
-		JTextField supplierEmailTextField = new JTextField();
+		supplierEmailTextField = new JTextField();
 		supplierEmailTextField.setColumns(10);
 		supplierEmailTextField.setBounds(124, 85, 157, 35);
 		supplierRadioPanel.add(supplierEmailTextField);
@@ -292,13 +320,13 @@ public class SearchPanel extends JPanel{
 		supplierPhoneNumberLabel.setBounds(291, 92, 128, 29);
 		supplierRadioPanel.add(supplierPhoneNumberLabel);
 		
-		JTextField supplierPhoneNumberTextField = new JTextField();
+		supplierPhoneNumberTextField = new JTextField();
 		supplierPhoneNumberTextField.setToolTipText("Minimum price");
 		supplierPhoneNumberTextField.setColumns(10);
 		supplierPhoneNumberTextField.setBounds(408, 85, 114, 35);
 		supplierRadioPanel.add(supplierPhoneNumberTextField);
 		
-		JTextField supplierIDTextField = new JTextField();
+		supplierIDTextField = new JTextField();
 		supplierIDTextField.setColumns(10);
 		supplierIDTextField.setBounds(408, 5, 114, 35);
 		supplierRadioPanel.add(supplierIDTextField);
@@ -308,7 +336,7 @@ public class SearchPanel extends JPanel{
 		supplierIDLabel.setBounds(313, 12, 89, 29);
 		supplierRadioPanel.add(supplierIDLabel);
 		
-		JTextField supplierAddressTextField = new JTextField();
+		supplierAddressTextField = new JTextField();
 		supplierAddressTextField.setColumns(10);
 		supplierAddressTextField.setBounds(134, 44, 388, 35);
 		supplierRadioPanel.add(supplierAddressTextField);
@@ -318,7 +346,7 @@ public class SearchPanel extends JPanel{
 		supplierWebsiteLabel.setBounds(10, 137, 134, 29);
 		supplierRadioPanel.add(supplierWebsiteLabel);
 		
-		JTextField supplierWebsiteTextField = new JTextField();
+		supplierWebsiteTextField = new JTextField();
 		supplierWebsiteTextField.setColumns(10);
 		supplierWebsiteTextField.setBounds(134, 130, 388, 35);
 		supplierRadioPanel.add(supplierWebsiteTextField);
@@ -326,27 +354,428 @@ public class SearchPanel extends JPanel{
 		return supplierRadioPanel;
 	}
 
-	public Inventory getInventory() {
-		return inventory;
-	}
+	public ArrayList<Object> getResults()
+	{
+		ArrayList<Object> resultList = new ArrayList<Object>();
+		ArrayList<Integer> results = new ArrayList<Integer>();
+		boolean addToResults = false;
+		
+		//uses customer list
+		if (customerRadioButton.isSelected())
+		{
+			ArrayList<Customer> originalList = customers.getList();
+			for(int x = 0; x < originalList.size(); x++)
+			{
+				originalList.get(x).setFName(originalList.get(x).getFName().toLowerCase().trim().replaceAll(" ", ""));
+				originalList.get(x).setLName(originalList.get(x).getLName().toLowerCase().trim().replaceAll(" ", ""));
+				originalList.get(x).setID(originalList.get(x).getID().toLowerCase().trim().replaceAll(" ", ""));
+				originalList.get(x).setPhone1(originalList.get(x).getPhone1());
+				originalList.get(x).setStAdress1(originalList.get(x).getStAdress1().toLowerCase().trim().replaceAll(" ", ""));
+				originalList.get(x).setEmail(originalList.get(x).getEmail().toLowerCase().trim().replaceAll(" ", ""));
+			}
+			
+			boolean containsFName = false;
+			boolean containsLName = false;
+			boolean containsID = false;
+			boolean containsPhone = false;
+			boolean containsAddress = false;
+			boolean containsEmail = false;
+			
+			String searchFName = customerFirstNameTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchLName = customerLastNameTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchID = customerIDTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchPhone = customerPhoneNumberTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchAddress = customerAddressTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchEmail = customerEmailAddressTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			
+			for(int y = 0; y < originalList.size(); y++)
+			{
+				//resets booleans
+				addToResults = false;
+				containsFName = false;
+				containsLName = false;
+				containsID = false;
+				containsPhone = false;
+				containsAddress = false;
+				containsEmail = false;
+				
+				//checks name
+				if(!searchFName.equals(""))
+				{
+					if(originalList.get(y).getFName().contains(searchFName))
+					{
+						containsFName = true;
+					}
+				}
+				else
+				{
+					containsFName = true;
+				}
+				
+				if(!searchLName.equals(""))
+				{
+					if(originalList.get(y).getLName().contains(searchLName))
+					{
+						containsLName = true;
+					}
+				}
+				else
+				{
+					containsLName = true;
+				}
+				
+				//checks Id
+				if(!searchID.equals(""))
+				{
+					if(originalList.get(y).getID().contains(searchID))
+					{
+						containsID = true;
+					}
+				}
+				else
+				{
+					containsID = true;
+				}
+				
+				//checks Phone
+				if(!searchPhone.equals(""))
+				{
+					if((originalList.get(y).getPhone1()+"").contains(searchPhone))
+					{
+						containsPhone = true;
+					}
+				}
+				else
+				{
+					containsPhone = true;
+				}
+				
+				//checks address
+				if(!searchAddress.equals(""))
+				{
+					if(originalList.get(y).getStAdress1().contains(searchAddress))
+					{
+						containsAddress = true;
+					}
+				}
+				else
+				{
+					containsAddress = true;
+				}
+				
+				
+				//checks email
+				if(!searchEmail.equals(""))
+				{
+					if(originalList.get(y).getEmail().contains(searchEmail))
+					{
+						containsEmail = true;
+					}
+				}
+				else
+				{
+					containsEmail = true;
+				}
+				
+				if(containsFName && containsLName && containsID && containsPhone && containsAddress && containsEmail)
+				{
+					addToResults = true;
+				}
+				
+				if(searchFName.equals("") && searchLName.equals("") && searchID.equals("") && 
+						searchPhone.equals("") && searchAddress.equals("") && searchEmail.equals(""))
+				{
+					addToResults = true;
+				}
+				
+				if(addToResults)
+				{
+					results.add(y);
+				}
+			}
+			
+			//adding items to resultList
+			for(int z = 0; z < results.size(); z++)
+			{
+				resultList.add(inventory.get((int) results.get(z)));
+			}
+		}
+		//uses inventory list
+		else if (inventoryRadioButton.isSelected())
+		{
+			ArrayList<Item> originalList = inventory.getList();
 
-	public void setInventory(Inventory inventory) {
-		this.inventory = inventory;
-	}
+			for(int x = 0; x < originalList.size(); x++)
+			{
+				originalList.get(x).setName(originalList.get(x).getName().toLowerCase().trim().replaceAll(" ", ""));
+				originalList.get(x).setSupplier(originalList.get(x).getSupplier().toLowerCase().trim().replaceAll(" ", ""));
+				originalList.get(x).setId(originalList.get(x).getId().toLowerCase().trim().replaceAll(" ", ""));
+			}
+			
+			boolean containsName = false;
+			boolean containsID = false;
+			boolean containsMin = false;
+			boolean containsMax = false;
+			boolean containsSupplierName = false;
 
-	public CustomerList getCustomers() {
-		return customers;
-	}
-
-	public void setCustomers(CustomerList customers) {
-		this.customers = customers;
-	}
-
-	public SupplierList getSuppliers() {
-		return suppliers;
-	}
-
-	public void setSuppliers(SupplierList suppliers) {
-		this.suppliers = suppliers;
+			String searchName = inventoryItemNameTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchID = inventoryItemIDTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			Double searchMin = null;
+			/*if(!(inventoryMinPriceTextField.getText() == ""))
+			{
+				searchMin = Double.parseDouble(inventoryMinPriceTextField.getText());
+			}*/
+			Double searchMax = null;
+			/*if(!(inventoryMaxPriceTextField.getText() == null) && !(inventoryMaxPriceTextField.getText() == ""))
+			{
+				searchMax = Double.parseDouble(inventoryMaxPriceTextField.getText());
+			}*/
+			String searchSupplierName = inventorySupplierNameTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			
+			for(int y = 0; y < originalList.size(); y++)
+			{
+				//resets add to results boolean
+				addToResults = false;
+				containsName = false;
+				containsID = false;
+				containsMin = false;
+				containsMax = false;
+				containsSupplierName = false;
+				
+				//checks name
+				if(!searchName.equals(""))
+				{
+					if(originalList.get(y).getName().contains(searchName))
+					{
+						containsName = true;
+					}
+				}
+				else
+				{
+					containsName = true;
+				}
+				
+				//checks Id
+				if(!searchID.equals(""))
+				{
+					if(originalList.get(y).getId().contains(searchID))
+					{
+						containsID = true;
+					}
+				}
+				else
+				{
+					containsID = true;
+				}
+				
+				//check min and max
+				if(!(searchMin == null || (searchMin+"").equals("")) && !(searchMax == null || (searchMax+"").equals("")))
+				{
+					if(originalList.get(y).getPrice() >= searchMin && originalList.get(y).getPrice() <= searchMax)
+					{
+						containsMin = true;
+						containsMax = true;
+					}
+				}
+				else if((searchMin == null || (searchMin+"").equals("")) && !(searchMax == null || (searchMax+"").equals("")))
+				{
+					containsMax = true;
+					if(originalList.get(y).getPrice() >= searchMin)
+					{
+						containsMin = true;
+					}
+				}
+				else if(!(searchMin == null || (searchMin+"").equals("")) && (searchMax == null || (searchMax+"").equals("")))
+				{
+					containsMin = true;
+					if(originalList.get(y).getPrice() <= searchMax)
+					{
+						containsMax = true;
+					}
+				}
+				else
+				{
+					containsMin = true;
+					containsMax = true;
+				}
+				
+				//checks supplier name
+				if(!searchSupplierName.equals(""))
+				{
+					if(originalList.get(y).getSupplier().contains(searchSupplierName))
+					{
+						containsSupplierName = true;
+					}
+				}
+				else
+				{
+					containsSupplierName = true;
+				}
+				
+				if(containsName && containsID && containsMin && containsMax && containsSupplierName)
+				{
+					addToResults = true;
+				}
+				
+				if(searchName.equals("") && searchID.equals("") && (searchMin+"").equals("") 
+						&& (searchMin+"").equals("") && searchSupplierName.equals(""))
+				{
+					addToResults = true;
+				}
+				
+				if(addToResults)
+				{
+					results.add(y);
+				}
+			}
+			
+			//adding items to resultList
+			for(int z = 0; z < results.size(); z++)
+			{
+				resultList.add(inventory.get((int) results.get(z)));
+			}
+		}
+		//uses supplier list
+		else
+		{
+			ArrayList<Supplier> originalList = suppliers.getList();
+			for(int x = 0; x < originalList.size(); x++)
+			{
+				originalList.get(x).setName(originalList.get(x).getName().toLowerCase().trim().replaceAll(" ", ""));
+				originalList.get(x).setID(originalList.get(x).getID().toLowerCase().trim().replaceAll(" ", ""));
+				originalList.get(x).setPhone1(originalList.get(x).getPhone1());
+				originalList.get(x).setStAdress1(originalList.get(x).getStAdress1().toLowerCase().trim().replaceAll(" ", ""));
+				originalList.get(x).setEmail(originalList.get(x).getEmail().toLowerCase().trim().replaceAll(" ", ""));
+				originalList.get(x).setWebsite(originalList.get(x).getWebsite().toLowerCase().trim().replaceAll(" ", ""));
+			}
+			
+			boolean containsName = false;
+			boolean containsID = false;
+			boolean containsPhone = false;
+			boolean containsAddress = false;
+			boolean containsEmail = false;
+			boolean containsWebsite = false;
+			
+			String searchName = supplierNameTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchID = supplierIDTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchPhone = supplierPhoneNumberTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchAddress = supplierAddressTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchEmail = supplierEmailTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			String searchWebsite = supplierWebsiteTextField.getText().toLowerCase().trim().replaceAll(" ", "");
+			
+			for(int y = 0; y < originalList.size(); y++)
+			{
+				//resets add to results boolean
+				addToResults = false;
+				containsName = false;
+				containsID = false;
+				containsPhone = false;
+				containsAddress = false;
+				containsEmail = false;
+				containsWebsite = false;
+				
+				//checks name
+				if(!searchName.equals(""))
+				{
+					if(originalList.get(y).getName().contains(searchName))
+					{
+						containsName = true;
+					}
+				}
+				else
+				{
+					containsName = true;
+				}
+				
+				//checks Id
+				if(!searchID.equals(""))
+				{
+					if(originalList.get(y).getID().contains(searchID))
+					{
+						containsID = true;
+					}
+				}
+				else
+				{
+					containsID = true;
+				}
+				
+				//checks name
+				if(!searchName.equals(""))
+				{
+					if((originalList.get(y).getPhone1()+"").contains(searchPhone))
+					{
+						containsPhone = true;
+					}
+				}
+				else
+				{
+					containsPhone = true;
+				}
+				
+				//checks Id
+				if(!searchID.equals(""))
+				{
+					if(originalList.get(y).getStAdress1().contains(searchAddress))
+					{
+						containsAddress = true;
+					}
+				}
+				else
+				{
+					containsAddress = true;
+				}
+				
+				//checks name
+				if(!searchName.equals(""))
+				{
+					if(originalList.get(y).getEmail().contains(searchEmail))
+					{
+						containsEmail = true;
+					}
+				}
+				else
+				{
+					containsEmail = true;
+				}
+				
+				//checks Id
+				if(!searchWebsite.equals(""))
+				{
+					if(originalList.get(y).getWebsite().contains(searchWebsite))
+					{
+						containsWebsite = true;
+					}
+				}
+				else
+				{
+					containsWebsite = true;
+				}
+				
+				if(containsName && containsID && containsPhone && containsAddress && containsEmail && containsWebsite)
+				{
+					addToResults = true;
+				}
+				
+				if(searchName.equals("") && searchID.equals("") && searchPhone.equals("") 
+						&& searchAddress.equals("") && searchEmail.equals("") && searchWebsite.equals(""))
+				{
+					addToResults = true;
+				}
+				
+				if(addToResults)
+				{
+					results.add(y);
+				}
+			}
+			
+			//adding items to resultList
+			for(int z = 0; z < results.size(); z++)
+			{
+				resultList.add(inventory.get((int) results.get(z)));
+			}
+		}
+		
+		return resultList; 
 	}
 } 

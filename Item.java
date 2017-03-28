@@ -124,4 +124,11 @@ public class Item {
 	public void setPrettyName(String prettyName) {
 		this.prettyName = prettyName;
 	}
+	
+	public String toString(){
+		String string = "";
+		string +=  name + "\t" + id + "\t" + price + "\t" + quantity + "\t" 
+		+ parStock + "\t" + supplier + "\t" + description;
+		return string;
+	}
 }

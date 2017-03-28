@@ -13,9 +13,10 @@ public class Customer {
 	private String website;
 	private String email;
 	private int fax;
+	private boolean removed;
 	
 	public Customer (String ID, String fName, String lName, String stAddress1, String stAddress2, String city, String state, int zipCode,
-			int phone1, int phone2, String email, int fax)
+			int phone1, int phone2, String email, int fax, boolean r)
 	{
 		this.ID = ID;
 		this.fName = fName;
@@ -29,6 +30,7 @@ public class Customer {
 		this.phone2 = phone2;
 		this.email = email;
 		this.fax = fax;
+		this.setRemoved(r);
 	}
 	
 	public Customer() {
@@ -152,27 +154,36 @@ public class Customer {
 		return fax;
 	}
 	
-	public String toString()
-	{
-		String string = "";
-		string += ID + " ";
-		string += fName + " ";
-		string += lName + " ";
-		string += city + " ";
-		string += state + " ";
-		string += zipCode + " ";
-		string += phone1 + " ";
-		string += phone2 + " ";
-		string += email + " ";
-		string += fax + " ";
-		return string;
-	}
-
 	public String getWebsite() {
 		return website;
 	}
 
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+
+	public boolean isRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
+	}	
+	
+	public String toString()
+	{
+		String string = "";
+		string += ID + " \t";
+		string += fName + " \t";
+		string += lName + " \t";
+		string += stAddress1 + " \t";
+		string += city + " \t";
+		string += state + " \t";
+		string += zipCode + " \t";
+		string += phone1 + " \t";
+		string += phone2 + " \t";
+		string += email + " \t";
+		string += fax + " \t";
+		return string;
 	}
 }

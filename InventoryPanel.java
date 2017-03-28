@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Panel;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -11,7 +12,9 @@ import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -25,8 +28,8 @@ public class InventoryPanel extends JPanel{
 	private JTextField editItemNameTextField, addItemNameTextField, deleteItemNameTextField;
 	private JTextField addSupplierNameTextField, editSupplierNameTextField;
 	private JTextField addQuantityTextField, editItemIDTextField, deleteItemIDTextField;
-	private JTextField addPriceTextField, editMinPriceTextField;
-	private JTextField addMaxPriceTextField, editMaxPriceTextField;
+	private JTextField addPriceTextField, editPriceTextField;
+	private JTextField addMaxPriceTextField, editQuantityTextField;
 	private JTextField addItemDescription, editItemDescription;
 	private JTextField addParStockTextField, editParStockTextField;
 	private JCheckBox chckbxConfirmDelete;
@@ -216,29 +219,29 @@ public class InventoryPanel extends JPanel{
 		itemPriceLabel.setBounds(8, 51, 56, 29);
 		editItemRadioPanel.add(itemPriceLabel);
 				
-		editMinPriceTextField = new JTextField();
-		editMinPriceTextField.setColumns(10);
-		editMinPriceTextField.setBounds(63, 44, 100, 35);
-		editItemRadioPanel.add(editMinPriceTextField);
+		editPriceTextField = new JTextField();
+		editPriceTextField.setColumns(10);
+		editPriceTextField.setBounds(63, 44, 100, 35);
+		editItemRadioPanel.add(editPriceTextField);
 				
-		JLabel toLabel = new JLabel("to");
-		toLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		toLabel.setBounds(180, 51, 45, 29);
-		editItemRadioPanel.add(toLabel);
+		JLabel quantityLabel = new JLabel("Quantity:");
+		quantityLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		quantityLabel.setBounds(205, 51, 105, 29);
+		editItemRadioPanel.add(quantityLabel);
 				
-		editMaxPriceTextField = new JTextField();
-		editMaxPriceTextField.setColumns(10);
-		editMaxPriceTextField.setBounds(208, 44, 100, 35);
-		editItemRadioPanel.add(editMaxPriceTextField);
+		editQuantityTextField = new JTextField();
+		editQuantityTextField.setColumns(10);
+		editQuantityTextField.setBounds(283, 44, 50, 35);
+		editItemRadioPanel.add(editQuantityTextField);
 
 		JLabel editParStockLabel = new JLabel("Par stock:");
 		editParStockLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		editParStockLabel.setBounds(328, 51, 87, 29);
+		editParStockLabel.setBounds(378, 51, 87, 29);
 		editItemRadioPanel.add(editParStockLabel);
 				
 		editParStockTextField = new JTextField();
 		editParStockTextField.setColumns(10);
-		editParStockTextField.setBounds(400, 44, 115, 35);
+		editParStockTextField.setBounds(450, 44, 50, 35);
 		editItemRadioPanel.add(editParStockTextField);
 		editItemRadioPanel.setBounds(239, 0, 533, 178);
 		informationPanel.add(editItemRadioPanel);
@@ -342,9 +345,7 @@ public class InventoryPanel extends JPanel{
 				updateInventoryDisplay(textArea);
 			}
 		});
-		
-			
-	} 
+	}
 	
 	private void addToInventory(){
 		String n = addItemNameTextField.getText();
@@ -367,7 +368,7 @@ public class InventoryPanel extends JPanel{
 		}
 			
 		if(n.equals("") || price.equals("") || s.equals("") ){
-			// Return Warning (required fields empty)
+			setWarningMsg("Item name, price, Supplier name are required.");
 		}
 		else{
 			//update the inventory
@@ -379,7 +380,8 @@ public class InventoryPanel extends JPanel{
 	
 	private void editInventory(){
 		String n = editItemNameTextField.getText();
-		String price = editMinPriceTextField.getText();
+		String id = editItemIDTextField.getText();
+		String price = editPriceTextField.getText();
 		double p = 0;
 		if(!price.equals("")){
 			p = Double.parseDouble(price);
@@ -391,13 +393,17 @@ public class InventoryPanel extends JPanel{
 		if(!parStock.equals("")){
 			par = Integer.parseInt(parStock);
 		}
+		String quantity = editQuantityTextField.getText();
+		int quant = 0;
+		if(!quantity.equals("")){
+			quant = Integer.parseInt(quantity);
+		}			
 			
-			
-		if(n.equals("")){
-			// Return Warning (required fields empty)
+		if(id.equals("")){
+			setWarningMsg("ID field required");
 		}
 		else{
-			int index = inventory.findItemByName(n);
+			int index = inventory.findItemByID(id);
 			if(index >= 0)
 			{
 				int counter = 0;
@@ -427,6 +433,16 @@ public class InventoryPanel extends JPanel{
 						query += ", ";
 					}
 					query += "supplier_name = " + s;
+					counter++;
+				}
+				if(!quantity.equals(""))
+				{
+					inventory.get(index).setQuantity(quant);
+					if(counter > 0)
+					{
+						query += ", ";
+					}
+					query += "num_in_stock = " + quant;
 					counter++;
 				}
 				if(!parStock.equals(""))
@@ -463,23 +479,28 @@ public class InventoryPanel extends JPanel{
 		int index = inventory.findItemByName(n);
 		if(index >= 0){
 			if(inventory.get(index).getId().equals(id) && check == true){
-				String query = "DELETE FROM INVENTORY "
-						+ "WHERE invID = " + inventory.get(index).getId();
-				inventory.removeItem(index);
-				/*
-				try{
-					Statement stmt = connect.createStatement();
-					stmt.executeQuery(query);
-				}
-				catch (SQLException e){
-					System.out.println(e);
-				}
-				*/
+				inventory.get(index).setRemoved(true);
 			}
+			else
+			{
+				setWarningMsg("Confirm delete check box is not selected.");
+			}
+		}						
+		else
+		{
+			setWarningMsg("Item name and Item ID do not match.");
 		}
 	}
 	
 	private void updateInventoryDisplay(JTextArea text){
 		text.setText(inventory.toString());
+	}
+	
+	public void setWarningMsg(String text){
+	    Toolkit.getDefaultToolkit().beep();
+	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
+	    JDialog dialog = optionPane.createDialog("Warning!");
+	    dialog.setAlwaysOnTop(true);
+	    dialog.setVisible(true);
 	}
 } 

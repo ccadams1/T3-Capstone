@@ -20,13 +20,13 @@ public class Inventory {
 		return items.get(i);
 	}
 	
-	public void addItem(String n, String i, double p, String s, int q, int par, String d){
-		Item temp = new Item(n, i, p, s, q, par, d);
+	public void addItem(String n, String i, double p, String s, int q, int par, String d, boolean r){
+		Item temp = new Item(n, i, p, s, q, par, d, r);
 		items.add(temp);
 	}
 	
-	public void addItem(String n, String i, double p, String s, int par, String d){
-		Item temp = new Item(n, i, p, s, par, d);
+	public void addItem(String n, String i, double p, String s, int q, int par, String d){
+		Item temp = new Item(n, i, p, s, q, par, d);
 		items.add(temp);
 	}
 	
@@ -44,6 +44,16 @@ public class Inventory {
 		return index;
 	}
 	
+	public int findItemByID(String id) {
+		int index = -1;
+		for(int i = 0; i < items.size(); i++){
+			if(items.get(i).getId().equals(id)){
+				index = i;
+			}
+		}
+		return index;
+	}
+	
 	public void removeItem(int i){
 		items.remove(i);
 	}
@@ -52,43 +62,29 @@ public class Inventory {
 		String s = "";
 		
 		for(int i = 0; i < items.size(); i++){
-			s += "Item: " + items.get(i).getName() + "  ";
-			s += "Item Id: " + items.get(i).getId() + "  ";
-			s += "Price: " + items.get(i).getPrice() + "  ";
-			s += "Supplier: " + items.get(i).getSupplier() + "  ";
-			s += "Par Stock: " + items.get(i).getParStock();
-			if(!items.get(i).getDescription().equals("")){
-				s += "  Description: " + items.get(i).getDescription();
+			if(!items.get(i).isRemoved())
+			{
+				s += "Item: " + items.get(i).getName() + " \t";
+				s += "Item Id: " + items.get(i).getId() + " \t";
+				s += "Price: " + items.get(i).getPrice() + " \t";
+				s += "Supplier: " + items.get(i).getSupplier() + " \t";
+				s += "Par Stock: " + items.get(i).getParStock() + " \t";
+				s += "Quantity: " + items.get(i).getQuantity() + " \t";
+				if(!items.get(i).getDescription().equals("")){
+					s += "Description: " + items.get(i).getDescription();
+				}
+				s += "\n";
 			}
-			s += "\n";
 		}
 		return s;
 	}
 
-	public List<Item> getList() {
+	public ArrayList<Item> getList() {
 		return items;
 	}
 	
 	public void setList(ArrayList<Item> items){
 		this.items = items;
 	}
-	
-	
-	
-	// default code
-	/*
-	public Item getItem(int i){
-		return items.get(i);
-	}
-	
-	
-	
-	public int searchInventory(String n){
-		return -1;
-	}
-	*/
-	
-	
-	
-	
+
 }

@@ -2,47 +2,37 @@
 public class Item {
 
 	private String name;
-	private String prettyName;
 	private String id;
 	private double price;
 	private int quantity;
 	private int parStock;
 	private String supplier;
 	private String description;
+	private boolean removed;
 	
-	public Item(String n, String i, double p, String s, int par, String d)
+	public Item(String n, String i, double p, String s, int quantity, int par, String d)
 	{
 		this.name = n;
 		this.id = i;
 		this.price = p;
 		this.supplier = s;
-		this.quantity = 0;
+		this.quantity = quantity;
 		this.parStock = par;
 		this.description = d;
-	}
-	
-	public Item(String n, String i, double p, String s, int q, int par, String d)
-	{
-		this.name = n;
-		this.id = i;
-		this.price = p;
-		this.supplier = s;
-		this.quantity = q;
-		this.parStock = par;
-		this.description = d;
+		this.setRemoved(false);
 	}
 	
 	//constructor for population
-	public Item(String n, String pn, String i, double p, String s, int q, int par, String d)
+	public Item(String n, String i, double p, String s, int q, int par, String d, boolean r)
 	{
 		this.name = n;
-		this.setPrettyName(pn);
 		this.id = i;
 		this.price = p;
 		this.supplier = s;
 		this.quantity = q;
 		this.parStock = par;
 		this.description = d;
+		this.setRemoved(r);
 	}
 	
 	public void setName(String name) {
@@ -117,18 +107,18 @@ public class Item {
 		return this.description;
 	}
 
-	public String getPrettyName() {
-		return prettyName;
+	public boolean isRemoved() {
+		return removed;
 	}
 
-	public void setPrettyName(String prettyName) {
-		this.prettyName = prettyName;
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
 	}
-	
+
 	public String toString(){
 		String string = "";
 		string +=  name + "\t" + id + "\t" + price + "\t" + quantity + "\t" 
 		+ parStock + "\t" + supplier + "\t" + description;
 		return string;
 	}
-}
+}	

@@ -15,9 +15,10 @@ public class Supplier {
 	private String website;
 	private String email;
 	private int fax;
+	private boolean removed;
 	
 	public Supplier (String name, String Id, String stAddress1, String stAddress2, String city, String state, int zipCode,
-			File logo1, int phone1, int phone2, String website, String email, int fax)
+			File logo1, int phone1, int phone2, String website, String email, int fax, boolean r)
 	{
 		this.name = name;
 		this.Id = Id;
@@ -32,6 +33,7 @@ public class Supplier {
 		this.website = website;
 		this.email = email;
 		this.fax = fax;
+		this.setRemoved(r);
 	}
 	
 	public Supplier() {
@@ -163,5 +165,29 @@ public class Supplier {
 	public int getFax()
 	{
 		return fax;
+	}
+
+	public boolean isRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
+	}
+	
+	public String toString()
+	{
+		String string = "";
+		string += Id + " \t";
+		string += name + " \t";
+		string += stAddress1 + " \t";
+		string += city + " \t";
+		string += state + " \t";
+		string += zipCode + " \t";
+		string += phone1 + " \t";
+		string += website + " \t";
+		string += email + " \t";
+		string += fax + " \t";
+		return string;
 	}
 }

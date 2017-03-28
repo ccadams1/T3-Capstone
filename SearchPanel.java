@@ -146,6 +146,7 @@ public class SearchPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				textArea.setText(null);
+				textArea.setText(textLabel());
 				ArrayList results = getResults();
 				for (int x = 0; x < results.size(); x++)
 				{
@@ -249,7 +250,7 @@ public class SearchPanel extends JPanel{
 		supplierNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		supplierNameLabel.setBounds(10, 92, 114, 29);
 		inventoryRadioPanel.add(supplierNameLabel);
-		
+
 		inventorySupplierNameTextField = new JTextField();
 		inventorySupplierNameTextField.setColumns(10);
 		inventorySupplierNameTextField.setBounds(124, 85, 231, 35);
@@ -497,14 +498,13 @@ public class SearchPanel extends JPanel{
 			//adding items to resultList
 			for(int z = 0; z < results.size(); z++)
 			{
-				resultList.add(inventory.get((int) results.get(z)));
+				resultList.add(customers.getCustomer((int) results.get(z)));
 			}
 		}
 		//uses inventory list
 		else if (inventoryRadioButton.isSelected())
 		{
-			ArrayList<Item> originalList = inventory.getList();
-
+			ArrayList<Item> originalList = inventory.getList();	
 			for(int x = 0; x < originalList.size(); x++)
 			{
 				originalList.get(x).setName(originalList.get(x).getName().toLowerCase().trim().replaceAll(" ", ""));
@@ -517,7 +517,6 @@ public class SearchPanel extends JPanel{
 			boolean containsMin = false;
 			boolean containsMax = false;
 			boolean containsSupplierName = false;
-
 			String searchName = inventoryItemNameTextField.getText().toLowerCase().trim().replaceAll(" ", "");
 			String searchID = inventoryItemIDTextField.getText().toLowerCase().trim().replaceAll(" ", "");
 			Double searchMin = null;
@@ -772,10 +771,31 @@ public class SearchPanel extends JPanel{
 			//adding items to resultList
 			for(int z = 0; z < results.size(); z++)
 			{
-				resultList.add(inventory.get((int) results.get(z)));
+				resultList.add(suppliers.getSupplier((int) results.get(z)));
 			}
 		}
 		
 		return resultList; 
+	}
+	
+	public String textLabel()
+	{
+		String string = "";
+		if(customerRadioButton.isSelected())
+		{
+			string += "Customer ID\tFirst Name\tLast Name\tAddress\t\tCity\tState\tZipcode\tMain Phone\tOther Phone\tEmail\t\tFax\n";
+			string += "---------------------------------------------------------------------------------------------------------";
+			string += "---------------------------------------------------------------------------------------------------------";
+			string += "--------------------------------------------\n";
+		}
+		else if(inventoryRadioButton.isSelected())
+		{
+			
+		}
+		else
+		{
+			
+		}
+		return string;
 	}
 } 

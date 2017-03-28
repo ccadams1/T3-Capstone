@@ -1,6 +1,7 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -36,10 +37,30 @@ public class MainApplicationWindow {
 					connection = database.getConnection();
 					PullDatabase pull = new PullDatabase(connection);
 					myBusiness = pull.getMyBusinessData();
-					customers.populate(pull.getCustomers());
+					//customers.populate(pull.getCustomers());
 					employees.populate(pull.getEmployees());
-					inventory.populate(pull.getInventory());
-					suppliers.populate(pull.getSuppliers());
+					//inventory.populate(pull.getInventory());
+					
+					Item test1 = new Item("Test name", "123", 12.50, "New guys", 5, 50, "first item for testing", false);
+					Item test2 = new Item("Another Test", "456", 9.00, "More New guys", 10, 50, "second item for testing", false);
+					inventory.addItem(test1);
+					inventory.addItem(test2);
+					
+					Customer joe = new Customer ("1", "Joe", "Smoe", "555 transaction rd", "", "raleigh", "NC", 12345,
+							1565, 3215, "guy@gmail.com", 8754, false);
+					Customer mat = new Customer ("2", "Mat", "Do", "123 califorican dr", "", "raleigh", "NC", 12345,
+							4234, 3625, "otherGuy@gmail.com", 8754, false);
+					customers.addCustomer(joe);
+					customers.addCustomer(mat);
+					
+					Supplier company1 = new Supplier("Company 1", "2200", "928 make money st", "", "raleigh", "NC", 12345,
+							null, 4655, 9865, "www.go.com", "company@company.com", 5642, false);
+					Supplier company2 = new Supplier("Company 2", "1230", "644 business dr", "", "raleigh", "NC", 12345,
+							null, 9182, 4563, "www.getmore.com", "company@pro.com", 88324, false);
+					suppliers.addSupplier(company1);
+					suppliers.addSupplier(company2);
+					
+					//suppliers.populate(pull.getSuppliers());
 					currentUser = null;
 					allData.add(connection);
 					allData.add(customers);

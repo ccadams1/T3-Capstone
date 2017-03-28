@@ -20,9 +20,9 @@ public class PullDatabase {
 	//customer code complete
 	public ArrayList<Customer> getCustomers()
 	{
-		String query = "SELECT pretty_code, fname, lname, st_address1, "
+		String query = "SELECT cusID, fname, lname, st_address1, "
 				+ "st_address2, city, state, zip_code, phone1, phone2, "
-				+ "email, fax FROM CUSTOMER"; 
+				+ "email, fax, removed FROM CUSTOMER"; 
 		
 		try{
 			Statement stmt = connection.createStatement();
@@ -30,7 +30,7 @@ public class PullDatabase {
 			
 			while(rs.next())
 			{
-				String prettyCode = rs.getString("pretty_code");
+				String id = rs.getString("cusID");
 				String fName = rs.getString("fname");
 				String lName = rs.getString("lname");
 				String st_address1 = rs.getString("st_address1");
@@ -42,9 +42,10 @@ public class PullDatabase {
 				int phone2 = rs.getInt("phone2");
 				String email = rs.getString("email");
 				int fax = rs.getInt("fax");
-				Customer c = new Customer(prettyCode, fName, lName, st_address1,
+				boolean removed = rs.getBoolean("removed");
+				Customer c = new Customer(id, fName, lName, st_address1,
 						st_address2, city, state, zip_code, phone1, phone2, 
-						email, fax);
+						email, fax, removed);
 				System.out.println(c.toString());
 				customers.add(c);
 				System.out.println("added");
@@ -94,13 +95,17 @@ public class PullDatabase {
 	
 	public ArrayList<Item> getInventory()
 	{
-		String query = "SELECT I.invID, I.pretty_name, I.item_name, O.supplier_price, S.name, "
+		String query = "";
+		/*String query = "SELECT I.invID, I.item_name, O.supplier_price, S.name, "
 				+ "I.num_in_stock, I.reorder_amt, I.item_description "
 				+ "FROM INVENTORY I LEFT OUTER JOIN INVENTORY_ORDER O "
 				+ "ON I.invID = O.INV_id LEFT OUTER JOIN INVENTORY_PRICE P "
 				+ "ON I.invID = P.INV_id LEFT OUTER JOIN SUPPLIER S "
 				+ "ON O.SUP_id = S.supID"; 
-		
+		String query = "SELECT I.invID, I.item_name, I.retail_price, S.name, "
+				+ "I.num_in_stock, I.reorder_amt, I.item_description, I.removed "
+				+ "FROM INVENTORY I LEFT OUTER JOIN SUPPLIER S"
+				+ "ON i.SUP_id = S.supID";*/
 		try{
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -108,15 +113,15 @@ public class PullDatabase {
 			while(rs.next())
 			{
 				String item_name = rs.getString("item_name");
-				String pretty_name = rs.getString("pretty_name");
 				String invID = rs.getString("invID");
 				Double price = rs.getDouble("supplier_price");
 				String supplier = rs.getString("name");
 				int quantity = rs.getInt("num_in_stock");
 				int parStock = rs.getInt("reorder_amt");
 				String item_description = rs.getString("item_description");
-				Item i = new Item(item_name, pretty_name, invID, price, supplier, quantity, 
-						parStock, item_description);
+				boolean removed = rs.getBoolean("removed");
+				Item i = new Item(item_name, invID, price, supplier, quantity, 
+						parStock, item_description, removed);
 				System.out.println(i.toString());
 				items.add(i);
 				System.out.println("added");
@@ -176,9 +181,9 @@ public class PullDatabase {
 	//supplier code complete
 	public ArrayList<Supplier> getSuppliers()
 	{
-		String query = "SELECT name, pretty_code, st_address1, st_address2, "
+		String query = "SELECT name, supID, st_address1, st_address2, "
 				+ "city, state, zip_code, logo, phone1, phone2, website, "
-				+ "email, fax FROM SUPPLIER"; 
+				+ "email, fax, removed FROM SUPPLIER"; 
 		
 		try{
 			Statement stmt = connection.createStatement();
@@ -187,7 +192,7 @@ public class PullDatabase {
 			while(rs.next())
 			{
 				String name = rs.getString("name");
-				String pretty_code = rs.getString("pretty_code");
+				String id = rs.getString("supID");
 				String st_address1 = rs.getString("st_address1");
 				String st_address2 = rs.getString("st_address2");
 				String city = rs.getString("city");
@@ -199,9 +204,10 @@ public class PullDatabase {
 				String website = rs.getString("website");
 				String email = rs.getString("email");
 				int fax = rs.getInt("fax");
-				Supplier s = new Supplier(name, pretty_code, st_address1, st_address2,
+				boolean removed = rs.getBoolean("removed");
+				Supplier s = new Supplier(name, id, st_address1, st_address2,
 						city, state, zip_code, logo, phone1, phone2, website,
-						email, fax);
+						email, fax, removed);
 				System.out.println(s.toString());
 				suppliers.add(s);
 				System.out.println("added");

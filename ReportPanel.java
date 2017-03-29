@@ -60,7 +60,6 @@ public class ReportPanel extends JPanel{
 	{
 		MyBusiness businessObj = (MyBusiness) data.get(4);
 		Inventory inventory = (Inventory) data.get(3);
-		List<Item> items = inventory.getList();
 
 		//bounds should be set to (0, 0, 772, 476)
 		this.setBounds(0, 0, 772, 476);
@@ -198,7 +197,7 @@ public class ReportPanel extends JPanel{
 				if(businessCheckBox.isSelected())
 				{
 					if(businessCheck1.isSelected()) {
-						textAreaString += "\t \t \tLong Business Name \n";
+						textAreaString += "\t \t \t"+ businessObj.getBizName() +" \n";
 					}
 					if(businessCheck2.isSelected()) {
 						textAreaString += "Street Address \n";
@@ -252,59 +251,132 @@ public class ReportPanel extends JPanel{
 				{
 					textAreaString += "Inventory Report \n";
 					textAreaString += "-------------------------------------------------------------------------------- \n";
-					for(int x = 0; x < items.size(); x++)
+					for(int x = 0; x < inventory.size(); x++)
 					{
-						if (itemNameCheck.isSelected()) {
-							textAreaString += "Item Name: \t";
-							textAreaString += items.get(x).getName() +"\t";
-						}
-						if (itemIDCheck.isSelected()) {
-							textAreaString += "Item ID: \t";
-							textAreaString += items.get(x).getId() +"\t";
-						}
-						if (itemPriceCheck.isSelected()) {
-							textAreaString += "Price: \t";
-							textAreaString += items.get(x).getPrice() +"\t";
-						}
-						if (itemSupplierNameCheck.isSelected()) {
-							textAreaString += "Supplier Name: ";
-							textAreaString += items.get(x).getSupplier() +"\t";
-						}
-						if (itemQuantityCheck.isSelected()) {
-							textAreaString += "Quantity: \t";
-							textAreaString += items.get(x).getQuantity() +"\t";
-						}
-						if (itemParCheck.isSelected()) {
-							textAreaString += "Par Stock: \t";
-							textAreaString += items.get(x).getParStock() +"\t";
-						}
-						if (itemDescriptionCheck.isSelected()) {
-							textAreaString += "Item Description: \t";
-							textAreaString += items.get(x).getDescription() +"\t";
-						}
-						if (itemActiveCheck.isSelected()){
-							textAreaString += "Active Item: \t";
-							if(!items.get(x).isRemoved())
-							{
-								textAreaString += "yes\t";
+						if (itemActiveCheck.isSelected() && !itemInactiveCheck.isSelected() && !inventory.get(x).isRemoved())
+						{
+							if (itemNameCheck.isSelected()) {
+								textAreaString += "Item Name: \t";
+								textAreaString += inventory.get(x).getName() +"\t";
 							}
-							else
-							{
-								textAreaString += "no\t";
+							if (itemIDCheck.isSelected()) {
+								textAreaString += "Item ID: \t";
+								textAreaString += inventory.get(x).getId() +"\t";
 							}
+							if (itemPriceCheck.isSelected()) {
+								textAreaString += "Price: \t";
+								textAreaString += inventory.get(x).getPrice() +"\t";
+							}
+							if (itemSupplierNameCheck.isSelected()) {
+								textAreaString += "Supplier Name: ";
+								textAreaString += inventory.get(x).getSupplier() +"\t";
+							}
+							if (itemQuantityCheck.isSelected()) {
+								textAreaString += "Quantity: \t";
+								textAreaString += inventory.get(x).getQuantity() +"\t";
+							}
+							if (itemParCheck.isSelected()) {
+								textAreaString += "Par Stock: \t";
+								textAreaString += inventory.get(x).getParStock() +"\t";
+							}
+							if (itemDescriptionCheck.isSelected()) {
+								textAreaString += "Item Description: \t";
+								textAreaString += inventory.get(x).getDescription() +"\t";
+							}
+							if (itemActiveCheck.isSelected()){
+								textAreaString += "Active Item: \t";
+								if(!inventory.get(x).isRemoved())
+								{
+									textAreaString += "yes\t";
+								}
+							}
+							textAreaString += "\n";
 						}
-						if (itemInactiveCheck.isSelected()){
-							textAreaString += "Inactive Item: \t";
-							if(items.get(x).isRemoved())
-							{
-								textAreaString += "yes\t";
+						else if (!itemActiveCheck.isSelected() && itemInactiveCheck.isSelected() && inventory.get(x).isRemoved())
+						{
+							if (itemNameCheck.isSelected()) {
+								textAreaString += "Item Name: \t";
+								textAreaString += inventory.get(x).getName() +"\t";
 							}
-							else
-							{
-								textAreaString += "no\t";
+							if (itemIDCheck.isSelected()) {
+								textAreaString += "Item ID: \t";
+								textAreaString += inventory.get(x).getId() +"\t";
 							}
+							if (itemPriceCheck.isSelected()) {
+								textAreaString += "Price: \t";
+								textAreaString += inventory.get(x).getPrice() +"\t";
+							}
+							if (itemSupplierNameCheck.isSelected()) {
+								textAreaString += "Supplier Name: ";
+								textAreaString += inventory.get(x).getSupplier() +"\t";
+							}
+							if (itemQuantityCheck.isSelected()) {
+								textAreaString += "Quantity: \t";
+								textAreaString += inventory.get(x).getQuantity() +"\t";
+							}
+							if (itemParCheck.isSelected()) {
+								textAreaString += "Par Stock: \t";
+								textAreaString += inventory.get(x).getParStock() +"\t";
+							}
+							if (itemDescriptionCheck.isSelected()) {
+								textAreaString += "Item Description: \t";
+								textAreaString += inventory.get(x).getDescription() +"\t";
+							}
+							if (itemInactiveCheck.isSelected()){
+								textAreaString += "Active Item: \t";
+								if(inventory.get(x).isRemoved())
+								{
+									textAreaString += "no\t";
+								}
+							}
+							textAreaString += "\n";
 						}
-						textAreaString += "\n";
+						else if (itemActiveCheck.isSelected() && itemInactiveCheck.isSelected())
+						{
+							if (itemNameCheck.isSelected()) {
+								textAreaString += "Item Name: \t";
+								textAreaString += inventory.get(x).getName() +"\t";
+							}
+							if (itemIDCheck.isSelected()) {
+								textAreaString += "Item ID: \t";
+								textAreaString += inventory.get(x).getId() +"\t";
+							}
+							if (itemPriceCheck.isSelected()) {
+								textAreaString += "Price: \t";
+								textAreaString += inventory.get(x).getPrice() +"\t";
+							}
+							if (itemSupplierNameCheck.isSelected()) {
+								textAreaString += "Supplier Name: ";
+								textAreaString += inventory.get(x).getSupplier() +"\t";
+							}
+							if (itemQuantityCheck.isSelected()) {
+								textAreaString += "Quantity: \t";
+								textAreaString += inventory.get(x).getQuantity() +"\t";
+							}
+							if (itemParCheck.isSelected()) {
+								textAreaString += "Par Stock: \t";
+								textAreaString += inventory.get(x).getParStock() +"\t";
+							}
+							if (itemDescriptionCheck.isSelected()) {
+								textAreaString += "Item Description: \t";
+								textAreaString += inventory.get(x).getDescription() +"\t";
+							}
+							if (itemActiveCheck.isSelected()){
+								textAreaString += "Active Item: \t";
+								if(!inventory.get(x).isRemoved())
+								{
+									textAreaString += "yes\t";
+								}
+								else
+								{
+									textAreaString += "no\t";
+								}
+							}
+							textAreaString += "\n";
+						}
+						else
+						{
+						}
 					}
 				    textArea.setText(textAreaString);
 				}

@@ -21,15 +21,7 @@ public class POSPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Inventory inventory = new Inventory();
 	private JPanel panel_2;
-	private double subtotalValue = 0.00;
-	private double discountValue = 0.00;
-	private double taxesValue = 0.00;
-	private double totalValue = 0.00;
-	private JLabel subtotalValueText = new JLabel();
-	private JLabel discountValueText = new JLabel();
-	private JLabel taxesValueText = new JLabel();
-	private JLabel totalValueText = new JLabel();
-	
+
 	public POSPanel(ArrayList<Object> data)
 	{
 		inventory = (Inventory) data.get(3);
@@ -49,7 +41,7 @@ public class POSPanel extends JPanel{
 		scrollPane_1.setViewportView(panel_1);
 		panel_1.setLayout(new GridLayout(7, 4, 25, 25));
 		
-		JPanel panel_3 = new JPanel();
+		CheckoutPanel panel_3 = new CheckoutPanel();
 		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_3.setBounds(515, 357, 257, 119);
 		panel.add(panel_3);
@@ -75,31 +67,29 @@ public class POSPanel extends JPanel{
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panel_3.add(lblNewLabel_3);
 		
-		JLabel subtotalValueText = new JLabel("$"+ subtotalValue);
+		JLabel subtotalValueText= new JLabel("$0.00");
 		subtotalValueText.setHorizontalAlignment(SwingConstants.RIGHT);
 		subtotalValueText.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		subtotalValueText.setBounds(88, 11, 60, 20);
-		panel_3.add(subtotalValueText);
+		panel_3.addSubtotalLabel(subtotalValueText);
 		
-		JLabel discountValueText = new JLabel("$" + discountValue);
+		JLabel discountValueText= new JLabel("$0.00");
 		discountValueText.setHorizontalAlignment(SwingConstants.RIGHT);
 		discountValueText.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		discountValueText.setBounds(88, 38, 60, 20);
-		panel_3.add(discountValueText);
+		panel_3.addDiscountLabel(discountValueText);
 	
-		taxesValue = subtotalValue * .07;
-		JLabel taxesValueText = new JLabel("$" + taxesValue);
+		JLabel taxesValueText = new JLabel("$0.00");
 		taxesValueText.setHorizontalAlignment(SwingConstants.RIGHT);
 		taxesValueText.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		taxesValueText.setBounds(88, 65, 60, 20);
-		panel_3.add(taxesValueText);
+		panel_3.addTaxesLabel(taxesValueText);
 		
-		totalValue = taxesValue + subtotalValue - discountValue;
-		JLabel totalValueText = new JLabel("$" + totalValue);
+		JLabel totalValueText = new JLabel("$0.00");
 		totalValueText.setHorizontalAlignment(SwingConstants.RIGHT);
 		totalValueText.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		totalValueText.setBounds(88, 92, 60, 20);
-		panel_3.add(totalValueText);
+		panel_3.addTotalLabel(totalValueText);
 		
 		JButton btnCheckOut = new JButton("Check Out");
 		btnCheckOut.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -125,7 +115,7 @@ public class POSPanel extends JPanel{
 				panel_2.revalidate();
 				for(int x = 0; x < inventory.size(); x++)
 				{
-					POSButton button = new POSButton(inventory.get(x), panel_2);
+					POSButton button = new POSButton(inventory.get(x), panel_2, panel_3);
 					button.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
 							JPanel newPanel = button.getCheckPanel();
@@ -135,6 +125,8 @@ public class POSPanel extends JPanel{
 							panel_2.add(spacer);
 							panel_2.add(newPanel);
 							panel_2.remove(spacer);
+							panel_3.addToSubtotal(button.getPrice());
+							panel_3.updateLabels();
 							panel_2.validate();
 						}
 					});
@@ -150,15 +142,5 @@ public class POSPanel extends JPanel{
 
 	public void setPanel_2(JPanel panel_2) {
 		this.panel_2 = panel_2;
-	}
-	
-	public void setTotal()
-	{
-		
-		
-		subtotalValueText.setText("$" + subtotalValue);
-		discountValueText.setText("$" + discountValue);
-		taxesValueText.setText("$" + taxesValue);
-		totalValueText.setText("$" + totalValue);
 	}
 } 

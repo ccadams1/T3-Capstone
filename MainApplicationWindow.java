@@ -54,7 +54,7 @@ public class MainApplicationWindow {
 					customers.addCustomer(mat);
 					
 					Supplier company1 = new Supplier("Company 1", "2200", "928 make money st", "", "raleigh", "NC", 12345,
-							null, 4655, 9865, "www.go.com", "company@company.com", 5642, false);
+							null, 4655, 9865, "www.gobusiness.com", "company@company.com", 5642, false);
 					Supplier company2 = new Supplier("Company 2", "1230", "644 business dr", "", "raleigh", "NC", 12345,
 							null, 9182, 4563, "www.getmore.com", "company@pro.com", 88324, false);
 					suppliers.addSupplier(company1);

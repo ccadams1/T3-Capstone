@@ -1,10 +1,12 @@
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory {
 	
 	private ArrayList<Item> items = new ArrayList<Item>();
-	
+	private NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
 	public Inventory(){
 	}
 	
@@ -66,7 +68,7 @@ public class Inventory {
 			{
 				s += "Item: " + items.get(i).getName() + " \t";
 				s += "Item Id: " + items.get(i).getId() + " \t";
-				s += "Price: " + items.get(i).getPrice() + " \t";
+				s += "Price: " + formatter.format(items.get(i).getPrice()) + " \t";
 				s += "Supplier: " + items.get(i).getSupplier() + " \t";
 				s += "Par Stock: " + items.get(i).getParStock() + " \t";
 				s += "Quantity: " + items.get(i).getQuantity() + " \t";
@@ -83,8 +85,14 @@ public class Inventory {
 		return items;
 	}
 	
-	public void setList(ArrayList<Item> items){
-		this.items = items;
+	public ArrayList<Item> getListCopy() {
+		ArrayList<Item> copy = new ArrayList<Item>();
+		for(int x = 0; x < items.size(); x++)
+		{
+			Item temp = items.get(x);
+			copy.add(temp);
+		}
+		return copy;
 	}
 
 }

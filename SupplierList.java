@@ -50,4 +50,14 @@ public class SupplierList {
 	public ArrayList<Supplier> getList() {
 		return suppliers;
 	}
+
+	public ArrayList<Supplier> getListCopy() {
+		ArrayList<Supplier> copy = new ArrayList<Supplier>();
+		for(int x = 0; x < suppliers.size(); x++)
+		{
+			Supplier temp = suppliers.get(x);
+			copy.add(temp);
+		}
+		return copy;
+	}
 }

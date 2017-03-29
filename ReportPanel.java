@@ -39,13 +39,15 @@ public class ReportPanel extends JPanel{
 	JCheckBox businessCheck11;
 	JCheckBox businessCheck12;
 	
-	JCheckBox inventoryCheck1;
-	JCheckBox inventoryCheck2;
-	JCheckBox inventoryCheck3;
-	JCheckBox inventoryCheck4;
-	JCheckBox inventoryCheck5;
-	JCheckBox inventoryCheck6;
-	JCheckBox inventoryCheck7;
+	JCheckBox itemNameCheck;
+	JCheckBox itemIDCheck;
+	JCheckBox itemPriceCheck;
+	JCheckBox itemDescriptionCheck;
+	JCheckBox itemSupplierNameCheck;
+	JCheckBox itemParCheck;
+	JCheckBox itemQuantityCheck;
+	JCheckBox itemActiveCheck;
+	JCheckBox itemInactiveCheck;
 	
 	JCheckBox salesCheck1;
 	JCheckBox salesCheck2;
@@ -139,23 +141,27 @@ public class ReportPanel extends JPanel{
 			{
 				if(inventoryCheckBox.isSelected())
 				{
-					inventoryCheck1.setEnabled(true);
-					inventoryCheck2.setEnabled(true);
-					inventoryCheck3.setEnabled(true);
-					inventoryCheck4.setEnabled(true);
-					inventoryCheck5.setEnabled(true);
-					inventoryCheck6.setEnabled(true);
-					inventoryCheck7.setEnabled(true);
+					itemNameCheck.setEnabled(true);
+					itemIDCheck.setEnabled(true);
+					itemPriceCheck.setEnabled(true);
+					itemDescriptionCheck.setEnabled(true);
+					itemSupplierNameCheck.setEnabled(true);
+					itemParCheck.setEnabled(true);
+					itemQuantityCheck.setEnabled(true);
+					itemActiveCheck.setEnabled(true);
+					itemInactiveCheck.setEnabled(true);
 				}
 				else if(!inventoryCheckBox.isSelected())
 				{
-					inventoryCheck1.setEnabled(false);
-					inventoryCheck2.setEnabled(false);
-					inventoryCheck3.setEnabled(false);
-					inventoryCheck4.setEnabled(false);
-					inventoryCheck5.setEnabled(false);
-					inventoryCheck6.setEnabled(false);
-					inventoryCheck7.setEnabled(false);
+					itemNameCheck.setEnabled(false);
+					itemIDCheck.setEnabled(false);
+					itemPriceCheck.setEnabled(false);
+					itemDescriptionCheck.setEnabled(false);
+					itemSupplierNameCheck.setEnabled(false);
+					itemParCheck.setEnabled(false);
+					itemQuantityCheck.setEnabled(false);
+					itemActiveCheck.setEnabled(false);
+					itemInactiveCheck.setEnabled(false);
 				}
 			}
 		});
@@ -248,34 +254,57 @@ public class ReportPanel extends JPanel{
 					textAreaString += "-------------------------------------------------------------------------------- \n";
 					for(int x = 0; x < items.size(); x++)
 					{
-						if (inventoryCheck1.isSelected()) {
+						if (itemNameCheck.isSelected()) {
 							textAreaString += "Item Name: \t";
-							textAreaString += items.get(x).getName();
+							textAreaString += items.get(x).getName() +"\t";
 						}
-						if (inventoryCheck2.isSelected()) {
+						if (itemIDCheck.isSelected()) {
 							textAreaString += "Item ID: \t";
-							textAreaString += items.get(x).getId();
+							textAreaString += items.get(x).getId() +"\t";
 						}
-						if (inventoryCheck3.isSelected()) {
+						if (itemPriceCheck.isSelected()) {
 							textAreaString += "Price: \t";
-							textAreaString += items.get(x).getSupplier();
+							textAreaString += items.get(x).getPrice() +"\t";
 						}
-						if (inventoryCheck5.isSelected()) {
-							textAreaString += "Supplier Name: \t";
-							textAreaString += items.get(x).getSupplier();
+						if (itemSupplierNameCheck.isSelected()) {
+							textAreaString += "Supplier Name: ";
+							textAreaString += items.get(x).getSupplier() +"\t";
 						}
-						if (inventoryCheck7.isSelected()) {
-							textAreaString += "Quantity: \n";
-							textAreaString += items.get(x).getQuantity();
+						if (itemQuantityCheck.isSelected()) {
+							textAreaString += "Quantity: \t";
+							textAreaString += items.get(x).getQuantity() +"\t";
 						}
-						if (inventoryCheck6.isSelected()) {
-							textAreaString += "Par Stock: \n";
-							textAreaString += items.get(x).getParStock();
+						if (itemParCheck.isSelected()) {
+							textAreaString += "Par Stock: \t";
+							textAreaString += items.get(x).getParStock() +"\t";
 						}
-						if (inventoryCheck4.isSelected()) {
-							textAreaString += "Item Description: \n";
-							textAreaString += items.get(x).getDescription();
+						if (itemDescriptionCheck.isSelected()) {
+							textAreaString += "Item Description: \t";
+							textAreaString += items.get(x).getDescription() +"\t";
 						}
+						if (itemActiveCheck.isSelected()){
+							textAreaString += "Active Item: \t";
+							if(!items.get(x).isRemoved())
+							{
+								textAreaString += "yes\t";
+							}
+							else
+							{
+								textAreaString += "no\t";
+							}
+						}
+						if (itemInactiveCheck.isSelected()){
+							textAreaString += "Inactive Item: \t";
+							if(items.get(x).isRemoved())
+							{
+								textAreaString += "yes\t";
+							}
+							else
+							{
+								textAreaString += "no\t";
+							}
+						}
+						textAreaString += "\n";
 					}
 				    textArea.setText(textAreaString);
 				}
@@ -486,47 +515,60 @@ public class ReportPanel extends JPanel{
 		inventoryPanel.setLayout(new GridLayout(15, 1, 0, 0));
 			
 		//checkbox for inventory panel
-		inventoryCheck1 = new JCheckBox("Item Name");
-		inventoryCheck1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		inventoryCheck1.setActionCommand("");
-		inventoryPanel.add(inventoryCheck1);
-		inventoryCheck1.setEnabled(false);			
+		itemNameCheck = new JCheckBox("Item Name");
+		itemNameCheck.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		itemNameCheck.setActionCommand("");
+		inventoryPanel.add(itemNameCheck);
+		itemNameCheck.setEnabled(false);			
 		
 		//checkbox for inventory panel
-		inventoryCheck2 = new JCheckBox("Item ID");
-		inventoryCheck2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		inventoryPanel.add(inventoryCheck2);
-		inventoryCheck2.setEnabled(false);			
+		itemIDCheck = new JCheckBox("Item ID");
+		itemIDCheck.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		inventoryPanel.add(itemIDCheck);
+		itemIDCheck.setEnabled(false);			
 								
 		//checkbox for inventory panel
-		inventoryCheck3 = new JCheckBox("Item Price");
-		inventoryCheck3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		inventoryPanel.add(inventoryCheck3);
-		inventoryCheck3.setEnabled(false);			
+		itemPriceCheck = new JCheckBox("Item Price");
+		itemPriceCheck.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		inventoryPanel.add(itemPriceCheck);
+		itemPriceCheck.setEnabled(false);			
 			
 		//checkbox for inventory panel
-		inventoryCheck4 = new JCheckBox("Item Description");
-		inventoryCheck4.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		inventoryPanel.add(inventoryCheck4);
-		inventoryCheck4.setEnabled(false);			
+		itemDescriptionCheck = new JCheckBox("Item Description");
+		itemDescriptionCheck.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		inventoryPanel.add(itemDescriptionCheck);
+		itemDescriptionCheck.setEnabled(false);			
 					
 		//checkbox for inventory panel
-		inventoryCheck5 = new JCheckBox("Supplier Name");
-		inventoryCheck5.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		inventoryPanel.add(inventoryCheck5);
-		inventoryCheck5.setEnabled(false);			
+		itemSupplierNameCheck = new JCheckBox("Supplier Name");
+		itemSupplierNameCheck.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		inventoryPanel.add(itemSupplierNameCheck);
+		itemSupplierNameCheck.setEnabled(false);			
 		
 		//checkbox for inventory panel
-		inventoryCheck7 = new JCheckBox("Quantity");
-		inventoryCheck7.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		inventoryPanel.add(inventoryCheck7);
-		inventoryCheck7.setEnabled(false);			
+		itemQuantityCheck = new JCheckBox("Quantity");
+		itemQuantityCheck.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		inventoryPanel.add(itemQuantityCheck);
+		itemQuantityCheck.setEnabled(false);			
 			
 		//checkbox for inventory panel
-		inventoryCheck6 = new JCheckBox("Par Stock");
-		inventoryCheck6.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		inventoryPanel.add(inventoryCheck6);
-		inventoryCheck6.setEnabled(false);	
+		itemParCheck = new JCheckBox("Par Stock");
+		itemParCheck.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		inventoryPanel.add(itemParCheck);
+		itemParCheck.setEnabled(false);	
+		
+		//checkbox for inventory panel
+		itemActiveCheck = new JCheckBox("Active Item");
+		itemActiveCheck.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		inventoryPanel.add(itemActiveCheck);
+		itemActiveCheck.setEnabled(false);
+		itemActiveCheck.setSelected(true);
+		
+		//checkbox for inventory panel
+		itemInactiveCheck = new JCheckBox("Inactive Item");
+		itemInactiveCheck.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		inventoryPanel.add(itemInactiveCheck);
+		itemInactiveCheck.setEnabled(false);
 		
 		//scroll pane for sales checkboxes
 		JScrollPane salesBoxScrollPane = new JScrollPane();

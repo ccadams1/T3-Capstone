@@ -115,23 +115,28 @@ public class POSPanel extends JPanel{
 				panel_2.revalidate();
 				for(int x = 0; x < inventory.size(); x++)
 				{
-					POSButton button = new POSButton(inventory.get(x), panel_2, panel_3);
-					button.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							JPanel newPanel = button.getCheckPanel();
-							newPanel.setVisible(true);
-							JPanel spacer = new JPanel();
-							spacer.setSize(235,1);
-							panel_2.add(spacer);
-							panel_2.add(newPanel);
-							panel_2.remove(spacer);
-							panel_3.addToSubtotal(button.getPrice());
-							panel_3.updateLabels();
-							panel_2.validate();
-						}
-					});
-					panel_1.add(button);
+					if(!inventory.get(x).isRemoved())
+					{
+						POSButton button = new POSButton(inventory.get(x), panel_2, panel_3);
+						button.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								JPanel newPanel = button.getCheckPanel();
+								newPanel.setVisible(true);
+								JPanel spacer = new JPanel();
+								spacer.setSize(235,1);
+								panel_2.add(spacer);
+								panel_3.addToSubtotal(button.getPrice());
+								panel_2.add(newPanel);
+								panel_2.remove(spacer);
+								panel_3.updateLabels();
+								panel_2.validate();
+							}
+						});
+						panel_1.add(button);
+					}
 				}
+				panel_1.revalidate();
+				panel_2.revalidate();
 			}
 		});
 	}

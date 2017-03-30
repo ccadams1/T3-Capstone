@@ -584,7 +584,7 @@ public class ReportPanel extends JPanel{
 		//of the gridlayout below and add checkbox to the inventory panel
 		JPanel inventoryPanel = new JPanel();
 		inventoryBoxScrollPane.setViewportView(inventoryPanel);
-		inventoryPanel.setLayout(new GridLayout(15, 1, 0, 0));
+		inventoryPanel.setLayout(new GridLayout(9, 1, 0, 0));
 			
 		//checkbox for inventory panel
 		itemNameCheck = new JCheckBox("Item Name");

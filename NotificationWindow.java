@@ -35,10 +35,7 @@ public class NotificationWindow extends JFrame {
 		contentPanel.add(scroll, BorderLayout.CENTER);
 		contentPanel.add(ackPane, BorderLayout.SOUTH);
 		add(contentPanel);
-	
-		
-		
-		
+			
 		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

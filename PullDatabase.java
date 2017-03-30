@@ -1,8 +1,10 @@
 import java.io.File;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 
 public class PullDatabase {
@@ -184,10 +186,23 @@ public class PullDatabase {
 		String query = "SELECT name, supID, st_address1, st_address2, "
 				+ "city, state, zip_code, logo, phone1, phone2, website, "
 				+ "email, fax, removed FROM SUPPLIER"; 
+		CallableStatement stmt = null;
 		
 		try{
-			Statement stmt = connection.createStatement();
+			//Prepare the stored procedure call
+			stmt = connection.prepareCall("{call "+/*get supplier procedure with parameters*/"}");
 			ResultSet rs = stmt.executeQuery(query);
+			
+			//set the parameters
+			stmt.registerOutParameter(1, Types.VARCHAR);
+			stmt.setString(1, "name");
+			stmt.registerOutParameter(1, Types.DOUBLE);
+			stmt.setDouble(2, 0.0);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to populate suppliers");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
 			
 			while(rs.next())
 			{

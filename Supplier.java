@@ -4,36 +4,27 @@ public class Supplier {
 
 	private String name;
 	private String Id;
-	private String stAddress1;
-	private String stAddress2;
+	private String stAddress;
 	private String city;
 	private String state;
-	private int zipCode;
-	private File logo1;
-	private String phone1;
-	private String phone2;
+	private String zipCode;
+	private String phone;
 	private String website;
 	private String email;
-	private String fax;
 	private boolean removed;
 	
-	public Supplier (String name, String Id, String stAddress1, String stAddress2, String city, String state, int zipCode,
-			File logo1, String phone1, String phone2, String website, String email, String fax, boolean r)
+	public Supplier (String name1, String stAddress1, String city1, String state1, String zipCode1,
+			String email1, String website1, String phone1)
 	{
-		this.name = name;
-		this.Id = Id;
-		this.stAddress1 = stAddress1;
-		this.stAddress2 = stAddress2;
-		this.city = city;
-		this.state = state;
-		this.zipCode = zipCode;
-		this.logo1 = logo1;
-		this.phone1 = phone1;
-		this.phone2 = phone2;
-		this.website = website;
-		this.email = email;
-		this.fax = fax;
-		this.setRemoved(r);
+		this.name = name1;
+		// need to auto generate this.Id = Id;
+		this.stAddress = stAddress1;
+		this.city = city1;
+		this.state = state1;
+		this.zipCode = zipCode1;
+		this.phone = phone1;
+		this.website = website1;
+		this.email = email1;
 	}
 	
 	public Supplier() {
@@ -61,22 +52,12 @@ public class Supplier {
 	
 	public void setStAdress1 (String stAddress1)
 	{
-		this.stAddress1 = stAddress1;
+		this.stAddress = stAddress1;
 	}
 	
 	public String getStAdress1()
 	{
-		return stAddress1.toString();
-	}
-	
-	public void setStAdress2 (String stAddress2)
-	{
-		this.stAddress2 = stAddress2;
-	}
-	
-	public String getStAdress2()
-	{
-		return stAddress2.toString();
+		return stAddress.toString();
 	}
 	
 	public void setCity (String city)
@@ -98,43 +79,23 @@ public class Supplier {
 		return state.toString();
 	}
 	
-	public void setZipCode (int zipCode)
+	public void setZipCode (String zipCode)
 	{
 		this.zipCode = zipCode;
 	}
-	public int getZipCode()
+	public String getZipCode()
 	{
 		return zipCode;
 	}
 	
-	public void setLogo1 (File logo1)
+	public void setPhone (String phone1)
 	{
-		this.logo1 = logo1;
-	}
-	
-	public File getLogo1()
-	{
-		return logo1;
-	}
-	
-	public void setPhone1 (String phone1)
-	{
-		this.phone1 = phone1;
+		this.phone = phone1;
 	}
 	
 	public String getPhone1()
 	{
-		return phone1;
-	}
-	
-	public void setPhone2 (String phone2)
-	{
-		this.phone2 = phone2;
-	}
-	
-	public String getPhone2()
-	{
-		return phone2;
+		return phone;
 	}
 	
 	public void setWebsite( String website)
@@ -144,7 +105,7 @@ public class Supplier {
 
 	public String getWebsite()
 	{
-		return website;
+		return website.toString();
 	}
 	
 	public void setEmail (String email)
@@ -154,25 +115,7 @@ public class Supplier {
 
 	public String getEmail()
 	{
-		return email;
-	}
-	
-	public void setFax (String fax)
-	{
-		this.fax = fax;
-	}
-
-	public String getFax()
-	{
-		return fax;
-	}
-
-	public boolean isRemoved() {
-		return removed;
-	}
-
-	public void setRemoved(boolean removed) {
-		this.removed = removed;
+		return email.toString();
 	}
 	
 	public String toString()
@@ -180,14 +123,26 @@ public class Supplier {
 		String string = "";
 		string += Id + " \t";
 		string += name + " \t";
-		string += stAddress1 + " \t";
+		string += stAddress + " \t";
 		string += city + " \t";
 		string += state + " \t";
 		string += zipCode + " \t";
-		string += phone1 + " \t";
+		string += phone + " \t";
 		string += website + " \t";
 		string += email + " \t";
-		string += fax + " \t";
 		return string;
+	}
+	
+	public void print(){
+		String s = "";
+		s += "Supplier Name: " + this.name + "\n";
+		s += "Address: " + this.stAddress + "\n";
+		s += "City: " + this.city + "\n";
+		s += "State: " + this.state + "\n";
+		s += "Zip: " + this.zipCode + "\n";
+		s += "Email Address: " + this.email + "\n";
+		s += "Website: " + this.website + "\n";
+		s += "Phone Number: " + this.phone + "\n";
+		System.out.println(s);
 	}
 }

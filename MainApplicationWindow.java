@@ -37,42 +37,38 @@ public class MainApplicationWindow {
 					connection = database.getConnection();
 					PullDatabase pull = new PullDatabase(connection);
 					myBusiness = pull.getMyBusinessData();
-					//customers.populate(pull.getCustomers());
+					customers.populate(pull.getCustomers());
 					employees.populate(pull.getEmployees());
-					//inventory.populate(pull.getInventory());
-					
-					Item test1 = new Item("Test name", "123", 12.50, "New guys", 5, 50, "first item for testing", false);
-					Item test2 = new Item("Another Test", "456", 9.00, "More New guys", 10, 50, "second item for testing", false);
+					inventory.populate(pull.getInventory());
+					/*Item test1 = new Item("Test name", "123", 12.50, 1, "New guys", 5, 50, "first item for testing", false);
+					Item test2 = new Item("Another Test", "456", 9.00, 2, "More New guys", 10, 50, "second item for testing", false);
 					inventory.addItem(test1);
 					inventory.addItem(test2);
 					
 					Customer joe = new Customer ("1", "Joe", "Smoe", "555 transaction rd", "", "raleigh", "NC", 12345,
-							1565, 3215, "guy@gmail.com", 8754, false);
+							"1565", "3215", "guy@gmail.com", "8754");
 					Customer mat = new Customer ("2", "Mat", "Do", "123 califorican dr", "", "raleigh", "NC", 12345,
-							4234, 3625, "otherGuy@gmail.com", 8754, false);
+							"4234", "3625", "otherGuy@gmail.com", "8754");
 					customers.addCustomer(joe);
 					customers.addCustomer(mat);
 					
 					Supplier company1 = new Supplier("Company 1", "2200", "928 make money st", "", "raleigh", "NC", 12345,
-							null, 4655, 9865, "www.gobusiness.com", "company@company.com", 5642, false);
+							null, "8757", null, "www.gobusiness.com", "company@company.com", null, false);
 					Supplier company2 = new Supplier("Company 2", "1230", "644 business dr", "", "raleigh", "NC", 12345,
-							null, 9182, 4563, "www.getmore.com", "company@pro.com", 88324, false);
+							null, "9182", null, "www.getmore.com", "company@pro.com", null, false);
 					suppliers.addSupplier(company1);
 					suppliers.addSupplier(company2);
-					
-					//suppliers.populate(pull.getSuppliers());
+					*/
+					suppliers.populate(pull.getSuppliers());
 					currentUser = null;
-					allData.add(connection);
-					allData.add(customers);
-					allData.add(employees);
-					allData.add(inventory);
-					allData.add(myBusiness);
-					allData.add(suppliers);
-					allData.add(currentUser);
-					new LoginScreen(allData);
-					for(int x = 0; x < employees.size();x++){
-						System.out.println(employees.get(x).getPassword());
-					}
+					allData.add(connection); //get(0)
+					allData.add(customers);//get(1)
+					allData.add(employees);//get(2)
+					new LoginScreen(allData);				
+					allData.add(inventory);//get(3)
+					allData.add(myBusiness);//get(4)
+					allData.add(suppliers);//get(5)
+					allData.add(currentUser);//get(6)
 					MainApplicationWindow window = new MainApplicationWindow(allData);
 					window.frame.setVisible(true);
 				} catch (Exception e) {

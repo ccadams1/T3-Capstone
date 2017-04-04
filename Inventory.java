@@ -22,13 +22,8 @@ public class Inventory {
 		return items.get(i);
 	}
 	
-	public void addItem(String n, String i, double p, String s, int q, int par, String d, boolean r){
-		Item temp = new Item(n, i, p, s, q, par, d, r);
-		items.add(temp);
-	}
-	
-	public void addItem(String n, String i, double p, String s, int q, int par, String d){
-		Item temp = new Item(n, i, p, s, q, par, d);
+	public void addItem(String n, String i, double p, int sn, String s, int q, int par, String d){
+		Item temp = new Item(n, i, p, sn, s, q, par, d);
 		items.add(temp);
 	}
 	

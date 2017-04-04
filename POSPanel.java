@@ -94,6 +94,17 @@ public class POSPanel extends JPanel{
 		JButton btnCheckOut = new JButton("Check Out");
 		btnCheckOut.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnCheckOut.setBounds(151, 82, 106, 37);
+		btnCheckOut.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				ArrayList<String> checkoutData = new ArrayList<String>();
+				checkoutData.add(subtotalValueText.getText());
+				checkoutData.add(discountValueText.getText());
+				checkoutData.add(taxesValueText.getText());
+				checkoutData.add(totalValueText.getText());
+				new CheckoutButtonScreen(data, checkoutData);
+			}
+		});
 		panel_3.add(btnCheckOut);
 		
 		JScrollPane scrollPane = new JScrollPane();

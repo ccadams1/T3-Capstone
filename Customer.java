@@ -8,15 +8,14 @@ public class Customer {
 	private String city;
 	private String state;
 	private int zipCode;
-	private int phone1;
-	private int phone2;
+	private String phone1;
+	private String phone2;
 	private String website;
 	private String email;
-	private int fax;
-	private boolean removed;
+	private String fax;
 	
 	public Customer (String ID, String fName, String lName, String stAddress1, String stAddress2, String city, String state, int zipCode,
-			int phone1, int phone2, String email, int fax, boolean r)
+			String phone1, String phone2, String email, String fax)
 	{
 		this.ID = ID;
 		this.fName = fName;
@@ -30,10 +29,6 @@ public class Customer {
 		this.phone2 = phone2;
 		this.email = email;
 		this.fax = fax;
-		this.setRemoved(r);
-	}
-	
-	public Customer() {
 	}
 
 	public void setID (String ID)
@@ -114,22 +109,22 @@ public class Customer {
 		return zipCode;
 	}
 	
-	public void setPhone1 (int phone1)
+	public void setPhone1 (String phone1)
 	{
 		this.phone1 = phone1;
 	}
 	
-	public int getPhone1()
+	public String getPhone1()
 	{
 		return phone1;
 	}
 	
-	public void setPhone2 (int phone2)
+	public void setPhone2 (String phone2)
 	{
 		this.phone2 = phone2;
 	}
 	
-	public int getPhone2()
+	public String getPhone2()
 	{
 		return phone2;
 	}
@@ -144,12 +139,12 @@ public class Customer {
 		return email.toString();
 	}
 	
-	public void setFax (int fax)
+	public void setFax (String fax)
 	{
 		this.fax = fax;
 	}
 
-	public int getFax()
+	public String getFax()
 	{
 		return fax;
 	}
@@ -161,14 +156,6 @@ public class Customer {
 	public void setWebsite(String website) {
 		this.website = website;
 	}
-
-	public boolean isRemoved() {
-		return removed;
-	}
-
-	public void setRemoved(boolean removed) {
-		this.removed = removed;
-	}	
 	
 	public String toString()
 	{

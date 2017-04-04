@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.awt.Dialog.ModalityType;
 
 public class CheckoutButtonScreen extends JDialog{
-
 	private JFrame frame;
 	private JTextField customerIDTextField;
 	public static CustomerList customers;
@@ -28,25 +27,26 @@ public class CheckoutButtonScreen extends JDialog{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CheckoutButtonScreen window = new CheckoutButtonScreen();
-																																											} catch (Exception e) {
-																																												e.printStackTrace();
+					CheckoutButtonScreen window = new CheckoutButtonScreen();	
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		});
 	}
 	*/
+
 	/**
 	 * Create the application.
 	 */
-	public CheckoutButtonScreen(ArrayList<Object> data){
-		initialize(data);
+	public CheckoutButtonScreen(ArrayList<Object> data, ArrayList<String> checkoutData){
+		initialize(data, checkoutData);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(ArrayList<Object> data) {
+	private void initialize(ArrayList<Object> data, ArrayList<String> checkoutData) {
 		this.setAlwaysOnTop (true);
 		this.setSize(400,600);
 		this.setLocationRelativeTo(null);
@@ -55,13 +55,13 @@ public class CheckoutButtonScreen extends JDialog{
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		this.setTitle("Checkout");
 		this.getContentPane().setLayout(null);
-		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		
-		customers = (CustomerList) data.get(2);
-		
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+		customers = (CustomerList) data.get(1);
+
 		this.setBounds(100, 100, 450, 450);
 		getContentPane().setLayout(null);
-		
+
 		JLabel lblSubtotal = new JLabel("Subtotal:");
 		lblSubtotal.setBounds(22, 24, 123, 29);
 		getContentPane().add(lblSubtotal);
@@ -78,31 +78,31 @@ public class CheckoutButtonScreen extends JDialog{
 		lblTotal.setBounds(22, 133, 123, 29);
 		getContentPane().add(lblTotal);
 		
-		JLabel lblSubtotalvalue = new JLabel("subtotalValue");
+		JLabel lblSubtotalvalue = new JLabel(checkoutData.get(0));
 		lblSubtotalvalue.setBounds(159, 24, 104, 29);
 		getContentPane().add(lblSubtotalvalue);
 		
-		JLabel lblDiscountvalue = new JLabel("discountValue");
+		JLabel lblDiscountvalue = new JLabel(checkoutData.get(1));
 		lblDiscountvalue.setBounds(159, 61, 104, 29);
 		getContentPane().add(lblDiscountvalue);
 		
-		JLabel lblTaxvalue = new JLabel("taxValue");
+		JLabel lblTaxvalue = new JLabel(checkoutData.get(2));
 		lblTaxvalue.setBounds(159, 94, 104, 29);
 		getContentPane().add(lblTaxvalue);
 		
-		JLabel lblTotalvalue = new JLabel("TotalValue");
+		JLabel lblTotalvalue = new JLabel(checkoutData.get(3));
 		lblTotalvalue.setBounds(159, 133, 104, 29);
 		getContentPane().add(lblTotalvalue);
 		
 		JLabel lblSearchCustomer = new JLabel("Search Customer ID:");
 		lblSearchCustomer.setBounds(22, 179, 241, 29);
 		getContentPane().add(lblSearchCustomer);
-		
+
 		customerIDTextField = new JTextField();
 		customerIDTextField.setBounds(32, 218, 143, 35);
 		getContentPane().add(customerIDTextField);
 		customerIDTextField.setColumns(10);
-		
+
 		JLabel lblCustomerId = new JLabel("OR");
 		lblCustomerId.setBounds(84, 274, 40, 29);
 		getContentPane().add(lblCustomerId);
@@ -113,7 +113,7 @@ public class CheckoutButtonScreen extends JDialog{
 		btnCreateNewCustomer.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new AddCustomer(thisCustomer);
+				//new AddCustomerScreen(data, thisCustomer);
 			}
 		});
 		getContentPane().add(btnCreateNewCustomer);
@@ -135,12 +135,13 @@ public class CheckoutButtonScreen extends JDialog{
 		});
 		getContentPane().add(btnSearchCustomer);
 		
-		((Object) thisCustomer).addChangeListener(new ChangeListener(){
+		/*((Object) thisCustomer).addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e) {
 		        if(thisCustomer!=null)
 		        {
 		        	new PaymentScreen(data);
 		        }
 	        }  
-		});
+		});*/
+	}
 }

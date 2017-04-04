@@ -10,15 +10,15 @@ public class Supplier {
 	private String state;
 	private int zipCode;
 	private File logo1;
-	private int phone1;
-	private int phone2;
+	private String phone1;
+	private String phone2;
 	private String website;
 	private String email;
-	private int fax;
+	private String fax;
 	private boolean removed;
 	
 	public Supplier (String name, String Id, String stAddress1, String stAddress2, String city, String state, int zipCode,
-			File logo1, int phone1, int phone2, String website, String email, int fax, boolean r)
+			File logo1, String phone1, String phone2, String website, String email, String fax, boolean r)
 	{
 		this.name = name;
 		this.Id = Id;
@@ -117,22 +117,22 @@ public class Supplier {
 		return logo1;
 	}
 	
-	public void setPhone1 (int phone1)
+	public void setPhone1 (String phone1)
 	{
 		this.phone1 = phone1;
 	}
 	
-	public int getPhone1()
+	public String getPhone1()
 	{
 		return phone1;
 	}
 	
-	public void setPhone2 (int phone2)
+	public void setPhone2 (String phone2)
 	{
 		this.phone2 = phone2;
 	}
 	
-	public int getPhone2()
+	public String getPhone2()
 	{
 		return phone2;
 	}
@@ -144,7 +144,7 @@ public class Supplier {
 
 	public String getWebsite()
 	{
-		return website.toString();
+		return website;
 	}
 	
 	public void setEmail (String email)
@@ -154,15 +154,15 @@ public class Supplier {
 
 	public String getEmail()
 	{
-		return email.toString();
+		return email;
 	}
 	
-	public void setFax (int fax)
+	public void setFax (String fax)
 	{
 		this.fax = fax;
 	}
 
-	public int getFax()
+	public String getFax()
 	{
 		return fax;
 	}

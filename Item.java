@@ -7,14 +7,17 @@ public class Item {
 	private int quantity;
 	private int parStock;
 	private String supplier;
+	private int supplierID;
 	private String description;
 	private boolean removed;
 	
-	public Item(String n, String i, double p, String s, int quantity, int par, String d)
+	public Item(String n, double p, int sn, String s, int quantity,
+			int par, String d)
 	{
 		this.name = n;
-		this.id = i;
+		this.id = null;
 		this.price = p;
+		this.supplierID = sn;
 		this.supplier = s;
 		this.quantity = quantity;
 		this.parStock = par;
@@ -23,8 +26,22 @@ public class Item {
 	}
 	
 	//constructor for population
-	public Item(String n, String i, double p, String s, int q, int par, String d, boolean r)
+	public Item(String n, String i, double p, int sn, String s, int q, int par,
+			String d)
 	{
+		this.name = n;
+		this.id = i;
+		this.price = p;
+		this.supplierID = sn;
+		this.supplier = s;
+		this.quantity = q;
+		this.parStock = par;
+		this.description = d;
+		this.setRemoved(false);
+	}
+	
+	public Item(String n, String i, double p, int sn, String s, int q, int par,
+			String d, boolean r) {
 		this.name = n;
 		this.id = i;
 		this.price = p;
@@ -34,7 +51,7 @@ public class Item {
 		this.description = d;
 		this.setRemoved(r);
 	}
-	
+
 	public void setName(String name) {
 		
 		this.name = name;
@@ -120,5 +137,18 @@ public class Item {
 		string +=  name + "\t" + id + "\t" + price + "\t" + quantity + "\t" 
 		+ parStock + "\t" + supplier + "\t" + description;
 		return string;
+	}
+
+	public String getSupplierIDString() {
+		String supID = supplierID+"";
+		return supID;
+	}
+
+	public int getSupplierID() {
+		return supplierID;
+	}
+	
+	public void setSupplierID(int supplierID) {
+		this.supplierID = supplierID;
 	}
 }	

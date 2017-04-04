@@ -9,7 +9,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -22,6 +25,8 @@ public class RemoveUserScreen extends JDialog {
 	private JTextField usernameTextField;
 	private JTextField userIDTextField;
 	private EmployeeList employees;
+	private Employee removedUser;
+	private Connection connect;
 
 	/**
 	 * Launch the application.
@@ -59,7 +64,7 @@ public class RemoveUserScreen extends JDialog {
 		this.getContentPane().setLayout(null);
 		
 		employees = (EmployeeList) data.get(2);
-		Connection connect = (Connection) data.get(0);
+		connect = (Connection) data.get(0);
 		
 		JLabel usernameLabel = new JLabel("Username:");
 		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -80,11 +85,20 @@ public class RemoveUserScreen extends JDialog {
 		userIDTextField.setBounds(100, 49, 150, 35);
 		this.getContentPane().add(userIDTextField);
 		userIDTextField.setColumns(10);
+		String userID = userIDTextField.getText().trim();
 		
 		JButton btnRemoveUser = new JButton("Remove User");
 		btnRemoveUser.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnRemoveUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				for(int x = 0; x < employees.size(); x++)
+				{
+					if(employees.get(x).getUserId().equals(userID))
+					{
+						removedUser = employees.get(x);
+					}
+				}
+				callRemoveUserProcedure(connect, removedUser);
 				boolean temps = true; //temp code
 				new AdminVerificationScreen(data, temps);
 			}
@@ -99,5 +113,40 @@ public class RemoveUserScreen extends JDialog {
 		JTextPane textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
 		textPane.setEditable(false);
+	}
+	
+	protected void callRemoveUserProcedure(Connection connect, Employee temp) 
+	{
+		CallableStatement stmt = null;
+			
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspEditUser(?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setInt(1, Integer.parseInt(temp.getUserId()));
+			stmt.setString(2, temp.getUsername());
+			stmt.setString(3, temp.getPassword());
+			stmt.setString(4, temp.getFirstName());
+			stmt.setString(5, temp.getLastName());
+			stmt.setInt(6, /*temp.getRole()*/1);
+			stmt.setString(7, temp.getEmail());
+			stmt.setString(8, temp.getPhone());
+			stmt.setInt(9, /*temp.isRemoved()*/1);
+			stmt.registerOutParameter(10, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to remove user");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(10);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
 	}
 }

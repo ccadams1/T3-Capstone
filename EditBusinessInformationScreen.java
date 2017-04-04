@@ -7,9 +7,11 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -29,6 +31,8 @@ public class EditBusinessInformationScreen extends JDialog {
 	private JTextField websiteTextField;
 	private JTextField ownerFirstNameTextField;
 	private JTextField ownerLastNameTextField;
+	private static MyBusiness info;
+	private static Connection connect;
 	private static boolean verified = false;
 
 	/**
@@ -57,8 +61,8 @@ public class EditBusinessInformationScreen extends JDialog {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data) {
-		MyBusiness info = (MyBusiness) data.get(4);
-		Connection connect = (Connection) data.get(0);
+		info = (MyBusiness) data.get(4);
+		connect = (Connection) data.get(0);
 		
 		this.setAlwaysOnTop (true);
 		this.setSize(400,620);
@@ -202,8 +206,8 @@ public class EditBusinessInformationScreen extends JDialog {
 		getContentPane().add(ownerLastNameTextField);
 		ownerLastNameTextField.setText(info.getOwnerLastName());
 		
-		JButton btnAddUser = new JButton("Save Changes");
-		btnAddUser.addActionListener(new ActionListener() {
+		JButton btnEditBusinessInfo = new JButton("Save Changes");
+		btnEditBusinessInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AdminVerificationScreen adminveri = new AdminVerificationScreen(data, verified);
 				adminveri.addWindowListener(new WindowAdapter(){
@@ -218,7 +222,7 @@ public class EditBusinessInformationScreen extends JDialog {
 						else
 						{
 							//save all data
-							saveData(connect, info);
+							callEditMyBusinessProcedure(connect, info);
 							System.out.println("data saved");
 							verified = false;
 						}
@@ -227,29 +231,43 @@ public class EditBusinessInformationScreen extends JDialog {
 			}
 		});
 		
-		btnAddUser.setBounds(98, 490, 181, 37);
-		getContentPane().add(btnAddUser);
+		btnEditBusinessInfo.setBounds(98, 490, 181, 37);
+		getContentPane().add(btnEditBusinessInfo);
 	}
 	
-	public void saveData(Connection connect, MyBusiness info){
-		String query = "UPDATE MY_BUSINESS SET "
-				+ "biz_name = " + bizNameTextField.getText() + ", "
-				+ "st_address1 = " + stAddressTextField.getText() + ", "
-				+ "st_address2 = " + stAddress2TextField.getText() + ", "
-				+ "city = " + cityTextField.getText() + ", "
-				+ "state = " + stateTextField.getText() + ", "
-				+ "zip_code = " + zipCodeTextField.getText() + ", "
-				+ "email = " + emailTextField.getText() + ", "
-				+ "phone1 = " + phone1TextField.getText() + ", "
-				+ "fax = " + faxTextField.getText() + ", "
-				+ "website = " + websiteTextField.getText() + ", "
-				+ "owner_fname = " + ownerFirstNameTextField.getText() + ", "
-				+ "owner_lname = " + ownerLastNameTextField.getText() 
-				+ " WHERE biz_name = " + info.getBizName();
-				//logo1, logo2, phone2 need to be added
+	protected void callEditMyBusinessProcedure(Connection connect, MyBusiness business) {
+		CallableStatement stmt = null;
+		
 		try{
-			Statement stmt = connect.createStatement();
-			stmt.executeQuery(query);
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspEditMyBusiness(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setString(1, business.getBizName());
+			stmt.setString(2, business.getStAdress1());
+			stmt.setString(3, business.getStAdress2());
+			stmt.setString(4, business.getCity());
+			stmt.setString(5, business.getState());
+			stmt.setInt(6, business.getZipCode());
+			stmt.setString(7, null);
+			stmt.setString(8, null);
+			stmt.setString(9, business.getPhone1());
+			stmt.setString(10, business.getPhone2());
+			stmt.setString(11, business.getWebsite());
+			stmt.setString(12, business.getEmail());
+			stmt.setString(13, business.getFax());
+			stmt.setString(14, business.getOwnerFirstName());
+			stmt.setString(15, business.getOwnerLastName());
+			stmt.registerOutParameter(16, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to add new user");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(10);
+			System.out.println(response);
 		}
 		catch (SQLException e)
 		{
@@ -263,8 +281,8 @@ public class EditBusinessInformationScreen extends JDialog {
 		info.setState(stateTextField.getText());
 		info.setZipCode(Integer.parseInt(zipCodeTextField.getText()));
 		info.setEmail(emailTextField.getText());
-		info.setPhone1(Integer.parseInt(phone1TextField.getText()));
-		info.setFax(Integer.parseInt(faxTextField.getText()));
+		info.setPhone1(phone1TextField.getText().replaceAll(" ", "").replaceAll("/", "").replaceAll("-", ""));
+		info.setFax(faxTextField.getText().replaceAll(" ", "").replaceAll("/", "").replaceAll("-", ""));
 		info.setWebsite(websiteTextField.getText());
 		info.setOwnerFirstName(ownerFirstNameTextField.getText());
 		info.setOwnerLastName(ownerLastNameTextField.getText());

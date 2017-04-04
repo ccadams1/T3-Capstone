@@ -24,7 +24,7 @@ public class PullDatabase {
 	{
 		String query = "SELECT cusID, fname, lname, st_address1, "
 				+ "st_address2, city, state, zip_code, phone1, phone2, "
-				+ "email, fax, removed FROM CUSTOMER"; 
+				+ "email, fax FROM CUSTOMER"; 
 		
 		try{
 			Statement stmt = connection.createStatement();
@@ -40,32 +40,28 @@ public class PullDatabase {
 				String city = rs.getString("city");
 				String state = rs.getString("state");
 				int zip_code = rs.getInt("zip_code");
-				int phone1 = rs.getInt("phone1");
-				int phone2 = rs.getInt("phone2");
+				String phone1 = rs.getString("phone1");
+				String phone2 = rs.getString("phone2");
 				String email = rs.getString("email");
-				int fax = rs.getInt("fax");
-				boolean removed = rs.getBoolean("removed");
+				String fax = rs.getString("fax");
 				Customer c = new Customer(id, fName, lName, st_address1,
 						st_address2, city, state, zip_code, phone1, phone2, 
-						email, fax, removed);
-				System.out.println(c.toString());
+						email, fax);
 				customers.add(c);
-				System.out.println("added");
 			}
 		}
 		catch (SQLException e)
 		{
 			System.out.println(e);
 		}
-		
+		System.out.println("customers added");
 		return customers;
 	}
-	
 	
 	public ArrayList<Employee> getEmployees()
 	{
 		String query = "SELECT UserID, LoginName, PasswordHash, FirstName, "
-				+ "LastName, URE_ID, email, phone1 FROM USERS"; 
+				+ "LastName, URE_ID, email, phone1, removed FROM USERS"; 
 		
 		try{
 			Statement stmt = connection.createStatement();
@@ -81,33 +77,25 @@ public class PullDatabase {
 				String role = rs.getString("URE_ID");
 				String email = rs.getString("email");
 				String phone = rs.getString("phone1");
-				Employee e = new Employee(userID, username, password, firstName, lastName, role, email, phone);
-				e.print();
+				boolean removed = rs.getBoolean("removed");
+				Employee e = new Employee(userID, username, password, firstName, lastName, role, email, phone, removed);
 				employees.add(e);
-				System.out.println("added");
 			}
 		}
 		catch (SQLException e)
 		{
 			System.out.println(e);
 		}
-		
+		System.out.println("employees added");
 		return employees;
 	}
 	
 	public ArrayList<Item> getInventory()
 	{
-		String query = "";
-		/*String query = "SELECT I.invID, I.item_name, O.supplier_price, S.name, "
-				+ "I.num_in_stock, I.reorder_amt, I.item_description "
-				+ "FROM INVENTORY I LEFT OUTER JOIN INVENTORY_ORDER O "
-				+ "ON I.invID = O.INV_id LEFT OUTER JOIN INVENTORY_PRICE P "
-				+ "ON I.invID = P.INV_id LEFT OUTER JOIN SUPPLIER S "
-				+ "ON O.SUP_id = S.supID"; 
 		String query = "SELECT I.invID, I.item_name, I.retail_price, S.name, "
-				+ "I.num_in_stock, I.reorder_amt, I.item_description, I.removed "
-				+ "FROM INVENTORY I LEFT OUTER JOIN SUPPLIER S"
-				+ "ON i.SUP_id = S.supID";*/
+				+ "I.num_in_stock, I.reorder_amt, I.item_description, I.removed,"
+				+ " S.supID FROM INVENTORY I LEFT OUTER JOIN SUPPLIER S ON "
+				+ "I.SUP_id = S.supID";
 		try{
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -116,24 +104,23 @@ public class PullDatabase {
 			{
 				String item_name = rs.getString("item_name");
 				String invID = rs.getString("invID");
-				Double price = rs.getDouble("supplier_price");
+				Double price = rs.getDouble("retail_price");
 				String supplier = rs.getString("name");
+				String supplierID = rs.getString("supID");
 				int quantity = rs.getInt("num_in_stock");
 				int parStock = rs.getInt("reorder_amt");
 				String item_description = rs.getString("item_description");
 				boolean removed = rs.getBoolean("removed");
-				Item i = new Item(item_name, invID, price, supplier, quantity, 
+				Item i = new Item(item_name, invID, price, Integer.parseInt(supplierID), supplier, quantity, 
 						parStock, item_description, removed);
-				System.out.println(i.toString());
 				items.add(i);
-				System.out.println("added");
 			}
 		}
 		catch (SQLException e)
 		{
 			System.out.println(e);
 		}
-		
+		System.out.println("inventory added");
 		return items;
 	}
 	
@@ -160,11 +147,11 @@ public class PullDatabase {
 				int zipCode = rs.getInt("zip_code");
 				File logo1 = null;//(File) rs.getObject("logo1");
 				File logo2 = null;//(File) rs.getObject("logo2");
-				int phone1 = rs.getInt("phone1");
-				int phone2 = rs.getInt("phone2");
+				String phone1 = rs.getString("phone1");
+				String phone2 = rs.getString("phone2");
 				String website = rs.getString("website");
 				String email = rs.getString("email");
-				int fax = rs.getInt("fax");
+				String fax = rs.getString("fax");
 				String ownerFirstName = rs.getString("owner_fname");
 				String ownerLastName = rs.getString("owner_lname");
 				data = new MyBusiness(bizName, stAddress1, stAddress2, city, state, zipCode,
@@ -176,7 +163,7 @@ public class PullDatabase {
 		{
 			System.out.println(e);
 		}
-		
+		System.out.println("business information added");
 		return data;
 	}
 	
@@ -184,25 +171,12 @@ public class PullDatabase {
 	public ArrayList<Supplier> getSuppliers()
 	{
 		String query = "SELECT name, supID, st_address1, st_address2, "
-				+ "city, state, zip_code, logo, phone1, phone2, website, "
+				+ "city, s_state, zip_code, logo, phone1, phone2, website, "
 				+ "email, fax, removed FROM SUPPLIER"; 
-		CallableStatement stmt = null;
 		
 		try{
-			//Prepare the stored procedure call
-			stmt = connection.prepareCall("{call "+/*get supplier procedure with parameters*/"}");
+			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
-			//set the parameters
-			stmt.registerOutParameter(1, Types.VARCHAR);
-			stmt.setString(1, "name");
-			stmt.registerOutParameter(1, Types.DOUBLE);
-			stmt.setDouble(2, 0.0);
-			
-			//call stored procedure
-			System.out.println("Calling stored procedure to populate suppliers");
-			stmt.execute();
-			System.out.println("Finished calling procedure");
 			
 			while(rs.next())
 			{
@@ -211,28 +185,26 @@ public class PullDatabase {
 				String st_address1 = rs.getString("st_address1");
 				String st_address2 = rs.getString("st_address2");
 				String city = rs.getString("city");
-				String state = rs.getString("state");
+				String state = rs.getString("s_state");
 				int zip_code = rs.getInt("zip_code");
 				File logo = (File) rs.getObject("logo");
-				int phone1 = rs.getInt("phone1");
-				int phone2 = rs.getInt("phone2");
+				String phone1 = rs.getString("phone1");
+				String phone2 = rs.getString("phone2");
 				String website = rs.getString("website");
 				String email = rs.getString("email");
-				int fax = rs.getInt("fax");
+				String fax = rs.getString("fax");
 				boolean removed = rs.getBoolean("removed");
 				Supplier s = new Supplier(name, id, st_address1, st_address2,
 						city, state, zip_code, logo, phone1, phone2, website,
 						email, fax, removed);
-				System.out.println(s.toString());
 				suppliers.add(s);
-				System.out.println("added");
 			}
 		}
 		catch (SQLException e)
 		{
 			System.out.println(e);
 		}
-		
+		System.out.println("suppliers added");
 		return suppliers;
 	}
 }

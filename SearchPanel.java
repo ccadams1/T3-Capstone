@@ -368,10 +368,20 @@ public class SearchPanel extends JPanel{
 			for(int x = 0; x < customers.size(); x++)
 			{
 				Customer original = customers.getCustomer(x);
-				Customer temp = new Customer(original.getID(),original.getFName(),
+				Customer temp = null;
+				try{
+					temp = new Customer(original.getID(),original.getFName(),
 						original.getLName(),original.getStAdress1(),original.getStAdress2(),
 						original.getCity(),original.getState(), original.getZipCode(),original.getPhone1(),
-						original.getPhone2(),original.getEmail(),original.getFax(),original.isRemoved());
+						original.getPhone2(),original.getEmail(),original.getFax());
+				}
+				catch(NullPointerException e)
+				{
+					temp = new Customer(original.getID(),original.getFName(),
+						original.getLName(),original.getStAdress1(),null,
+						original.getCity(),original.getState(), original.getZipCode(),original.getPhone1(),
+						null,original.getEmail(),null);
+				}
 				temp.setFName(temp.getFName().toLowerCase().trim().replaceAll(" ", ""));
 				temp.setLName(temp.getLName().toLowerCase().trim().replaceAll(" ", ""));
 				temp.setID(temp.getID().toLowerCase().trim().replaceAll(" ", ""));
@@ -515,7 +525,7 @@ public class SearchPanel extends JPanel{
 			{
 				Item original = inventory.get(x);
 				Item temp = new Item(original.getName(),original.getId(),
-						original.getPrice(),original.getSupplier(),
+						original.getPrice(), original.getSupplierID(), original.getSupplier(),
 						original.getQuantity(),original.getParStock(),
 						original.getDescription(),original.isRemoved());
 				temp.setName(temp.getName().toLowerCase().trim().replaceAll(" ", ""));
@@ -642,17 +652,32 @@ public class SearchPanel extends JPanel{
 			for(int x = 0; x < suppliers.size(); x++)
 			{
 				Supplier original = suppliers.getSupplier(x);
-				Supplier temp = new Supplier(original.getName(),original.getID(),
-						original.getStAdress1(),original.getStAdress2(),original.getCity(),
-						original.getState(), original.getZipCode(),null, original.getPhone1(),
-						original.getPhone2(),original.getWebsite(),original.getEmail(),original.getFax(),
-						original.isRemoved());
+				Supplier temp = null;
+				try{
+					temp = new Supplier(original.getName(),original.getID(),
+							original.getStAdress1(),original.getStAdress2(),original.getCity(),
+							original.getState(), original.getZipCode(), null, original.getPhone1(),
+							original.getPhone2(), original.getWebsite(), original.getEmail(), original.getFax(),
+							original.isRemoved());
+				}
+				catch(NullPointerException e)
+				{
+					temp = new Supplier(original.getName(),original.getID(),
+							original.getStAdress1(), null,original.getCity(),
+							original.getState(), original.getZipCode(), null, original.getPhone1(),
+							null, original.getWebsite(), original.getEmail(), null,
+							original.isRemoved());
+				}
 				temp.setName(temp.getName().toLowerCase().trim().replaceAll(" ", ""));
 				temp.setID(temp.getID().toLowerCase().trim().replaceAll(" ", ""));
 				temp.setPhone1(temp.getPhone1());
 				temp.setStAdress1(temp.getStAdress1().toLowerCase().trim().replaceAll(" ", ""));
-				temp.setEmail(temp.getEmail().toLowerCase().trim().replaceAll(" ", ""));
-				temp.setWebsite(temp.getWebsite().toLowerCase().trim().replaceAll(" ", ""));
+				if(temp.getEmail()!=null){
+					temp.setEmail(temp.getEmail().trim().replaceAll(" ", ""));
+				}
+				if(temp.getWebsite()!=null){
+					temp.setWebsite(temp.getWebsite().trim().replaceAll(" ", ""));
+				}
 				originalList.add(temp);
 			}
 			
@@ -791,7 +816,7 @@ public class SearchPanel extends JPanel{
 		String string = "";
 		if(customerRadioButton.isSelected())
 		{
-			string += "Customer ID\tFirst Name\tLast Name\tAddress\t\tCity\tState\tZipcode\tMain Phone\tOther Phone\tEmail\t\tFax\n";
+			string += "Customer ID\tFirst Name\tLast Name\tAddress\tCity\tState\tZipcode\tMain Phone\tOther Phone\tEmail\t\tFax\n";
 			string += "---------------------------------------------------------------------------------------------------------";
 			string += "---------------------------------------------------------------------------------------------------------";
 			string += "-------------------------------------------------------------------------\n";

@@ -4,14 +4,17 @@ import java.awt.Panel;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,18 +29,22 @@ import javax.swing.border.TitledBorder;
 public class InventoryPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JTextField editItemNameTextField, addItemNameTextField, deleteItemNameTextField;
-	private JTextField addSupplierNameTextField, editSupplierNameTextField;
 	private JTextField addQuantityTextField, editItemIDTextField, deleteItemIDTextField;
 	private JTextField addPriceTextField, editPriceTextField;
 	private JTextField addMaxPriceTextField, editQuantityTextField;
 	private JTextField addItemDescription, editItemDescription;
 	private JTextField addParStockTextField, editParStockTextField;
+	private JComboBox<String> addSupplierNameComboBox, editSupplierNameComboBox;
 	private JCheckBox chckbxConfirmDelete;
+	private Connection connect;
 	private Inventory inventory;
+	private SupplierList suppliers;
 	
 	public InventoryPanel(ArrayList<Object> data)
 	{
+		connect = (Connection) data.get(0);
 		inventory = (Inventory) data.get(3);
+		suppliers = (SupplierList) data.get(5);
 		
 		//bounds should be set to (0, 0, 772, 476)
 		this.setBounds(0, 0, 772, 476);
@@ -121,10 +128,15 @@ public class InventoryPanel extends JPanel{
 		addSupplierNameLabel.setBounds(10, 92, 114, 29);
 		addItemRadioPanel.add(addSupplierNameLabel);
 		
-		addSupplierNameTextField = new JTextField();
-		addSupplierNameTextField.setColumns(10);
-		addSupplierNameTextField.setBounds(124, 85, 231, 35);
-		addItemRadioPanel.add(addSupplierNameTextField);
+		addSupplierNameComboBox = new JComboBox<String>();
+		addSupplierNameComboBox.addItem("");
+		for(int x = 0; x< suppliers.size(); x++)
+		{
+			addSupplierNameComboBox.addItem(suppliers.getSupplier(x).getName());
+		}
+		addSupplierNameComboBox.addItem("New Supplier");
+		addSupplierNameComboBox.setBounds(124, 85, 231, 35);
+		addItemRadioPanel.add(addSupplierNameComboBox);
 		
 		addQuantityTextField = new JTextField();
 		addQuantityTextField.setColumns(10);
@@ -189,10 +201,15 @@ public class InventoryPanel extends JPanel{
 		supplierNameLabel.setBounds(10, 92, 114, 29);
 		editItemRadioPanel.add(supplierNameLabel);
 				
-		editSupplierNameTextField = new JTextField();
-		editSupplierNameTextField.setColumns(10);
-		editSupplierNameTextField.setBounds(124, 85, 231, 35);
-		editItemRadioPanel.add(editSupplierNameTextField);
+		editSupplierNameComboBox = new JComboBox<String>();
+		editSupplierNameComboBox.addItem("");
+		for(int x = 0; x< suppliers.size(); x++)
+		{
+			editSupplierNameComboBox.addItem(suppliers.getSupplier(x).getName());
+		}
+		editSupplierNameComboBox.addItem("New Supplier");
+		editSupplierNameComboBox.setBounds(124, 85, 231, 35);
+		editItemRadioPanel.add(editSupplierNameComboBox);
 				
 		editItemIDTextField = new JTextField();
 		editItemIDTextField.setColumns(10);
@@ -329,7 +346,6 @@ public class InventoryPanel extends JPanel{
 				else if(editItemButton.isSelected()){
 					editInventory();
 				}
-				
 				updateInventoryDisplay(textArea);
 			}
 		});
@@ -350,6 +366,7 @@ public class InventoryPanel extends JPanel{
 	private void addToInventory(){
 		String n = addItemNameTextField.getText();
 		String quantity = addQuantityTextField.getText();
+		String supID = null;
 		int q = 0;
 		if(!quantity.equals("")){
 			q = Integer.parseInt(quantity);
@@ -359,7 +376,12 @@ public class InventoryPanel extends JPanel{
 		if(!price.equals("")){
 			p = Double.parseDouble(price);
 		}
-		String s = addSupplierNameTextField.getText();
+		String s = (String) addSupplierNameComboBox.getSelectedItem();
+		if(s.equals("New Supplier"))
+		{
+			//new addSupplierScreen(data);
+		}
+		
 		String d = addItemDescription.getText();
 		String parStock = addParStockTextField.getText();
 		int par = 0;
@@ -371,22 +393,42 @@ public class InventoryPanel extends JPanel{
 			setWarningMsg("Item name, price, Supplier name are required.");
 		}
 		else{
-			//update the inventory
-			//pull id from inventory
-			String id = "0"; 
-			inventory.addItem(n, id, p, s, q, par, d);			
+			for(int x = 0; x < suppliers.size(); x++)
+			{
+				if(suppliers.getSupplier(x).getName().equals(addSupplierNameComboBox.getSelectedItem()))
+				{
+					supID = suppliers.getSupplier(x).getID();
+				}
+			}
+			Item newItem = new Item(n, p, Integer.parseInt(supID), s, q, par, d);
+			newItem.setId(callAddItemProcedure(connect, newItem)+"");
 		}
 	}
 	
 	private void editInventory(){
-		String n = editItemNameTextField.getText();
 		String id = editItemIDTextField.getText();
+		String n = editItemNameTextField.getText();
 		String price = editPriceTextField.getText();
+		String supID = null;
 		double p = 0;
 		if(!price.equals("")){
 			p = Double.parseDouble(price);
 		}
-		String s = editSupplierNameTextField.getText();
+		String s = (String) editSupplierNameComboBox.getSelectedItem();
+		if(s.equals("New Supplier"))
+		{
+			//new addSupplierScreen(data);
+		}
+		else
+		{
+			for(int x = 0; x < suppliers.size(); x++)
+			{
+				if(suppliers.getSupplier(x).getName().equals(editSupplierNameComboBox.getSelectedItem()))
+				{
+					supID = suppliers.getSupplier(x).getID();
+				}
+			}
+		}
 		String d = editItemDescription.getText();
 		String parStock = editParStockTextField.getText();
 		int par = 0;
@@ -398,76 +440,36 @@ public class InventoryPanel extends JPanel{
 		if(!quantity.equals("")){
 			quant = Integer.parseInt(quantity);
 		}			
-			
 		if(id.equals("")){
 			setWarningMsg("ID field required");
 		}
 		else{
 			int index = inventory.findItemByID(id);
+			inventory.get(index);
 			if(index >= 0)
 			{
-				int counter = 0;
-				String query = "UPDATE INVENTROY SET ";
 				if(!d.equals(""))
 				{
 					inventory.get(index).setDescription(d);
-					query += "item_description = " + d;
-					counter++;
 				}
 				if(!price.equals(""))
 				{
 					inventory.get(index).setPrice(p);
-					if(counter > 0)
-					{
-						query += ", ";
-					}
-					//need price in the database for inventory items
-					query += "item_price = " + p;
-					counter++;
 				}
 				if(!s.equals(""))
 				{
 					inventory.get(index).setSupplier(s);
-					if(counter > 0)
-					{
-						query += ", ";
-					}
-					query += "supplier_name = " + s;
-					counter++;
+					inventory.get(index).setSupplierID(Integer.parseInt(supID));
 				}
 				if(!quantity.equals(""))
 				{
 					inventory.get(index).setQuantity(quant);
-					if(counter > 0)
-					{
-						query += ", ";
-					}
-					query += "num_in_stock = " + quant;
-					counter++;
 				}
 				if(!parStock.equals(""))
 				{
 					inventory.get(index).setParStock(par);
-					if(counter > 0)
-					{
-						query += ", ";
-					}
-					query += "reorder_amt = " + parStock;
-					counter++;
 				}
-			//	query += " WHERE "
-				if(counter > 0)
-				{
-					/*
-					try{
-						Statement stmt = connect.createStatement();
-						stmt.executeQuery(query);
-					}
-					catch (SQLException e){
-						System.out.println(e);
-					}
-					*/
-				}
+				callAddItemProcedure(connect, inventory.get(index));
 			}
 		}
 	}
@@ -480,6 +482,7 @@ public class InventoryPanel extends JPanel{
 		if(index >= 0){
 			if(inventory.get(index).getId().equals(id) && check == true){
 				inventory.get(index).setRemoved(true);
+				callRemoveItemProcedure(connect, inventory.get(index));
 			}
 			else
 			{
@@ -496,6 +499,77 @@ public class InventoryPanel extends JPanel{
 		text.setText(inventory.toString());
 	}
 	
+	protected int callAddItemProcedure(Connection connect, Item temp) {
+		CallableStatement stmt = null;
+		
+		int id = (Integer) null;
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspAddItem(?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setString(1, null);
+			stmt.setString(2, temp.getName());
+			stmt.setString(3, temp.getDescription());
+			stmt.setInt(4, temp.getQuantity());
+			stmt.setInt(5, temp.getParStock());
+			stmt.setDouble(6, temp.getPrice());
+			stmt.setInt(7, temp.getSupplierID());
+			stmt.setInt(8, /*temp.isRemoved()*/0);
+			stmt.registerOutParameter(9, Types.VARCHAR);
+			stmt.registerOutParameter(10, Types.INTEGER);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to add new item");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(9);
+			id = stmt.getInt(10);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+		return id;
+	}
+	protected void callRemoveItemProcedure(Connection connect, Item temp){
+		CallableStatement stmt = null;
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspEditItem(?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setString(1, temp.getId());
+			stmt.setString(2, null);
+			stmt.setString(3, temp.getName());
+			stmt.setString(4, temp.getDescription());
+			stmt.setInt(5, temp.getQuantity());
+			stmt.setInt(6, temp.getParStock());
+			stmt.setDouble(7, temp.getPrice());
+			stmt.setInt(8, temp.getSupplierID());
+			stmt.setInt(9, /*temp.isRemoved()*/1);
+			stmt.registerOutParameter(10, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to add new user");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(10);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+	}
+	
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
@@ -503,4 +577,5 @@ public class InventoryPanel extends JPanel{
 	    dialog.setAlwaysOnTop(true);
 	    dialog.setVisible(true);
 	}
+	
 } 

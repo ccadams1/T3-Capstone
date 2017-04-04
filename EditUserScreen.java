@@ -1,4 +1,5 @@
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -6,28 +7,33 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.sql.CallableStatement;
 import java.sql.Connection; 
 import java.sql.SQLException; 
-import java.sql.Statement; 
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList; 
 import java.awt.Font;
+import java.awt.Toolkit;
+
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 
 public class EditUserScreen extends JDialog {
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
+	private JTextField userIDTextField;
+	private JTextField userNameTextField;
+	private JTextField passwordTextField;
+	private JTextField retypePasswordTextField;
+	private JTextField firstNameTextField;
+	private JTextField lastNameTextField;
+	private JTextField emailTextField;
+	private JTextField phoneTextField;
 	private JTextArea textArea;
-	
+	private Connection connect;
 	private EmployeeList employees;
+	private Employee selectedUser;
 
 	/*
 	public static void main(String[] args) {
@@ -63,7 +69,12 @@ public class EditUserScreen extends JDialog {
 		this.getContentPane().setLayout(null);
 		
 		employees = (EmployeeList) data.get(2); 
-		Connection connect = (Connection) data.get(0);
+		connect = (Connection) data.get(0);
+		
+		JLabel lblUserId = new JLabel("User ID:*");
+		lblUserId.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblUserId.setBounds(10, 17, 149, 29);
+		getContentPane().add(lblUserId);
 		
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -105,70 +116,114 @@ public class EditUserScreen extends JDialog {
 		lblPhoneNumber.setBounds(10, 321, 149, 29);
 		getContentPane().add(lblPhoneNumber);
 		
-		textField = new JTextField();
-		textField.setBounds(158, 49, 191, 35);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		userIDTextField = new JTextField();
+		userIDTextField.setToolTipText("Required to edit the user");
+		userIDTextField.setColumns(10);
+		userIDTextField.setBounds(158, 11, 191, 35);
+		getContentPane().add(userIDTextField);
+	
+		userNameTextField = new JTextField();
+		userNameTextField.setBounds(158, 49, 191, 35);
+		getContentPane().add(userNameTextField);
+		userNameTextField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(158, 87, 191, 35);
-		getContentPane().add(textField_1);
+		passwordTextField = new JTextField();
+		passwordTextField.setColumns(10);
+		passwordTextField.setBounds(158, 87, 191, 35);
+		getContentPane().add(passwordTextField);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(158, 125, 191, 35);
-		getContentPane().add(textField_2);
+		retypePasswordTextField = new JTextField();
+		retypePasswordTextField.setColumns(10);
+		retypePasswordTextField.setBounds(158, 125, 191, 35);
+		getContentPane().add(retypePasswordTextField);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(158, 163, 191, 35);
-		getContentPane().add(textField_3);
+		firstNameTextField = new JTextField();
+		firstNameTextField.setColumns(10);
+		firstNameTextField.setBounds(158, 163, 191, 35);
+		getContentPane().add(firstNameTextField);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(158, 201, 191, 35);
-		getContentPane().add(textField_4);
+		lastNameTextField = new JTextField();
+		lastNameTextField.setColumns(10);
+		lastNameTextField.setBounds(158, 201, 191, 35);
+		getContentPane().add(lastNameTextField);
+
+		JComboBox<String> empRoleComboBox = new JComboBox<String>();
+		empRoleComboBox.addItem("");
+		empRoleComboBox.addItem("Inventory Manager");
+		empRoleComboBox.addItem("Inventory User");
+		empRoleComboBox.addItem("POS Manager");
+		empRoleComboBox.addItem("POS User");
+		empRoleComboBox.setSelectedItem("");
+		empRoleComboBox.setBounds(158, 238, 191, 35);
+		getContentPane().add(empRoleComboBox);
+				
+		emailTextField = new JTextField();
+		emailTextField.setColumns(10);
+		emailTextField.setBounds(158, 277, 191, 35);
+		getContentPane().add(emailTextField);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(158, 277, 191, 35);
-		getContentPane().add(textField_5);
-		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(158, 315, 191, 35);
-		getContentPane().add(textField_6);
-		
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.addItem("");
-		comboBox.addItem("Inventory Manager");
-		comboBox.addItem("Inventory User");
-		comboBox.addItem("POS Manager");
-		comboBox.addItem("POS User");
-		comboBox.setSelectedItem("");
-		comboBox.setBounds(158, 238, 191, 35);
-		getContentPane().add(comboBox);
+		phoneTextField = new JTextField();
+		phoneTextField.setColumns(10);
+		phoneTextField.setBounds(158, 315, 191, 35);
+		getContentPane().add(phoneTextField);
 		
 		JButton btnEditUser = new JButton("Edit User");
-		/*
 		btnEditUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AdminVerificationScreen();
+				String userID = userIDTextField.getText();
+				String username = userNameTextField.getText();
+				String password = passwordTextField.getText();
+				String retypePassword = retypePasswordTextField.getText();
+				String fName = firstNameTextField.getText();
+				String lName = lastNameTextField.getText();
+				String userRole = (String) empRoleComboBox.getSelectedItem();
+				String email = emailTextField.getText();
+				String phone = phoneTextField.getText();
+				
+				if(userID.equals("")){
+					setWarningMsg("Please enter information in the *required boxes.");
+				}
+				else if(password.length() < 8 && password.length() != 0){
+					setWarningMsg("Password is too small.");
+				}
+				else if(password.length() > 16 && password.length() != 0){
+					setWarningMsg("Password is too large.");
+				}
+				else if(!password.equals(retypePassword)){
+					setWarningMsg("Passwords do not match.");
+				}
+				else{
+					for(int x = 0; x < employees.size(); x++)
+					{
+						if(employees.get(x).getUserId().equals(userID))
+						{
+							selectedUser = employees.get(x);
+						}
+					}
+					callEditUserProcedure(connect, selectedUser);
+
+					boolean temps = true; //temp code
+					/*AdminVerificationScreen adminveri = new AdminVerificationScreen(data, temps);
+					adminveri.addWindowListener(new WindowAdapter(){
+						public void windowClosing(WindowEvent e){
+							if (adminveri.getVerification())
+							{
+									
+								//Temp code to test functionality
+								temp.print();
+							}
+							else
+							{
+								setWarningMsg("Administrator not verified. No "
+										+ "information was saved.");
+							}
+						}
+					});*/
+				}
 			}
 		});
-		*/
-		
-		JLabel lblUserId = new JLabel("User ID:");
-		lblUserId.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblUserId.setBounds(10, 17, 149, 29);
-		getContentPane().add(lblUserId);
-		
-		textField_7 = new JTextField();
-		textField_7.setToolTipText("Required to edit the user");
-		textField_7.setColumns(10);
-		textField_7.setBounds(158, 11, 191, 35);
-		getContentPane().add(textField_7);
+		btnEditUser.setBounds(99, 356, 155, 37);
+		getContentPane().add(btnEditUser);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 404, 372, 117);
@@ -178,132 +233,52 @@ public class EditUserScreen extends JDialog {
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
 		textArea.setText(employees.toString());
-				
-		btnEditUser.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String text = textField.getText();
-				String text_1 = textField_1.getText();
-				String text_2 = textField_2.getText();
-				String text_3 = textField_3.getText();
-				String text_4 = textField_4.getText();
-				String text_5 = textField_5.getText();
-				String text_6 = textField_6.getText();
-				String text_7 = textField_7.getText();
-				String combo = (String) comboBox.getSelectedItem();
-
-				if(text_7.equals("")){
-					//Return warning (User Id Required)
-					return;
-				}
-				int index = -1;
-				
-				for(int i = 0; i < employees.size(); i++)
-				{
-					if(employees.get(i).getUserId().equals(text_7))
-					{
-						index = i;
-					}
-				}
-				if(index >= 0)
-				{
-					int counter = 0;
-					String query = "UPDATE USER SET ";
-					String queryTail = "";
-					
-					if(!text.equals(""))
-					{
-						employees.get(index).setUsername(text);
-						queryTail += "LoginName = " + text;
-						counter++;
-					}
-					if(!text_1.equals(""))
-					{
-						if(text_1.equals(text_2))
-						{
-							employees.get(index).setPassword(text_1);
-							if(counter > 0)
-							{
-								queryTail += ", ";
-							}
-							queryTail += "PasswordHash = " + text_1;
-							counter++;
-						}
-						else
-						{
-							//Return warning (Passwords Dont Match)
-						}
-					}
-					if(!text_3.equals(""))
-					{
-						employees.get(index).setFirstName(text_3);
-						if(counter > 0)
-						{
-							queryTail += ", ";
-						}
-						queryTail += "FirstName = " + text_3;
-						counter++;
-					}
-					if(!text_4.equals(""))
-					{
-						employees.get(index).setLastName(text_4);
-						if(counter > 0)
-						{
-							queryTail += ", ";
-						}
-						queryTail += "LastName = " + text_4;
-						counter++;
-					}
-					if(!text_5.equals(""))
-					{
-						employees.get(index).setEmail(text_5);
-						if(counter > 0){
-							queryTail += ", ";
-						}
-						queryTail += "email = " + text_5;
-						counter++;
-					}
-					if(!text_6.equals(""))
-					{
-						employees.get(index).setPhone(text_6);
-						if(counter > 0)
-						{
-							queryTail += ", ";
-						}
-						queryTail += "phone1 = " + text_6;
-						counter++;
-					}
-					if(!combo.equals(""))
-					{
-						employees.get(index).setRole(combo);
-						if(counter > 0){
-							queryTail += ", ";
-						}
-	// Set role?					queryTail += ""
-					}
-					query += queryTail + " WHERE UserID = " + text_7;
-					if(counter > 0)
-					{
-						/*
-						try{
-							Statement stmt = connect.createStatement();
-							stmt.executeQuery(query);
-						}
-						catch (SQLException e1){
-							System.out.println(e1);
-						}
-						*/
-					}
-					updateDisplay();
-				}
-			}
-		});
-
-		btnEditUser.setBounds(99, 356, 155, 37);
-		getContentPane().add(btnEditUser);
+	}
+	
+	protected void callEditUserProcedure(Connection connect, Employee temp) 
+	{
+		CallableStatement stmt = null;
+			
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspEditUser(?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setInt(1, Integer.parseInt(temp.getUserId()));
+			stmt.setString(2, temp.getUsername());
+			stmt.setString(3, temp.getPassword());
+			stmt.setString(4, temp.getFirstName());
+			stmt.setString(5, temp.getLastName());
+			stmt.setInt(6, /*temp.getRole()*/1);
+			stmt.setString(7, temp.getEmail());
+			stmt.setString(8, temp.getPhone());
+			stmt.setInt(9, /*temp.isRemoved()*/0);
+			stmt.registerOutParameter(10, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to edit user");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(10);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
 	}
 
 	private void updateDisplay(){
 		textArea.setText(employees.toString());
+	}
+	
+	public void setWarningMsg(String text){
+	    Toolkit.getDefaultToolkit().beep();
+	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
+	    JDialog dialog = optionPane.createDialog("Warning!");
+	    dialog.setAlwaysOnTop(true);
+	    dialog.setVisible(true);
 	}
 }

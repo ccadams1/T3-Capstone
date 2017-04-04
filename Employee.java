@@ -3,12 +3,14 @@ public class Employee {
 	private String username, password, firstName;
 	private String lastName, email, uRole;
 	private String userID, phone, address;
+	private boolean removed;
 		
 	public Employee(){
 		
 	}
 	
-	public Employee(String userID, String uName, String pWord,String fName,String lName,String role, String email, String phone){
+	//populate database
+	public Employee(String userID, String uName, String pWord,String fName,String lName,String role, String email, String phone, boolean removed){
 		this.userID = userID;
 		this.username = uName;
 		this.password = pWord;
@@ -17,8 +19,10 @@ public class Employee {
 		this.uRole = role;
 		this.email = email;
 		this.phone = phone;
+		this.removed = removed;
 	}
 	
+	//adding new user
 	public Employee(String uName, String pWord,String fName,String lName,String role, String email, String phone){
 		this.userID = "";
 		this.username = uName;
@@ -28,6 +32,7 @@ public class Employee {
 		this.uRole = role;
 		this.email = email;
 		this.phone = phone;
+		this.removed = false;
 	}
 	
 	public String getUserId(){
@@ -66,6 +71,10 @@ public class Employee {
 		return this.address;
 	}
 	
+	public void setUserId(int id){
+		this.userID = id + "";
+	}
+	
 	public void setUsername(String uName){
 		this.username = uName;
 	}
@@ -97,6 +106,15 @@ public class Employee {
 	public void setAddress(String add){
 		this.address = add;
 	}
+	
+	public boolean isRemoved() {
+		return removed;
+	}
+
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
+	}
+
 	
 	public void print(){
 		String s = "";

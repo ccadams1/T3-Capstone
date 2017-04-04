@@ -7,7 +7,12 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -177,13 +182,15 @@ public class AddUserScreen extends JDialog {
 				else{
 					Employee temp = new Employee(username, password, fName, lName, userRole,
 							email, phone);
+					temp.setUserId(callAddUserProcedure(connect, temp));
+					employees.addEmployee(temp);
+
 					boolean temps = true; //temp code
-					AdminVerificationScreen adminveri = new AdminVerificationScreen(data, temps);
+					/*AdminVerificationScreen adminveri = new AdminVerificationScreen(data, temps);
 					adminveri.addWindowListener(new WindowAdapter(){
 						public void windowClosing(WindowEvent e){
 							if (adminveri.getVerification())
 							{
-								employees.addEmployee(temp);
 									
 								//Temp code to test functionality
 								temp.print();
@@ -194,7 +201,7 @@ public class AddUserScreen extends JDialog {
 										+ "information was saved.");
 							}
 						}
-					});
+					});*/
 				}
 			}
 		});
@@ -202,6 +209,45 @@ public class AddUserScreen extends JDialog {
 		getContentPane().add(btnAddUser);
 	}
 	
+
+	protected int callAddUserProcedure(Connection connect, Employee temp) 
+	{
+		CallableStatement stmt = null;
+		
+		int id = (Integer) null;
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspAddUser(?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setString(1, temp.getUsername());
+			stmt.setString(2, temp.getPassword());
+			stmt.setString(3, temp.getFirstName());
+			stmt.setString(4, temp.getLastName());
+			stmt.setInt(5, /*temp.getRole()*/1);
+			stmt.setString(6, temp.getEmail());
+			stmt.setString(7, temp.getPhone());
+			stmt.setInt(8, /*temp.isRemoved()*/0);
+			stmt.registerOutParameter(9, Types.VARCHAR);
+			stmt.registerOutParameter(10, Types.INTEGER);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to add new user");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(9);
+			id = stmt.getInt(10);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+		return id;
+	}
 
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();

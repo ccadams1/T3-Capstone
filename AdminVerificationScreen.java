@@ -18,7 +18,7 @@ public class AdminVerificationScreen extends JDialog{
 	public EmployeeList employees = new EmployeeList();
 	public Employee currentUser = new Employee(); 
 	public Employee admin = new Employee();
-	public boolean verify;
+	public boolean verify = false;
 	
 	/**
 	 * Launch the application.
@@ -61,69 +61,72 @@ public class AdminVerificationScreen extends JDialog{
 		adminVeri.setModalityType(ModalityType.APPLICATION_MODAL);
 		adminVeri.setTitle("Administrator Verification");
 		
-		//create verification Panel
-		JPanel verificationPanel = new JPanel();
-		verificationPanel.setBounds(0, 0, 572, 171);
+		while(!verify)
+		{
+			//create verification Panel
+			JPanel verificationPanel = new JPanel();
+			verificationPanel.setBounds(0, 0, 572, 171);
+			
+			//Username label and textField
+			JLabel usernameLabel = new JLabel("Username:");
+			usernameLabel.setBounds(91, 20, 116, 29);
+			TextField usernameText = new TextField();
+			usernameText.setBounds(212, 13, 243, 36);
+			usernameText.setEditable(true);
+			verificationPanel.setLayout(null);
+			verificationPanel.add(usernameLabel);
+			verificationPanel.add(usernameText);
+			
+			//Password label and textField
+			JLabel passwordLabel = new JLabel("Password: ");
+			passwordLabel.setBounds(91, 73, 117, 29);
+			verificationPanel.add(passwordLabel);
+			
+			passwordField = new JPasswordField();
+			passwordField.setBounds(212, 73, 243, 36);
+			verificationPanel.add(passwordField);
 		
-		//Username label and textField
-		JLabel usernameLabel = new JLabel("Username:");
-		usernameLabel.setBounds(91, 20, 116, 29);
-		TextField usernameText = new TextField();
-		usernameText.setBounds(212, 13, 243, 36);
-		usernameText.setEditable(true);
-		verificationPanel.setLayout(null);
-		verificationPanel.add(usernameLabel);
-		verificationPanel.add(usernameText);
-		
-		//Password label and textField
-		JLabel passwordLabel = new JLabel("Password: ");
-		passwordLabel.setBounds(91, 73, 117, 29);
-		verificationPanel.add(passwordLabel);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(212, 73, 243, 36);
-		verificationPanel.add(passwordField);
-	
-		//Submit Verification request button
-		JButton verificationButton = new JButton("Verify");
-		verificationButton.setBounds(225, 117, 89, 37);
-		verificationButton.addActionListener(new ActionListener(){
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent arg0) {
-				String username = usernameText.getText();
-				String password = passwordField.getText();
-				
-				if(!username.equals(admin.getUsername()))
-				{
-					setWarningMsg("Invalid Username. Note Usernames and "
-							+ "Passwords are case sensitive");
-				}
-				else
-				{
-					if(!password.equals(admin.getPassword()))
+			//Submit Verification request button
+			JButton verificationButton = new JButton("Verify");
+			verificationButton.setBounds(225, 117, 89, 37);
+			verificationButton.addActionListener(new ActionListener(){
+				@SuppressWarnings("deprecation")
+				public void actionPerformed(ActionEvent arg0) {
+					String username = usernameText.getText();
+					String password = passwordField.getText();
+					
+					if(!username.equals(admin.getUsername()))
 					{
-						setWarningMsg("Invalid Password.");
+						setWarningMsg("Invalid Username. Note Usernames and "
+								+ "Passwords are case sensitive");
 					}
 					else
 					{
-						changedVerification();
-						System.out.println("Administrator verified");
-						adminVeri.revalidate();
-					}					
+						if(!password.equals(admin.getPassword()))
+						{
+							setWarningMsg("Invalid Password.");
+						}
+						else
+						{
+							changedVerification();
+							System.out.println("Administrator verified");
+							adminVeri.revalidate();
+						}					
+					}
 				}
+			});
+			verificationPanel.add(verificationButton);
+			adminVeri.add(verificationPanel);
+			
+			if (currentUser.getUserId()=="1"){
+				changedVerification();
+				System.out.println("is Admin");
 			}
-		});
-		verificationPanel.add(verificationButton);
-		adminVeri.add(verificationPanel);
-		
-		if (currentUser.getUserId()=="1"){
-			changedVerification();
-			System.out.println("is Admin");
-		}
-		
-		if(this.verify){
-			verification = verify; 
-			adminVeri.dispose();
+			
+			if(this.verify){
+				verification = verify; 
+				adminVeri.dispose();
+			}
 		}
 	}
 	

@@ -153,7 +153,7 @@ public class AddSupplierScreen extends JDialog {
 				
 				
 				Supplier temp = new Supplier(supName, supAddress, supCity, supState,
-						supZip, supEmail, supWebsite, supPhone);
+						supZip, supEmail, 0, null, supWebsite, supPhone, supPhone, supPhone, supPhone, rootPaneCheckingEnabled);
 				boolean temps = true;
 				AdminVerificationScreen adminveri = new AdminVerificationScreen(data, temps);
 				adminveri.addWindowListener(new WindowAdapter(){

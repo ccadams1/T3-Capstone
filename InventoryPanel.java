@@ -359,6 +359,7 @@ public class InventoryPanel extends JPanel{
 					deleteFromInventory();
 				}
 				updateInventoryDisplay(textArea);
+				textArea.revalidate();
 			}
 		});
 	}
@@ -469,7 +470,7 @@ public class InventoryPanel extends JPanel{
 				{
 					inventory.get(index).setParStock(par);
 				}
-				callAddItemProcedure(connect, inventory.get(index));
+				callEditItemProcedure(connect, inventory.get(index));
 			}
 		}
 	}
@@ -502,11 +503,11 @@ public class InventoryPanel extends JPanel{
 	protected int callAddItemProcedure(Connection connect, Item temp) {
 		CallableStatement stmt = null;
 		
-		int id = (Integer) null;
+		int id = -1;
 		
 		try{
 			//Prepare the stored procedure call
-			stmt = connect.prepareCall("{call dbo.uspAddItem(?,?,?,?,?,?,?,?,?,?)}");
+			stmt = connect.prepareCall("{call dbo.uspAddInventory(?,?,?,?,?,?,?,?,?,?)}");
 			
 			//set the parameters
 			stmt.setString(1, null);
@@ -536,27 +537,60 @@ public class InventoryPanel extends JPanel{
 		}
 		return id;
 	}
-	protected void callRemoveItemProcedure(Connection connect, Item temp){
+	protected void callEditItemProcedure(Connection connect, Item temp){
 		CallableStatement stmt = null;
 		
 		try{
 			//Prepare the stored procedure call
-			stmt = connect.prepareCall("{call dbo.uspEditItem(?,?,?,?,?,?,?,?,?,?)}");
+			stmt = connect.prepareCall("{call dbo.uspEditInventory(?,?,?,?,?,?,?,?,?,?)}");
 			
 			//set the parameters
-			stmt.setString(1, temp.getId());
-			stmt.setString(2, null);
+			stmt.setInt(1, Integer.parseInt(temp.getId()));
+			stmt.setInt(2, 0);
 			stmt.setString(3, temp.getName());
 			stmt.setString(4, temp.getDescription());
 			stmt.setInt(5, temp.getQuantity());
 			stmt.setInt(6, temp.getParStock());
 			stmt.setDouble(7, temp.getPrice());
 			stmt.setInt(8, temp.getSupplierID());
-			stmt.setInt(9, /*temp.isRemoved()*/1);
+			stmt.setInt(9, /*temp.isRemoved()*/0);
 			stmt.registerOutParameter(10, Types.VARCHAR);
 			
 			//call stored procedure
-			System.out.println("Calling stored procedure to add new user");
+			System.out.println("Calling stored procedure to edit item");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(10);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+	}
+	protected void callRemoveItemProcedure(Connection connect, Item temp){
+		CallableStatement stmt = null;
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspEditInventory(?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setInt(1, Integer.parseInt(temp.getId()));
+			stmt.setInt(2, 0);
+			stmt.setString(3, temp.getName());
+			stmt.setString(4, temp.getDescription());
+			stmt.setInt(5, temp.getQuantity());
+			stmt.setInt(6, temp.getParStock());
+			stmt.setDouble(7, temp.getPrice());
+			stmt.setInt(8, temp.getSupplierID());
+			stmt.setInt(9, 0);//temp.isRemoved()
+			stmt.registerOutParameter(10, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to remove item");
 			stmt.execute();
 			System.out.println("Finished calling procedure");
 			

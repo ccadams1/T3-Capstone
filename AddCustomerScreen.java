@@ -153,7 +153,7 @@ public class AddCustomerScreen extends JDialog {
 				
 				
 				Customer temp = new Customer(firstName, lastName, cusAddress, cusCity, cusState,
-						cusZip, cusPhone, cusEmail);
+						cusZip, cusPhone, 0, cusEmail, cusEmail, cusEmail, cusEmail);
 				boolean temps = true;
 				AdminVerificationScreen adminveri = new AdminVerificationScreen(data, temps);
 				adminveri.addWindowListener(new WindowAdapter(){

@@ -64,11 +64,11 @@ public class MainApplicationWindow {
 					allData.add(connection); //get(0)
 					allData.add(customers);//get(1)
 					allData.add(employees);//get(2)
-					new LoginScreen(allData);				
 					allData.add(inventory);//get(3)
 					allData.add(myBusiness);//get(4)
 					allData.add(suppliers);//get(5)
 					allData.add(currentUser);//get(6)
+					new LoginScreen(allData);		
 					MainApplicationWindow window = new MainApplicationWindow(allData);
 					window.frame.setVisible(true);
 				} catch (Exception e) {

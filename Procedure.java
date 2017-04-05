@@ -8,7 +8,7 @@ public class Procedure {
 	{
 		CallableStatement stmt = null;
 		
-		int id = (Integer) null;
+		int id = -1;
 		
 		try{
 			//Prepare the stored procedure call
@@ -140,7 +140,7 @@ public class Procedure {
 	protected int callAddSupplierProcedure(Connection connect, Supplier temp) {
 		CallableStatement stmt = null;
 			
-		int id = (Integer) null;
+		int id = -1;
 		
 		try{
 			//Prepare the stored procedure call
@@ -259,7 +259,7 @@ public class Procedure {
 	protected int callAddCustomerProcedure(Connection connect, Customer temp) {
 		CallableStatement stmt = null;
 		
-		int id = (Integer) null;
+		int id = -1;
 		
 		try{
 			//Prepare the stored procedure call
@@ -338,7 +338,7 @@ public class Procedure {
 	protected int callAddItemProcedure(Connection connect, Item temp) {
 		CallableStatement stmt = null;
 		
-		int id = (Integer) null;
+		int id = -1;
 		
 		try{
 			//Prepare the stored procedure call
@@ -375,9 +375,7 @@ public class Procedure {
 	}
 	protected void callEditItemProcedure(Connection connect, Item temp) {
 		CallableStatement stmt = null;
-		
-		int id = (Integer) null;
-		
+				
 		try{
 			//Prepare the stored procedure call
 			stmt = connect.prepareCall("{call dbo.uspEditItem(?,?,?,?,?,?,?,?,?,?)}");

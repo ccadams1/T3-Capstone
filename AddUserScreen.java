@@ -214,7 +214,7 @@ public class AddUserScreen extends JDialog {
 	{
 		CallableStatement stmt = null;
 		
-		int id = (Integer) null;
+		int id = -1;
 		
 		try{
 			//Prepare the stored procedure call

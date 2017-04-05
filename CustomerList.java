@@ -25,7 +25,7 @@ public class CustomerList {
 		return false;
 	}
 	
-	public Customer get(int index){
+	public Customer getCustomer(int index){
 		return customers.get(index);
 	}
 	
@@ -34,7 +34,7 @@ public class CustomerList {
 	}
 	
 	public Customer getCustomer(String firstName, String lastName){
-		Customer temp = new Customer();
+		Customer temp = null;
 		for(int i = 0; i < customers.size(); i++){
 			if(customers.get(i).getFName().equals(firstName)){
 				if(customers.get(i).getLName().equals(lastName)){

@@ -59,7 +59,7 @@ public class EditSupplierScreen extends JDialog {
 		this.setVisible(true);
 		this.setModal(true);
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
-		this.setTitle("Edit User");
+		this.setTitle("Edit Supplier");
 		this.getContentPane().setLayout(null);
 		
 		employees = (EmployeeList) data.get(2); 

@@ -4,10 +4,17 @@ import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,7 +23,6 @@ import javax.swing.JPasswordField;
 public class LoginScreen extends JDialog{
 	private static final long serialVersionUID = 1L;
 	private JPasswordField passwordField;
-	public EmployeeList employees = new EmployeeList();
 	public Employee currentUser = new Employee();
 	/**
 	 * Launch the application.
@@ -44,8 +50,7 @@ public class LoginScreen extends JDialog{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data) {
-		employees = (EmployeeList) data.get(2);
-		currentUser = (Employee) data.get(6);		
+		currentUser = (Employee) data.get(6);	
 		
 		JDialog login = new JDialog();
 		
@@ -54,8 +59,23 @@ public class LoginScreen extends JDialog{
 		login.setLocationRelativeTo(null);
 		login.setVisible(true);
 		login.setModal(true);
-		login.setModalityType(ModalityType.APPLICATION_MODAL);
+		login.setModalityType(ModalityType.DOCUMENT_MODAL);
 		login.setTitle("User Login");
+		if(currentUser == null){
+			System.out.println("no current user");
+			login.setDefaultCloseOperation(
+				JDialog.DO_NOTHING_ON_CLOSE);
+			login.addWindowListener(new WindowAdapter() {
+			    public void windowClosing(WindowEvent we) {
+					setWarningMsg("No user is selected.");
+			    }
+			});
+		}
+		else{
+			System.out.println("Current user is " + currentUser);
+			login.setDefaultCloseOperation(
+					JDialog.DISPOSE_ON_CLOSE);
+		}
 		
 		//create login Panel
 		JPanel loginPanel = new JPanel();
@@ -86,36 +106,77 @@ public class LoginScreen extends JDialog{
 		JButton loginButton = new JButton("Login");
 		loginButton.setBounds(225, 117, 89, 37);
 		loginButton.addActionListener(new ActionListener(){
-			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				String username = usernameText.getText();
-				String password = passwordField.getText();
-				
-				for(int x = 0; x < employees.size(); x++)
+				char[] password = passwordField.getPassword();
+				String passwordString  = "";
+				for(int x = 0; x < password.length; x++)
 				{
-					if(!username.equals(employees.get(x).getUsername()))
-					{
-						setWarningMsg("Invalid Username. Note Usernames and "
-								+ "Passwords are case sensitive");
-					}
-					else
-					{
-						if(!password.equals(employees.get(x).getPassword()))
-						{
-							setWarningMsg("Invalid Password.");
-						}
-						else
-						{
-							data.set(6, employees.get(x)); 
-							System.out.println("current employee set");	
-							login.dispose();
-						}			
-					}
+					passwordString += password[x];
+				}
+				
+				String response = callUserLoginProcedure(data, username, passwordString);
+				if(response.equals("User successfully logged in"))
+				{
+					login.dispose();
 				}
 			}
 		});
 		loginPanel.add(loginButton);
 		login.add(loginPanel);
+	}
+	
+	protected String callUserLoginProcedure(ArrayList<Object> data, String username, String password) 
+	{
+		Connection connect = (Connection) data.get(0);
+		EmployeeList employees = (EmployeeList) data.get(2);
+		Employee currentUser = (Employee) data.get(6);
+		String response = "";
+		
+		CallableStatement stmt = null;
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspLogin(?,?,?)}");
+			
+			//set the parameters
+			stmt.setString(1, username);
+			stmt.setNString(2, password);
+			stmt.registerOutParameter(3, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to login to employee");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			response = stmt.getString(3);
+			System.out.println(response);
+			if(!response.equals("User successfully logged in"))
+			{
+				setWarningMsg(response);
+			}
+			else
+			{
+				for(int x = 0; x < employees.size(); x++)
+				{
+					if(employees.get(x).getUsername().equals(username))
+					{
+						currentUser = employees.get(x);
+						System.out.println("current employee set");
+						currentUser.toString();
+						data.set(6, currentUser);
+					}
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+			setWarningMsg("Invalid Username. Note usernames and "
+					+ "passwords are case sensitive");
+		}
+		return response;
 	}
 	
 	public void setWarningMsg(String text){

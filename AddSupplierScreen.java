@@ -7,9 +7,13 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import javax.swing.JComboBox;
@@ -20,41 +24,57 @@ public class AddSupplierScreen extends JDialog {
 	private JTextField supStateTextField, supZipTextField, supEmailTextField;
 	private JTextField supWebsiteTextField, supPhoneTextField;
 	public SupplierList suppliers = new SupplierList();
+	public boolean added = false;
 	
-	/**
-	 * Launch the application.
+	
+	/** Launch the application.
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new AddUserScreen();
+					DatabaseConnection database = new DatabaseConnection();
+					Connection connection = database.getConnection();
+					ArrayList<Object> data = new ArrayList<Object>();
+					data.add(connection); //get(0)
+					SupplierList suppliers = new SupplierList(); 
+					Supplier company1 = new Supplier("Company 1", "2200", "928 make money st", "", "raleigh", "NC", 12345,
+							null, "8757", null, "www.gobusiness.com", "company@company.com", null, false);
+					Supplier company2 = new Supplier("Company 2", "1230", "644 business dr", "", "raleigh", "NC", 12345,
+							null, "9182", null, "www.getmore.com", "company@pro.com", null, false);
+					suppliers.addSupplier(company1);
+					suppliers.addSupplier(company2);
+					data.add(suppliers);
+					new AddSupplierScreen(data);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
- */
+	}*/
+ 
 	/**
 	 * Create the application.
 	 */
-	public AddSupplierScreen(ArrayList<Object> data) {
-		initialize(data);
+	public AddSupplierScreen(ArrayList<Object> data, JComboBox<String> list) {
+		list.setSelectedItem("");
+		initialize(data, list);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(ArrayList<Object> data) {
-		this.setAlwaysOnTop (true);
-		this.setSize(400,450);
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
-		this.setModal(true);
-		this.setModalityType(ModalityType.APPLICATION_MODAL);
-		this.setTitle("Add Supplier");
-		this.getContentPane().setLayout(null);
+	private void initialize(ArrayList<Object> data, JComboBox<String> list) {
+		JDialog addingSups = new JDialog();
+		
+		addingSups.setAlwaysOnTop (true);
+		addingSups.setSize(400,450);
+		addingSups.setLocationRelativeTo(null);
+		addingSups.setVisible(true);
+		addingSups.setModal(true);
+		addingSups.setModalityType(ModalityType.APPLICATION_MODAL);
+		addingSups.setTitle("Add Supplier");
+		addingSups.getContentPane().setLayout(null);
 
 		suppliers = (SupplierList) data.get(5);
 		Connection connect = (Connection) data.get(0);
@@ -62,123 +82,176 @@ public class AddSupplierScreen extends JDialog {
 		JLabel lblUsername = new JLabel("Supplier Name:*");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUsername.setBounds(11, 24, 149, 29);
-		getContentPane().add(lblUsername);
+		addingSups.add(lblUsername);
 		
 		JLabel lblPassword = new JLabel("Address:*");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPassword.setBounds(11, 62, 149, 29);
-		getContentPane().add(lblPassword);
+		addingSups.add(lblPassword);
 		
 		JLabel lblRetypePassword = new JLabel("City:*");
 		lblRetypePassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblRetypePassword.setBounds(11, 100, 149, 29);
-		getContentPane().add(lblRetypePassword);
+		addingSups.add(lblRetypePassword);
 		
 		JLabel lblFirstName = new JLabel("State:*");
 		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblFirstName.setBounds(11, 138, 149, 29);
-		getContentPane().add(lblFirstName);
+		addingSups.add(lblFirstName);
 		
 		JLabel lblLastName = new JLabel("Zip_Code:*");
 		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblLastName.setBounds(11, 176, 149, 29);
-		getContentPane().add(lblLastName);
+		addingSups.add(lblLastName);
 		
 		JLabel lblEmployeeRole = new JLabel("Email:");
 		lblEmployeeRole.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblEmployeeRole.setBounds(11, 214, 149, 29);
-		getContentPane().add(lblEmployeeRole);
+		addingSups.add(lblEmployeeRole);
 		
 		JLabel lblEmailAddress = new JLabel("Website:");
 		lblEmailAddress.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblEmailAddress.setBounds(11, 252, 149, 29);
-		getContentPane().add(lblEmailAddress);
+		addingSups.add(lblEmailAddress);
 		
 		JLabel lblPhoneNumber = new JLabel("Phone number:");
 		lblPhoneNumber.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPhoneNumber.setBounds(11, 290, 149, 29);
-		getContentPane().add(lblPhoneNumber);
+		addingSups.add(lblPhoneNumber);
 		
 		supNameTextField = new JTextField();
 		supNameTextField.setBounds(158, 17, 191, 35);
-		getContentPane().add(supNameTextField);
+		addingSups.add(supNameTextField);
 		supNameTextField.setColumns(10);
 		
 		supAddressTextField = new JTextField();
 		supAddressTextField.setColumns(10);
 		supAddressTextField.setBounds(158, 55, 191, 35);
-		getContentPane().add(supAddressTextField);
+		addingSups.add(supAddressTextField);
 		
 		supCityTextField = new JTextField();
 		supCityTextField.setColumns(10);
 		supCityTextField.setBounds(158, 93, 191, 35);
-		getContentPane().add(supCityTextField);
+		addingSups.add(supCityTextField);
 		
 		supStateTextField = new JTextField();
 		supStateTextField.setColumns(10);
 		supStateTextField.setBounds(158, 131, 191, 35);
-		getContentPane().add(supStateTextField);
+		addingSups.add(supStateTextField);
 		
 		supZipTextField = new JTextField();
 		supZipTextField.setColumns(10);
 		supZipTextField.setBounds(158, 169, 191, 35);
-		getContentPane().add(supZipTextField);
+		addingSups.add(supZipTextField);
 		
 		supEmailTextField = new JTextField();
 		supEmailTextField.setColumns(10);
 		supEmailTextField.setBounds(158, 207, 191, 35);
-		getContentPane().add(supEmailTextField);
+		addingSups.add(supEmailTextField);
 		
 		supWebsiteTextField = new JTextField();
 		supWebsiteTextField.setColumns(10);
 		supWebsiteTextField.setBounds(158, 245, 191, 35);
-		getContentPane().add(supWebsiteTextField);
+		addingSups.add(supWebsiteTextField);
 		
 		supPhoneTextField = new JTextField();
 		supPhoneTextField.setColumns(10);
 		supPhoneTextField.setBounds(158, 283, 191, 35);
-		getContentPane().add(supPhoneTextField);
+		addingSups.add(supPhoneTextField);
 		
-		JButton btnAddUser = new JButton("Add User");
+		JButton btnAddUser = new JButton("Add Supplier");
 		btnAddUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String supName = supNameTextField.getText();
-				String supAddress = supAddressTextField.getText();
-				String supCity = supCityTextField.getText();
-				String supState = supStateTextField.getText();
-				String supZip = supZipTextField.getText();
-				String supEmail = supEmailTextField.getText();
-				String supWebsite = supWebsiteTextField.getText();
-				String supPhone = supPhoneTextField.getText();
+				String supName = supNameTextField.getText().trim();
+				String supAddress = supAddressTextField.getText().trim();
+				String supCity = supCityTextField.getText().trim();
+				String supState = supStateTextField.getText().trim();
+				int supZip = Integer.parseInt(supZipTextField.getText().trim());
+				String supEmail = supEmailTextField.getText().trim();
+				String supWebsite = supWebsiteTextField.getText().trim();
+				String supPhone = supPhoneTextField.getText().trim();
 				
+				if(supName.equals("") || supAddress.equals("") || supCity.equals("") || 
+						supState.equals("") || supZipTextField.getText().equals("")){
+					setWarningMsg("Please enter information in the *required boxes.");
+				}
+				else{
+					Supplier temp = new Supplier(supName, supAddress, supCity, supState,
+						supZip, supEmail, supWebsite, supPhone);
 				
-				Supplier temp = new Supplier(supName, supAddress, supCity, supState,
-						supZip, supEmail, 0, null, supWebsite, supPhone, supPhone, supPhone, supPhone, rootPaneCheckingEnabled);
-				boolean temps = true;
-				AdminVerificationScreen adminveri = new AdminVerificationScreen(data, temps);
-				adminveri.addWindowListener(new WindowAdapter(){
-					public void windowClosing(WindowEvent e){
-						if (adminveri.getVerification())
+					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
+					if (adminveri.verify)
+					{
+						System.out.println("New Supplier added");
+						temp.setID(callAddSupplierProcedure(connect, temp));
+						suppliers.addSupplier(temp);
+						added = true;
+						list.removeAllItems();
+						for(int x = 0; x< suppliers.size(); x++)
 						{
-							suppliers.addSupplier(temp);
-									
-							//Temp code to test functionality
-							temp.print();
+							list.addItem(suppliers.getSupplier(x).getName());
 						}
-						else
-						{
-							setWarningMsg("Administrator not verified. No "
-									+ "information was saved.");
-						}
+						list.addItem("New Supplier");
+						list.setSelectedIndex(suppliers.size()-1);
+						list.revalidate();
+						addingSups.dispose();
 					}
-				});
+					else
+					{
+						setWarningMsg("Administrator not verified. No "
+								+ "information was saved.");
+					}
+				}
 			}
 		});
 		btnAddUser.setBounds(99, 322, 155, 37);
-		getContentPane().add(btnAddUser);
+		addingSups.add(btnAddUser);
 	}
 	
-
+	protected int callAddSupplierProcedure(Connection connect, Supplier temp) {
+		CallableStatement stmt = null;
+			
+		int id = -1;
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspAddSupplier(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setString(1, temp.getName());
+			stmt.setString(2, temp.getStAdress1());
+			stmt.setString(3, temp.getStAdress2());
+			stmt.setString(4, temp.getCity());
+			stmt.setString(5, temp.getState());
+			stmt.setInt(6, temp.getZipCode());
+			stmt.setBinaryStream(7, null);
+			stmt.setString(8, temp.getPhone1());
+			stmt.setString(9, temp.getPhone2());
+			stmt.setString(10, temp.getWebsite());
+			stmt.setString(11, temp.getEmail());
+			stmt.setString(12, temp.getFax());
+			stmt.setInt(13, /*temp.isRemoved()*/0);
+			stmt.registerOutParameter(14, Types.VARCHAR);
+			stmt.registerOutParameter(15, Types.INTEGER);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to add new supplier");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(14);
+			id = stmt.getInt(15);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+		
+		return id;
+	}
+	
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);

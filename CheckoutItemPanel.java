@@ -75,7 +75,7 @@ public class CheckoutItemPanel{
 				setSubtotal(quant, (int) txtQuant.getValue(), item.getPrice(), panel_3);
 				quant = (int) txtQuant.getValue();
 				itemTotal = quant * item.getPrice();
-				lblNewLabel.setText(itemTotal+"");
+				lblNewLabel.setText("$"+ itemTotal);
 			}
 		});
 	}

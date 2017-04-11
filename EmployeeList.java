@@ -69,14 +69,16 @@ public class EmployeeList {
 	
 	public String toString(){
 		String s = "";
-		s += "UserID  " + "Username  " + "password	" + "First Name    " + 
-		"Last Name    " + "Role   " + "Email  " + "Phone  \n";
+		s += "UserID\t" + "Username\t" + "First Name\t" + 
+		"Last Name\t" + "Role\t" + "Email\t\t" + "Phone\n";
+		s += "-------------------------------------------------------------------------";
+		s += "-------------------------------------------------------------------------";
 		s += "-------------------------------------------------------------------------\n";
 		for(int i = 0; i < employees.size(); i++){
-			s += employees.get(i).getUserId() + "      " + employees.get(i).getUsername() + "    ";
-			s += employees.get(i).getPassword() + "    " + employees.get(i).getFirstName();
-			s += "    " + employees.get(i).getLastName() + "    " + employees.get(i).getRole();
-			s += "    " + employees.get(i).getEmail() + "   " + employees.get(i).getPhone() + "\n";
+			s += employees.get(i).getUserId() + "\t" + employees.get(i).getUsername();
+			s += "\t" + employees.get(i).getFirstName();
+			s += "\t" + employees.get(i).getLastName() + "\t" + employees.get(i).getRole();
+			s += "\t" + employees.get(i).getEmail() + "\t" + employees.get(i).getPhone() + "\n";
 		}
 		return s;
 	}

@@ -39,6 +39,11 @@ public class Employee {
 		return this.userID;
 	}
 	
+	public int getIntUserID(){
+		int id = Integer.parseInt(this.userID);
+		return id;
+	}
+	
 	public String getUsername(){
 		return this.username;
 	}
@@ -119,7 +124,6 @@ public class Employee {
 	public void print(){
 		String s = "";
 		s += "Username: " + this.username + "\n";
-		s += "Password: " + this.password + "\n";
 		s += "First Name: " + this.firstName + "\n";
 		s += "Last Name: " + this.lastName + "\n";
 		s += "Employee Role: " + this.uRole + "\n";

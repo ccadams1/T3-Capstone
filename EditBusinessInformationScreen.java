@@ -3,6 +3,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -53,14 +54,14 @@ public class EditBusinessInformationScreen extends JDialog {
 	/**
 	 * Create the application.
 	 */
-	public EditBusinessInformationScreen(ArrayList<Object> data) {
-		initialize(data);
+	public EditBusinessInformationScreen(ArrayList<Object> data, JFrame mainFrame) {
+		initialize(data, mainFrame);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(ArrayList<Object> data) {
+	private void initialize(ArrayList<Object> data, JFrame mainFrame) {
 		info = (MyBusiness) data.get(4);
 		connect = (Connection) data.get(0);
 		
@@ -209,25 +210,30 @@ public class EditBusinessInformationScreen extends JDialog {
 		JButton btnEditBusinessInfo = new JButton("Save Changes");
 		btnEditBusinessInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AdminVerificationScreen adminveri = new AdminVerificationScreen(data, verified);
-				adminveri.addWindowListener(new WindowAdapter(){
-					@Override
-					public void windowClosed(WindowEvent e){
-						System.out.println("Closed");
-						if (!verified)
-						{
-							setWarningMsg("Administrator not verified. No "
-									+ "information was saved.");
-						}
-						else
-						{
-							//save all data
-							callEditMyBusinessProcedure(connect, info);
-							System.out.println("data saved");
-							verified = false;
-						}
-					}
-				});
+				AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
+				if (adminveri.verify)
+				{
+					callEditMyBusinessProcedure(connect, info);
+					mainFrame.setTitle("T3 Tracking and Inventory for " + bizNameTextField.getText());
+					info.setBizName(bizNameTextField.getText());
+					info.setStAdress1(stAddressTextField.getText());
+					info.setStAdress2(stAddress2TextField.getText());
+					info.setCity(cityTextField.getText());
+					info.setState(stateTextField.getText());
+					info.setZipCode(Integer.parseInt(zipCodeTextField.getText().trim()));
+					info.setEmail(emailTextField.getText());
+					info.setPhone1(phone1TextField.getText());
+					info.setFax(faxTextField.getText());
+					info.setWebsite(websiteTextField.getText());
+					info.setOwnerFirstName(ownerFirstNameTextField.getText());
+					info.setOwnerLastName(ownerLastNameTextField.getText());
+					System.out.println("data saved");
+				}
+				else
+				{
+					setWarningMsg("Administrator not verified. No "
+							+ "information was saved.");
+				}
 			}
 		});
 		
@@ -249,8 +255,8 @@ public class EditBusinessInformationScreen extends JDialog {
 			stmt.setString(4, business.getCity());
 			stmt.setString(5, business.getState());
 			stmt.setInt(6, business.getZipCode());
-			stmt.setString(7, null);
-			stmt.setString(8, null);
+			stmt.setBinaryStream(7, null);
+			stmt.setBinaryStream(8, null);
 			stmt.setString(9, business.getPhone1());
 			stmt.setString(10, business.getPhone2());
 			stmt.setString(11, business.getWebsite());
@@ -261,31 +267,18 @@ public class EditBusinessInformationScreen extends JDialog {
 			stmt.registerOutParameter(16, Types.VARCHAR);
 			
 			//call stored procedure
-			System.out.println("Calling stored procedure to add new user");
+			System.out.println("Calling stored procedure to edit business information");
 			stmt.execute();
 			System.out.println("Finished calling procedure");
 			
 			//Get the response message of the OUT parameter
-			String response = stmt.getString(10);
+			String response = stmt.getString(16);
 			System.out.println(response);
 		}
 		catch (SQLException e)
 		{
 			System.out.println(e);
 		}
-		
-		info.setBizName(bizNameTextField.getText());
-		info.setStAdress1(stAddressTextField.getText());
-		info.setStAdress2(stAddress2TextField.getText());
-		info.setCity(cityTextField.getText());
-		info.setState(stateTextField.getText());
-		info.setZipCode(Integer.parseInt(zipCodeTextField.getText()));
-		info.setEmail(emailTextField.getText());
-		info.setPhone1(phone1TextField.getText().replaceAll(" ", "").replaceAll("/", "").replaceAll("-", ""));
-		info.setFax(faxTextField.getText().replaceAll(" ", "").replaceAll("/", "").replaceAll("-", ""));
-		info.setWebsite(websiteTextField.getText());
-		info.setOwnerFirstName(ownerFirstNameTextField.getText());
-		info.setOwnerLastName(ownerLastNameTextField.getText());
 	}
 	
 	public void setWarningMsg(String text){

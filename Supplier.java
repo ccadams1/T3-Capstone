@@ -35,6 +35,24 @@ public class Supplier {
 		this.fax = fax;
 		this.setRemoved(r);
 	}
+	public Supplier (String name, String stAddress1,String city, String state, int zipCode,
+			String email, String website, String phone1)
+	{
+		this.name = name;
+		this.Id = null;
+		this.stAddress1 = stAddress1;
+		this.stAddress2 = "";
+		this.city = city;
+		this.state = state;
+		this.zipCode = zipCode;
+		this.logo1 = null;
+		this.phone1 = phone1;
+		this.phone2 = "";
+		this.website = website;
+		this.email = email;
+		this.fax = "";
+		this.setRemoved(false);
+	}
 	
 	public Supplier() {
 	}
@@ -49,9 +67,13 @@ public class Supplier {
 		return name.toString();
 	}
 	
-	public void setID (String Id)
+	public void setID (int i)
 	{
-		this.Id = Id;
+		this.Id = i + "";
+	}
+	
+	public void setID(String i) {
+		this.Id = i;
 	}
 	
 	public String getID()
@@ -170,7 +192,6 @@ public class Supplier {
 	public boolean isRemoved() {
 		return removed;
 	}
-
 	public void setRemoved(boolean removed) {
 		this.removed = removed;
 	}

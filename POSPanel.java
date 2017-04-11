@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
@@ -108,15 +109,14 @@ public class POSPanel extends JPanel{
 		panel_3.add(btnCheckOut);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		//scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(515, 0, 255, 355);
 		panel.add(scrollPane);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setAutoscrolls(true);
-		panel_2.setBounds(new Rectangle(0, 0, 234, 1000));
 		scrollPane.setViewportView(panel_2);
-		panel_2.setBorder(null);
-		panel_2.setLayout(new GridLayout(6, 1, 0, 0));
+		panel_2.setLayout(new GridLayout(10, 1, 0, 0));
 
 		this.addComponentListener(new ComponentAdapter(){
 			public void componentShown(ComponentEvent e){

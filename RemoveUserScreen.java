@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,6 +17,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.Dialog.ModalityType;
 
 import javax.swing.JScrollPane;
@@ -25,8 +27,9 @@ public class RemoveUserScreen extends JDialog {
 	private JTextField usernameTextField;
 	private JTextField userIDTextField;
 	private EmployeeList employees;
-	private Employee removedUser;
+	private Employee removedUser = null;
 	private Connection connect;
+	private JTextPane textPane = new JTextPane();
 
 	/**
 	 * Launch the application.
@@ -80,6 +83,7 @@ public class RemoveUserScreen extends JDialog {
 		usernameTextField.setBounds(100, 8, 150, 35);
 		this.getContentPane().add(usernameTextField);
 		usernameTextField.setColumns(10);
+		String username = usernameTextField.getText().trim();
 		
 		userIDTextField = new JTextField();
 		userIDTextField.setBounds(100, 49, 150, 35);
@@ -95,12 +99,28 @@ public class RemoveUserScreen extends JDialog {
 				{
 					if(employees.get(x).getUserId().equals(userID))
 					{
-						removedUser = employees.get(x);
+						if(employees.get(x).getUsername().equals(username))
+						{
+							removedUser = employees.get(x);
+						}
 					}
 				}
-				callRemoveUserProcedure(connect, removedUser);
-				boolean temps = true; //temp code
-				new AdminVerificationScreen(data, temps);
+				if (removedUser!=null){
+					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
+					if (adminveri.verify)
+					{
+						callRemoveUserProcedure(connect, removedUser);
+						System.out.println("User removed");
+					}
+					else
+					{
+						setWarningMsg("Administrator not verified. No "
+								+ "information was saved.");
+					}	
+				}
+				else{
+					setWarningMsg("There is no user match.");
+				}
 			}
 		});
 		btnRemoveUser.setBounds(263, 34, 150, 37);
@@ -110,9 +130,9 @@ public class RemoveUserScreen extends JDialog {
 		scrollPane.setBounds(0, 96, 422, 125);
 		this.getContentPane().add(scrollPane);
 		
-		JTextPane textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
 		textPane.setEditable(false);
+		updateDisplay();
 	}
 	
 	protected void callRemoveUserProcedure(Connection connect, Employee temp) 
@@ -148,5 +168,17 @@ public class RemoveUserScreen extends JDialog {
 		{
 			System.out.println(e);
 		}
+	}
+	
+	public void setWarningMsg(String text){
+	    Toolkit.getDefaultToolkit().beep();
+	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
+	    JDialog dialog = optionPane.createDialog("Warning!");
+	    dialog.setAlwaysOnTop(true);
+	    dialog.setVisible(true);
+	}
+	
+	private void updateDisplay(){
+		textPane.setText(employees.toString());
 	}
 }

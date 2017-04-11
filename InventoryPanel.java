@@ -4,6 +4,10 @@ import java.awt.Panel;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -34,7 +38,8 @@ public class InventoryPanel extends JPanel{
 	private JTextField addMaxPriceTextField, editQuantityTextField;
 	private JTextField addItemDescription, editItemDescription;
 	private JTextField addParStockTextField, editParStockTextField;
-	private JComboBox<String> addSupplierNameComboBox, editSupplierNameComboBox;
+	private JTextArea textArea;
+	private static JComboBox<String> addSupplierNameComboBox, editSupplierNameComboBox;
 	private JCheckBox chckbxConfirmDelete;
 	private Connection connect;
 	private Inventory inventory;
@@ -62,7 +67,7 @@ public class InventoryPanel extends JPanel{
 		this.add(scrollPane);
 				
 		//creates text area to put in the scrollPane
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));	
@@ -336,17 +341,44 @@ public class InventoryPanel extends JPanel{
 			}
 		});
 		
+		addSupplierNameComboBox.addItemListener(new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(addSupplierNameComboBox.getSelectedItem()==null)
+				{}
+				else if(addSupplierNameComboBox.getSelectedItem().equals("New Supplier"))
+				{
+					new AddSupplierScreen(data, addSupplierNameComboBox);
+				}
+				addItemRadioPanel.revalidate();
+			}
+		});
+		
+		editSupplierNameComboBox.addItemListener(new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(editSupplierNameComboBox.getSelectedItem()==null)
+				{}
+				else if(editSupplierNameComboBox.getSelectedItem().equals("New Supplier"))
+				{
+					new AddSupplierScreen(data, editSupplierNameComboBox);
+				}
+				editItemRadioPanel.revalidate();
+			}
+		});
+		
 		//Adds ActionListener for Change Inventory Button
 		changeInventoryButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(addItemButton.isSelected()){
-					addToInventory();
+					addToInventory();   
 				}
 				else if(editItemButton.isSelected()){
 					editInventory();
 				}
 				updateInventoryDisplay(textArea);
+				textArea.revalidate();
 			}
 		});
 		
@@ -362,6 +394,8 @@ public class InventoryPanel extends JPanel{
 				textArea.revalidate();
 			}
 		});
+		
+		
 	}
 	
 	private void addToInventory(){
@@ -403,6 +437,7 @@ public class InventoryPanel extends JPanel{
 			}
 			Item newItem = new Item(n, p, Integer.parseInt(supID), s, q, par, d);
 			newItem.setId(callAddItemProcedure(connect, newItem)+"");
+			inventory.addItem(newItem);
 		}
 	}
 	
@@ -484,6 +519,7 @@ public class InventoryPanel extends JPanel{
 			if(inventory.get(index).getId().equals(id) && check == true){
 				inventory.get(index).setRemoved(true);
 				callRemoveItemProcedure(connect, inventory.get(index));
+				updateInventoryDisplay(textArea);
 			}
 			else
 			{
@@ -611,5 +647,4 @@ public class InventoryPanel extends JPanel{
 	    dialog.setAlwaysOnTop(true);
 	    dialog.setVisible(true);
 	}
-	
 } 

@@ -1,4 +1,5 @@
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -6,27 +7,32 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.sql.CallableStatement;
 import java.sql.Connection; 
 import java.sql.SQLException; 
-import java.sql.Statement; 
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList; 
 import java.awt.Font;
+import java.awt.Toolkit;
+
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 
 public class EditCustomerScreen extends JDialog {
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
+	private JTextField firstNameTextField;
+	private JTextField lastNameTextField;
+	private JTextField addressTextField;
+	private JTextField cityTextField;
+	private JTextField stateTextField;
+	private JTextField zipCodeTextField;
+	private JTextField phoneTextField;
+	private JTextField emailTextField;
+	private JTextField customerIDtextField;
 	private JTextArea textArea;
+	private Customer selectedCustomer;
 	
 	private CustomerList customers;
 
@@ -60,114 +66,193 @@ public class EditCustomerScreen extends JDialog {
 		this.setVisible(true);
 		this.setModal(true);
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
-		this.setTitle("Edit User");
+		this.setTitle("Edit Customer");
 		this.getContentPane().setLayout(null);
 		
 		customers = (CustomerList) data.get(1); 
 		Connection connect = (Connection) data.get(0);
 		
-		JLabel lblUsername = new JLabel("Customer Id:");
-		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblUsername.setBounds(10, 55, 149, 29);
-		getContentPane().add(lblUsername);
+
+		JLabel lblCustomerId = new JLabel("Customer ID:");
+		lblCustomerId.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblCustomerId.setBounds(10, 17, 149, 29);
+		getContentPane().add(lblCustomerId);
 		
-		JLabel lblPassword = new JLabel("First Name:");
-		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblPassword.setBounds(10, 93, 149, 29);
-		getContentPane().add(lblPassword);
+		JLabel lblFName = new JLabel("First Name:");
+		lblFName.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblFName.setBounds(10, 55, 149, 29);
+		getContentPane().add(lblFName);
 		
-		JLabel lblRetypePassword = new JLabel("Last Name:");
-		lblRetypePassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblRetypePassword.setBounds(10, 131, 149, 29);
-		getContentPane().add(lblRetypePassword);
+		JLabel lblLName = new JLabel("Last Name:");
+		lblLName.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblLName.setBounds(10, 93, 149, 29);
+		getContentPane().add(lblLName);
 		
-		JLabel lblFirstName = new JLabel("Street Address:");
-		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblFirstName.setBounds(10, 169, 149, 29);
-		getContentPane().add(lblFirstName);
+		JLabel lblAddress = new JLabel("Street Address:");
+		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblAddress.setBounds(10, 131, 149, 29);
+		getContentPane().add(lblAddress);
 		
-		JLabel lblLastName = new JLabel("City:");
-		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblLastName.setBounds(10, 207, 149, 29);
-		getContentPane().add(lblLastName);
+		JLabel lblCity = new JLabel("City:");
+		lblCity.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblCity.setBounds(10, 169, 149, 29);
+		getContentPane().add(lblCity);
 		
-		JLabel lblEmployeeRole = new JLabel("State:");
-		lblEmployeeRole.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblEmployeeRole.setBounds(10, 245, 149, 29);
-		getContentPane().add(lblEmployeeRole);
+		JLabel lblState = new JLabel("State:");
+		lblState.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblState.setBounds(10, 207, 149, 29);
+		getContentPane().add(lblState);
 		
-		JLabel lblEmailAddress = new JLabel("Zip:");
-		lblEmailAddress.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblEmailAddress.setBounds(10, 283, 149, 29);
-		getContentPane().add(lblEmailAddress);
+		JLabel lblZipCode = new JLabel("Zip Code:");
+		lblZipCode.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblZipCode.setBounds(10, 245, 149, 29);
+		getContentPane().add(lblZipCode);
 		
-		JLabel lblPhoneNumber = new JLabel("Phone:");
-		lblPhoneNumber.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblPhoneNumber.setBounds(10, 321, 149, 29);
-		getContentPane().add(lblPhoneNumber);
+		JLabel lblPhone = new JLabel("Phone:");
+		lblPhone.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblPhone.setBounds(10, 283, 149, 29);
+		getContentPane().add(lblPhone);
 		
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblEmail.setBounds(10, 321, 149, 29);
+		getContentPane().add(lblEmail);
 		
-		textField = new JTextField();
-		textField.setBounds(158, 49, 191, 35);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		customerIDtextField = new JTextField();
+		customerIDtextField.setToolTipText("Required to edit the customer");
+		customerIDtextField.setColumns(10);
+		customerIDtextField.setBounds(158, 11, 191, 35);
+		customerIDtextField.setText("");
+		getContentPane().add(customerIDtextField);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(158, 87, 191, 35);
-		getContentPane().add(textField_1);
+		firstNameTextField = new JTextField();
+		firstNameTextField.setBounds(158, 49, 191, 35);
+		getContentPane().add(firstNameTextField);
+		firstNameTextField.setText("");
+		firstNameTextField.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(158, 125, 191, 35);
-		getContentPane().add(textField_2);
+		lastNameTextField = new JTextField();
+		lastNameTextField.setColumns(10);
+		lastNameTextField.setBounds(158, 87, 191, 35);
+		lastNameTextField.setText("");
+		getContentPane().add(lastNameTextField);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(158, 163, 191, 35);
-		getContentPane().add(textField_3);
+		addressTextField = new JTextField();
+		addressTextField.setColumns(10);
+		addressTextField.setBounds(158, 125, 191, 35);
+		addressTextField.setText("");
+		getContentPane().add(addressTextField);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(158, 201, 191, 35);
-		getContentPane().add(textField_4);
+		cityTextField = new JTextField();
+		cityTextField.setColumns(10);
+		cityTextField.setBounds(158, 163, 191, 35);
+		cityTextField.setText("");
+		getContentPane().add(cityTextField);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(158, 238, 191, 35);
-		getContentPane().add(textField_5);
+		stateTextField = new JTextField();
+		stateTextField.setColumns(10);
+		stateTextField.setBounds(158, 201, 191, 35);
+		stateTextField.setText("");
+		getContentPane().add(stateTextField);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(158, 277, 191, 35);
-		getContentPane().add(textField_6);
+		zipCodeTextField = new JTextField();
+		zipCodeTextField.setColumns(10);
+		zipCodeTextField.setBounds(158, 238, 191, 35);
+		zipCodeTextField.setText("");
+		getContentPane().add(zipCodeTextField);
 		
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(158, 315, 191, 35);
-		getContentPane().add(textField_7);
+		phoneTextField = new JTextField();
+		phoneTextField.setColumns(10);
+		phoneTextField.setBounds(158, 277, 191, 35);
+		phoneTextField.setText("");
+		getContentPane().add(phoneTextField);
 		
-		
-		
-		JButton btnEditUser = new JButton("Edit User");
-		/*
-		btnEditUser.addActionListener(new ActionListener() {
+		emailTextField = new JTextField();
+		emailTextField.setColumns(10);
+		emailTextField.setBounds(158, 315, 191, 35);
+		emailTextField.setText("");
+		getContentPane().add(emailTextField);
+				
+		JButton btnEditCustomer = new JButton("Edit Customer");
+		btnEditCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AdminVerificationScreen();
+				String customerID = customerIDtextField.getText();
+				String fName = firstNameTextField.getText();
+				String lName = lastNameTextField.getText();
+				String address = addressTextField.getText();
+				String city = cityTextField.getText();
+				String state = stateTextField.getText();
+				int zipCode = 00000;
+				try{
+					zipCode = Integer.parseInt(zipCodeTextField.getText());
+				}
+				catch(NumberFormatException e1)
+				{
+				}
+				String phone = phoneTextField.getText();
+				String email = emailTextField.getText();
+				
+				if(customerID.equals("")){
+					setWarningMsg("Please enter information in the *required boxes.");
+				}
+				else{
+					for(int x = 0; x < customers.size(); x++)
+					{
+						if(customers.getCustomer(x).getID().equals(customerID))
+						{
+							selectedCustomer = customers.getCustomer(x);
+						}
+					}
+
+					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
+					if (adminveri.verify)
+					{
+						callEditCustomerProcedure(connect, selectedCustomer);
+						if(!fName.equals(""))
+						{
+							selectedCustomer.setFName(fName);
+						}
+						if(!lName.equals(""))
+						{
+							selectedCustomer.setLName(lName);
+						}
+						if(!address.equals(""))
+						{
+							selectedCustomer.setStAdress1(address);
+						}
+						if(!city.equals(""))
+						{
+							selectedCustomer.setCity(city);
+						}
+						if(!state.equals(""))
+						{
+							selectedCustomer.setState(state);
+						}
+						if(!zipCodeTextField.getText().equals(""))
+						{
+							selectedCustomer.setZipCode(zipCode);
+						}
+						if(!phone.equals(""))
+						{
+							selectedCustomer.setPhone1(phone);
+						}
+						if(!email.equals(""))
+						{
+							selectedCustomer.setEmail(email);
+						}
+						System.out.println("User customer complete");
+						updateDisplay();
+					}
+					else
+					{
+						setWarningMsg("Administrator not verified. No "
+								+ "information was saved.");
+					}
+				}
 			}
 		});
-		*/
-		
-		JLabel lblUserId = new JLabel("User ID:");
-		lblUserId.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblUserId.setBounds(10, 17, 149, 29);
-		getContentPane().add(lblUserId);
-		
-		textField_8 = new JTextField();
-		textField_8.setToolTipText("Required to edit the customer");
-		textField_8.setColumns(10);
-		textField_8.setBounds(158, 11, 191, 35);
-		getContentPane().add(textField_8);
+		btnEditCustomer.setBounds(99, 356, 155, 37);
+		getContentPane().add(btnEditCustomer);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 404, 372, 117);
@@ -176,139 +261,61 @@ public class EditCustomerScreen extends JDialog {
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
-		textArea.setText(customers.toString());
-				
-		btnEditUser.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String text = textField.getText();
-				String text_1 = textField_1.getText();
-				String text_2 = textField_2.getText();
-				String text_3 = textField_3.getText();
-				String text_4 = textField_4.getText();
-				String text_5 = textField_5.getText();
-				String text_6 = textField_6.getText();
-				String text_7 = textField_7.getText();
-				String text_8 = textField_8.getText();
-
-				if(text_8.equals("")){
-					//Return warning (User Id Required)
-					return;
-				}
-				int index = -1;
-				
-				for(int i = 0; i < customers.size(); i++)
-				{
-					if(customers.get(i).getID().equals(text_8))
-					{
-						index = i;
-					}
-				}
-				if(index >= 0)
-				{
-					int counter = 0;
-					String query = "UPDATE USER SET ";
-					String queryTail = "";
-					
-					if(!text.equals(""))
-					{
-						customers.get(index).setFName(text);
-						queryTail += "fName = " + text;
-						counter++;
-					}
-					if(!text_1.equals(""))
-					{
-						customers.get(index).setLName(text_1);
-						if(counter > 0)
-						{
-							queryTail += ", ";
-						}
-						queryTail += "lName = " + text_1;
-						counter++;
-					}
-					if(!text_2.equals(""))
-					{
-						customers.get(index).setStAdress1(text_2);
-						if(counter > 0)
-						{
-							queryTail += ", ";
-						}
-						queryTail += "st_address1 = " + text_2;
-						counter++;
-					}
-					if(!text_3.equals(""))
-					{
-						customers.get(index).setCity(text_3);
-						if(counter > 0)
-						{
-							queryTail += ", ";
-						}
-						queryTail += "city = " + text_3;
-						counter++;
-					}
-					if(!text_4.equals(""))
-					{
-						customers.get(index).setState(text_4);
-						if(counter > 0){
-							queryTail += ", ";
-						}
-						queryTail += "state = " + text_4;
-						counter++;
-					}
-					if(!text_5.equals(""))
-					{
-						customers.get(index).setZipCode(text_5);
-						if(counter > 0)
-						{
-							queryTail += ", ";
-						}
-						queryTail += "zip_code = " + text_5;
-						counter++;
-					}
-					if(!text_6.equals(""))
-					{
-						customers.get(index).setPhone1(text_6);
-						if(counter > 0)
-						{
-							queryTail += ", ";
-						}
-						queryTail += "phone1 = " + text_6;
-						counter++;
-					}
-					if(!text_7.equals(""))
-					{
-						customers.get(index).setEmail(text_7);
-						if(counter > 0)
-						{
-							queryTail += ", ";
-						}
-						queryTail += "email = " + text_7;
-						counter++;
-					}
-					
-					query += queryTail + " WHERE UserID = " + text_8;
-					if(counter > 0)
-					{
-						/*
-						try{
-							Statement stmt = connect.createStatement();
-							stmt.executeQuery(query);
-						}
-						catch (SQLException e1){
-							System.out.println(e1);
-						}
-						*/
-					}
-					updateDisplay();
-				}
-			}
-		});
-
-		btnEditUser.setBounds(99, 356, 155, 37);
-		getContentPane().add(btnEditUser);
+		updateDisplay();
 	}
 
+	protected void callEditCustomerProcedure(Connection connect, Customer temp) {
+		CallableStatement stmt = null;
+				
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspEditCustomer(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setString(1, temp.getID());
+			stmt.setString(2, temp.getFName());
+			stmt.setString(3, temp.getLName());
+			stmt.setString(4, temp.getStAdress1());
+			stmt.setString(5, "");
+			stmt.setString(6, temp.getCity());
+			stmt.setString(7, temp.getState());
+			stmt.setInt(8, temp.getZipCode());
+			stmt.setString(9, temp.getPhone1());
+			stmt.setString(10, "");
+			stmt.setString(11, temp.getWebsite());
+			stmt.setString(12, temp.getEmail());
+			stmt.setString(13, "");
+			stmt.registerOutParameter(14, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to edit customer");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(14);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+	}
+	
 	private void updateDisplay(){
-		textArea.setText(customers.toString());
+		String allCustomers = "";
+		for(int x = 0; x < customers.size(); x++)
+		{
+			allCustomers += customers.getCustomer(x).toString() + "\n";
+		}
+		textArea.setText(allCustomers);
+	}
+	
+	public void setWarningMsg(String text){
+	    Toolkit.getDefaultToolkit().beep();
+	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
+	    JDialog dialog = optionPane.createDialog("Warning!");
+	    dialog.setAlwaysOnTop(true);
+	    dialog.setVisible(true);
 	}
 }

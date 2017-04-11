@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
@@ -15,7 +16,7 @@ public class MainPanel extends JPanel{
 	private JButton settings, changeUser;
 	public static JPanel pos;
 
-	public MainPanel(JMenuBar menuBar, ArrayList<Object> data){
+	public MainPanel(JMenuBar menuBar, ArrayList<Object> data, JFrame mainFrame){
 		
 		//Create JFrame and GridLayout
 		this.setLayout(null);
@@ -79,7 +80,7 @@ public class MainPanel extends JPanel{
 		settings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//sets main as visible screen
-				new SettingsScreen(data);
+				new SettingsScreen(data, mainFrame);
 			}
 		});
 		

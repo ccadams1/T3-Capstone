@@ -182,26 +182,19 @@ public class AddUserScreen extends JDialog {
 				else{
 					Employee temp = new Employee(username, password, fName, lName, userRole,
 							email, phone);
-					temp.setUserId(callAddUserProcedure(connect, temp));
-					employees.addEmployee(temp);
-
-					boolean temps = true; //temp code
-					/*AdminVerificationScreen adminveri = new AdminVerificationScreen(data, temps);
-					adminveri.addWindowListener(new WindowAdapter(){
-						public void windowClosing(WindowEvent e){
-							if (adminveri.getVerification())
-							{
-									
-								//Temp code to test functionality
-								temp.print();
-							}
-							else
-							{
-								setWarningMsg("Administrator not verified. No "
-										+ "information was saved.");
-							}
-						}
-					});*/
+					
+					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
+					if (adminveri.verify)
+					{
+						System.out.println("New user added");
+						temp.setUserId(callAddUserProcedure(connect, temp));
+						employees.addEmployee(temp);
+					}
+					else
+					{
+						setWarningMsg("Administrator not verified. No "
+								+ "information was saved.");
+					}
 				}
 			}
 		});

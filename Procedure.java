@@ -110,7 +110,7 @@ public class Procedure {
 			System.out.println(e);
 		}
 	}*/
-	protected void callUserLoginProcedure(Connection connect, Employee temp) 
+	/*protected void callUserLoginProcedure(Connection connect, Employee temp) 
 	{
 		CallableStatement stmt = null;
 		
@@ -136,8 +136,8 @@ public class Procedure {
 		{
 			System.out.println(e);
 		}
-	}
-	protected int callAddSupplierProcedure(Connection connect, Supplier temp) {
+	}*/
+	/*protected int callAddSupplierProcedure(Connection connect, Supplier temp) {
 		CallableStatement stmt = null;
 			
 		int id = -1;
@@ -159,7 +159,7 @@ public class Procedure {
 			stmt.setString(10, temp.getWebsite());
 			stmt.setString(11, temp.getEmail());
 			stmt.setString(12, temp.getFax());
-			stmt.setInt(13, /*temp.isRemoved()*/0);
+			stmt.setInt(13, 0);//temp.isRemoved()
 			stmt.registerOutParameter(14, Types.VARCHAR);
 			stmt.registerOutParameter(15, Types.INTEGER);
 			
@@ -179,7 +179,7 @@ public class Procedure {
 		}
 		
 		return id;
-	}
+	}*/
 	protected void callEditSupplierProcedure(Connection connect, Supplier temp) {
 		CallableStatement stmt = null;
 			
@@ -298,7 +298,7 @@ public class Procedure {
 		
 		return id;
 	}
-	protected void callEditCustomerProcedure(Connection connect, Customer temp) {
+	/*protected void callEditCustomerProcedure(Connection connect, Customer temp) {
 		CallableStatement stmt = null;
 				
 		try{
@@ -334,8 +334,8 @@ public class Procedure {
 		{
 			System.out.println(e);
 		}
-	}
-	protected int callAddItemProcedure(Connection connect, Item temp) {
+	}*/
+	/*protected int callAddItemProcedure(Connection connect, Item temp) {
 		CallableStatement stmt = null;
 		
 		int id = -1;
@@ -352,7 +352,7 @@ public class Procedure {
 			stmt.setInt(5, temp.getParStock());
 			stmt.setDouble(6, temp.getPrice());
 			stmt.setInt(7, temp.getSupplierID());
-			stmt.setInt(8, /*temp.isRemoved()*/0);
+			stmt.setInt(8, 0);//temp.isRemoved()
 			stmt.registerOutParameter(9, Types.VARCHAR);
 			stmt.registerOutParameter(10, Types.INTEGER);
 			
@@ -372,8 +372,8 @@ public class Procedure {
 		}
 		
 		return id;
-	}
-	protected void callEditItemProcedure(Connection connect, Item temp) {
+	}*/
+	/*protected void callEditItemProcedure(Connection connect, Item temp) {
 		CallableStatement stmt = null;
 				
 		try{
@@ -389,7 +389,7 @@ public class Procedure {
 			stmt.setInt(6, temp.getParStock());
 			stmt.setDouble(7, temp.getPrice());
 			stmt.setInt(8, temp.getSupplierID());
-			stmt.setInt(9, /*temp.isRemoved()*/0);
+			stmt.setInt(9, 0);//temp.isRemoved()
 			stmt.registerOutParameter(10, Types.VARCHAR);
 			
 			//call stored procedure
@@ -405,7 +405,7 @@ public class Procedure {
 		{
 			System.out.println(e);
 		}
-	}
+	}*/
 	/*protected void callRemoveInventoryProcedure(Connection connect, Item temp){
 		CallableStatement stmt = null;
 		

@@ -2,6 +2,10 @@ import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -11,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.WindowConstants;
-
 public class AdminVerificationScreen extends JDialog{
 	private static final long serialVersionUID = 1L;
 	private JPasswordField passwordField;
@@ -38,28 +41,35 @@ public class AdminVerificationScreen extends JDialog{
 	/**
 	 * Create the application.
 	 */
-	public AdminVerificationScreen(ArrayList<Object> data, boolean verify) {
-		initialize(data, verify);
+	public AdminVerificationScreen(ArrayList<Object> data) {
+		initialize(data);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(ArrayList<Object> data, boolean verification) {
+	private void initialize(ArrayList<Object> data) {
+		Connection connect = (Connection) data.get(0);
 		employees = (EmployeeList) data.get(2);
 		currentUser = (Employee) data.get(6);
 		admin = employees.get(0);
 				
 		JDialog adminVeri = new JDialog();
-		adminVeri.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
 		adminVeri.setAlwaysOnTop (true);
 		adminVeri.setSize(600,250);
 		adminVeri.setLocationRelativeTo(null);
 		adminVeri.setVisible(true);
 		adminVeri.setModal(true);
-		adminVeri.setModalityType(ModalityType.APPLICATION_MODAL);
+		adminVeri.setModalityType(ModalityType.DOCUMENT_MODAL);
 		adminVeri.setTitle("Administrator Verification");
+		
+		//temp admin is 24
+		//real admin is 1
+		if (currentUser.getUserId().equals("24")){
+			verify = true;
+			System.out.println("is Admin");
+			adminVeri.dispose();
+		}
 		
 		while(!verify)
 		{
@@ -90,51 +100,67 @@ public class AdminVerificationScreen extends JDialog{
 			JButton verificationButton = new JButton("Verify");
 			verificationButton.setBounds(225, 117, 89, 37);
 			verificationButton.addActionListener(new ActionListener(){
-				@SuppressWarnings("deprecation")
 				public void actionPerformed(ActionEvent arg0) {
 					String username = usernameText.getText();
-					String password = passwordField.getText();
-					
-					if(!username.equals(admin.getUsername()))
+					char[] password = passwordField.getPassword();
+					String passwordString  = "";
+					for(int x = 0; x < password.length; x++)
 					{
-						setWarningMsg("Invalid Username. Note Usernames and "
-								+ "Passwords are case sensitive");
+						passwordString += password[x];
 					}
-					else
+					
+					String response = callUserLoginProcedure(connect, username, passwordString);
+					//change JTest to admin
+					if(response.equals("User successfully logged in") && username.equals("JTest"))
 					{
-						if(!password.equals(admin.getPassword()))
-						{
-							setWarningMsg("Invalid Password.");
-						}
-						else
-						{
-							changedVerification();
-							System.out.println("Administrator verified");
-							adminVeri.revalidate();
-						}					
+						verify = true;
+						System.out.println("Administrator verified");
+						adminVeri.dispose();
 					}
 				}
 			});
 			verificationPanel.add(verificationButton);
 			adminVeri.add(verificationPanel);
-			
-			if (currentUser.getUserId()=="1"){
-				changedVerification();
-				System.out.println("is Admin");
-			}
-			
-			if(this.verify){
-				verification = verify; 
-				adminVeri.dispose();
-			}
 		}
 	}
 	
-	public void changedVerification()
+	protected String callUserLoginProcedure(Connection connect, String username, String password) 
 	{
-		verify = true;
+		String response = "";
+		
+		CallableStatement stmt = null;
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspLogin(?,?,?)}");
+			
+			//set the parameters
+			stmt.setString(1, username);
+			stmt.setNString(2, password);
+			stmt.registerOutParameter(3, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to login to employee");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			response = stmt.getString(3);
+			System.out.println(response);
+			if(!response.equals("User successfully logged in"))
+			{
+				setWarningMsg(response);
+			}
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+			setWarningMsg("Invalid Username. Note usernames and "
+					+ "passwords are case sensitive");
+		}
+		return response;
 	}
-
+	
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
@@ -143,7 +169,6 @@ public class AdminVerificationScreen extends JDialog{
 	    dialog.setVisible(true);
 	}
 
-	//temp code
 	public boolean getVerification() {
 		return false;
 	}

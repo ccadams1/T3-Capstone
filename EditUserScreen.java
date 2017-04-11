@@ -198,27 +198,50 @@ public class EditUserScreen extends JDialog {
 						if(employees.get(x).getUserId().equals(userID))
 						{
 							selectedUser = employees.get(x);
+							selectedUser.print();
 						}
 					}
-					callEditUserProcedure(connect, selectedUser);
 
-					boolean temps = true; //temp code
-					/*AdminVerificationScreen adminveri = new AdminVerificationScreen(data, temps);
-					adminveri.addWindowListener(new WindowAdapter(){
-						public void windowClosing(WindowEvent e){
-							if (adminveri.getVerification())
-							{
-									
-								//Temp code to test functionality
-								temp.print();
-							}
-							else
-							{
-								setWarningMsg("Administrator not verified. No "
-										+ "information was saved.");
-							}
+					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
+					if (adminveri.verify)
+					{
+						callEditUserProcedure(connect, selectedUser);
+						if(!username.equals(""))
+						{
+							selectedUser.setUsername(username);
 						}
-					});*/
+						if(!password.equals(""))
+						{
+							selectedUser.setPassword(password);
+						}
+						if(!fName.equals(""))
+						{
+							selectedUser.setFirstName(fName);
+						}
+						if(!lName.equals(""))
+						{
+							selectedUser.setLastName(lName);
+						}
+						if(!userRole.equals(""))
+						{
+							selectedUser.setRole(userRole);
+						}
+						if(!email.equals(""))
+						{
+							selectedUser.setEmail(email);
+						}
+						if(!phone.equals(""))
+						{
+							selectedUser.setPhone(phone);
+						}
+						System.out.println("User edit complete");
+						updateDisplay();
+					}
+					else
+					{
+						setWarningMsg("Administrator not verified. No "
+								+ "information was saved.");
+					}
 				}
 			}
 		});
@@ -244,7 +267,7 @@ public class EditUserScreen extends JDialog {
 			stmt = connect.prepareCall("{call dbo.uspEditUser(?,?,?,?,?,?,?,?,?,?)}");
 			
 			//set the parameters
-			stmt.setInt(1, Integer.parseInt(temp.getUserId()));
+			stmt.setInt(1, temp.getIntUserID());
 			stmt.setString(2, temp.getUsername());
 			stmt.setString(3, temp.getPassword());
 			stmt.setString(4, temp.getFirstName());
@@ -253,7 +276,7 @@ public class EditUserScreen extends JDialog {
 			stmt.setString(7, temp.getEmail());
 			stmt.setString(8, temp.getPhone());
 			stmt.setInt(9, /*temp.isRemoved()*/0);
-			stmt.registerOutParameter(10, Types.VARCHAR);
+			stmt.registerOutParameter(10, Types.NVARCHAR);
 			
 			//call stored procedure
 			System.out.println("Calling stored procedure to edit user");

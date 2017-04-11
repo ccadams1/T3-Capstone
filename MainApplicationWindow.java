@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.CardLayout;
 
-public class MainApplicationWindow {
+public class MainApplicationWindow extends JFrame{
 	private static ArrayList<Object> allData = new ArrayList<Object>();
 	private static Connection connection = null;
 	private static CustomerList customers = new CustomerList();
@@ -40,6 +40,8 @@ public class MainApplicationWindow {
 					customers.populate(pull.getCustomers());
 					employees.populate(pull.getEmployees());
 					inventory.populate(pull.getInventory());
+					suppliers.populate(pull.getSuppliers());
+					currentUser = null;
 					/*Item test1 = new Item("Test name", "123", 12.50, 1, "New guys", 5, 50, "first item for testing", false);
 					Item test2 = new Item("Another Test", "456", 9.00, 2, "More New guys", 10, 50, "second item for testing", false);
 					inventory.addItem(test1);
@@ -59,8 +61,6 @@ public class MainApplicationWindow {
 					suppliers.addSupplier(company1);
 					suppliers.addSupplier(company2);
 					*/
-					suppliers.populate(pull.getSuppliers());
-					currentUser = null;
 					allData.add(connection); //get(0)
 					allData.add(customers);//get(1)
 					allData.add(employees);//get(2)
@@ -68,8 +68,8 @@ public class MainApplicationWindow {
 					allData.add(myBusiness);//get(4)
 					allData.add(suppliers);//get(5)
 					allData.add(currentUser);//get(6)
-					new LoginScreen(allData);		
 					MainApplicationWindow window = new MainApplicationWindow(allData);
+					//new LoginScreen(allData);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -108,7 +108,7 @@ public class MainApplicationWindow {
 		
 		//Main panel
 		//adds the Main Screen
-		mainPanel = new MainPanel(menuBar, data);
+		mainPanel = new MainPanel(menuBar, data, frame);
 		mainPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(mainPanel);
 		mainPanel.setVisible(true);

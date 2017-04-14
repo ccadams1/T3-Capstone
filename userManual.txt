@@ -1,0 +1,181 @@
+USER MANUAL
+Tracking & Inventory
+
+Table of Contents
+1	Introduction	2
+1.1	Tracking & Inventory	2
+1.2	Licensing Requirements	2
+1.3	Legal, Copyright, and Other Notices	2
+1.4	User and System Requirements	2
+1.4.1	Database Server Minimum Requirements	2
+1.4.2	Client (Personal Computer) Minimum Requirements	3
+1.5	Installation	3
+1.6	Initial Set-Up	3
+2	Software Operation	4
+2.1	Operating Environment	4
+2.1.1	Login Screen	4
+2.1.2	Main User Screen	5
+2.1.3	POS Screen	6
+2.1.4	Checkout Screen	7
+2.1.5	Add Inventory Screen	8
+2.1.6	Edit Inventory Screen	9
+2.1.7	Delete Inventory Screen	10
+2.1.8	Inventory Search Screen	11
+2.1.9	Supplier Search Screen	12
+2.1.10	Customer Search Screen	13
+2.1.11	Report Screen	14
+2.1.12	Help Screen	15
+3	Notes	16
+3.1	Historical Record	16
+
+
+Introduction
+The Tracking and Inventory application created by T3 is to provide a completely configurable program that will allow any small business the ability to quickly and easily set up inventory tracking. 
+Tracking & Inventory
+Thank you for downloading the T3 Tracking application. The Tracking and Inventory application created by T3 provides a completely configurable program that will allow any small business the ability to quickly and easily set up inventory tracking.
+Licensing Requirements
+The purchaser of the software is not required to adhere to any licensing requirements. 
+Legal, Copyright, and Other Notices
+This application is available to the public domain and, therefore is not subject to copyright.
+User and System Requirements
+The T3 Tracking and Inventory standard operating environment is designed solely for Microsoft Windows operating systems. The software application will be utilizing the Java Swing GUI widget toolkit. Within the user environment, T3 Tracking and Inventory will give the initially set up administrator user the ability to create sub-users for employee use. Upon creation of the sub-users, the administrator user will be able to control the permissions assigned to all sub-users in regards to altering and manipulating the data. No users outside of the development team will have access to the coding of the software or the database. The T3 Tracking and Inventory standard operating environment is designed solely for Microsoft Windows operating systems. The software application will be utilizing the Java Swing GUI widget toolkit. Recommended screen resolution settings are 800 x 600 for optimal use.
+Database Server Minimum Requirements 
+Note that recommended requirements will be based on the client’s business size, number of users and available resources.
+	•	Microsoft SQL Server 
+	•	1 GB RAM 
+	•	2.0 GHz or faster Processer (AMD Athlon 64 or Pentium III x86)
+	•	10 GB available disk space on the system drive 
+Client (Personal Computer) Minimum Requirements
+	•	Microsoft Windows XP OS or higher
+	•	Intel Pentium Processor with 2.0 Ghz or AMD Athlon 64 2800
+	•	1 GB RAM
+	•	128 MB VRAM Software Interfaces
+Installation
+Reference Installation Manual.
+Initial Set-Up
+Describe initial set-up here. This will be notes on logging in the first time, setting up the Admin user and setting the My Business profile.
+
+
+Software Operation
+Operating Environment
+Login Screen
+When opening our T3Tracking program, you will first be shown the Login Screen. On the Login screen, you must enter your username and password to continue. 
+
+
+
+Main User Screen
+
+Once logged into your account, you will be shown the main screen. 
+The main screen contains six buttons that may be selected. 
+These buttons are: Point-of-Sale (POS), Inventory, Reports, Search, Help, and Settings. 
+Selecting a button will take you to their respective screen.
+
+
+
+POS Screen
+
+Once you open the Point-of-Sales(POS) screen you are presented with a number of buttons that represents each item 
+on your inventory list. When you click on each one of them, they are added to the right side of the screen where 
+you can modify the quantity, or if you change your mind, you can delete the item from the "shopping cart". The right 
+side of the screen will show the item name, quantity, and price. The right bottom screen will show the subtotal, 
+discounts, taxes and the total amount due for all of the items selected. It also has a button called Check Out 
+which will take you to the Checkout screen.
+
+
+Checkout Screen 
+
+Once you are in the Checkout screen, you will be given two options: search for a customer, or create a new customer. 
+When pressing either button, a new screen will pop-up and you will need to enter the information needed. If you choose 
+either one, the invoice will be saved to that specific customer. 
+
+
+Add Inventory Screen
+
+One of the six main screen, the Inventory screen, lets you add your inventory items, as well as the supplier of each item.
+You will be presented with fields that you need to fill out, for the item name, quantity, price, item description, and the 
+par stock, which is the minimum quantity of that item that your business needs to keep on hand. You will also choose one 
+of the suppliers available for that item by selecting it from the drop down menu. Once you are done filling out all these 
+fields, click on the "Change Inventory" button, and your new item will be added to the list at the bottom of the screen. 
+If the fields are empty, and you try to click on the button, a warning message will pop up telling you that at least 
+three fields need to be filled out. 
+
+
+Edit Inventory Screen
+ 
+When you choose the Edit Item radio button, you will be presented with the same fields that are on the Add item panel, 
+but in order to edit any of the product's data, you will need to first enter the Item ID number, and then you can either 
+change the price, quantity, and such. The changes will be reflected at the bottom of the screen. 
+
+
+Delete Inventory Screen
+ 
+When you click the Delete Item radio button, to the right of the screen, you will need to enter the item name and item ID. 
+Once you have entered that information, check the "Confirm Delete" option, and then click the Delete Item button, and that 
+specific item will be deleted from the system. 
+
+
+Inventory Search Screen
+ 
+When the Search button is selected from the main screen, you are taken to the Search screen. The Search screen starts 
+from the left side, where you select one of three search types, which are Customer, Inventory, Supplier Information.
+When selecting Inventory Information as a search type, you will be able to search for all inventory related information. 
+You may add in specific criteria to make the search easier, such as the items name, id, price range, and the items 
+suppliers name. Once you have added the desired criteria, you may finish by selecting the “Search” button. Your information 
+will be provided on the bottom side of the screen. 
+
+
+Supplier Search Screen
+ 
+When the Search button is selected from the main screen, you are taken to the Search screen. The Search screen starts 
+from the left side, where you select one of three search types, which are Customer, Inventory, Supplier Information.
+When selecting Supplier Information as a search type, you will be able to search for all supplier information. 
+You may add in specific criteria to make the search easier, such as the suppliers name, id, address, e-mail, 
+phone number, and website. Once you have added the desired criteria, you may finish by selecting the “Search” button. 
+Your information will be provided on the bottom side of the screen. 
+
+
+Customer Search Screen
+ 
+When the Search button is selected from the main screen, you are taken to the Search screen. The Search screen starts 
+from the left side, where you select one of three search types, which are Customer, Inventory, Supplier Information.
+When selecting Customer Information as a search type, you will be able to search for all customer related information. 
+You may add in specific criteria to make the search easier, such as the customers first and last name, id, phone number, 
+address, and e-mail. Once you have added the desired criteria, you may finish by selecting the “Search” button. 
+Your information will be provided on the bottom side of the screen. 
+
+
+
+Report Screen
+ 
+The report screen gives you a detailed summary of your business's information, inventory, and sales. You are given 
+three options: Business, Inventory, and Sales. When you click either one of these checkboxes, their options will activate, 
+and you can click on each one of these options, or click on all of them, and you will be able to generate a report showing 
+up either one of these options, such as business's name, address, or when choosing the Inventory option, you can generate 
+a report that will show the item ID, name, description, and such. Same with the sales option, you will be given different 
+options. Once you have chosen which criteria you want to see on your report, you click on the View button, to instantly 
+see the report at the bottom of the screen, click on the Save button to save the report as a WORD Document in your 
+desired folder, or click the Print button to send your report to your preferred printer, and print the report. 
+
+
+Help Screen
+ 
+When selecting the Help button from the main screen, you are taken to the Help screen. The help screen contains all the 
+contents of this user manual, organized by screen. When selecting one of the bolded buttons, which are Main Screen, POS 
+Screen, Inventory Screen, Search Screen, Report Screen and Help Screen, all the information on that screen will be pulled 
+up. If information on a specific button, panel, window, or bar on any screen is required, you will be able to select said 
+options, located under their respective bolded screen option. 
+
+
+
+Notes
+Historical Record
+Version Number
+Change From Previous Issue
+1.0
+Initial issue
+
+
+
+
+
+

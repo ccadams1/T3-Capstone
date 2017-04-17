@@ -22,6 +22,8 @@ public class POSPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Inventory inventory = new Inventory();
 	private JPanel panel_2;
+	private int panelCounter = 0;
+	private int checkoutPanels = 1;
 
 	public POSPanel(ArrayList<Object> data)
 	{
@@ -114,7 +116,7 @@ public class POSPanel extends JPanel{
 		scrollPane.setBounds(515, 0, 255, 355);
 		panel.add(scrollPane);
 		
-		JPanel panel_2 = new JPanel();
+		CheckoutList panel_2 = new CheckoutList();
 		scrollPane.setViewportView(panel_2);
 		panel_2.setLayout(new GridLayout(10, 1, 0, 0));
 
@@ -131,22 +133,58 @@ public class POSPanel extends JPanel{
 						POSButton button = new POSButton(inventory.get(x), panel_2, panel_3);
 						button.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
-								JPanel newPanel = button.getCheckPanel();
+								CheckoutItemPanel newPanel = button.checkoutPanel;
 								newPanel.setVisible(true);
 								JPanel spacer = new JPanel();
 								spacer.setSize(235,1);
+								panelCounter++;
+								if((panelCounter/6)>=checkoutPanels)
+								{
+									checkoutPanels++;
+									System.out.println(checkoutPanels);
+								}
+								if(panel_2.getComponentCount()==0)
+								{
+									panel_2.add(newPanel);
+								}
+								else
+								{
+									for(int x = 0; x < panel_2.getComponentCount(); x++)
+									{
+										System.out.println( panel_2.getComponentCount());
+										if(panel_2.getCheckoutComponent(x).getItemName().equals(button.checkoutPanel.getItemName()))
+										{
+											panel_2.getCheckoutComponent(x).increaseQuantity();
+											checkoutPanels--;
+										}
+										else
+										{
+											panel_2.add(newPanel);
+										}
+									}
+								}
 								panel_2.add(spacer);
 								panel_3.addToSubtotal(button.getPrice());
-								panel_2.add(newPanel);
 								panel_2.remove(spacer);
 								panel_3.updateLabels();
 								panel_2.validate();
+								
 							}
 						});
 						panel_1.add(button);
 					}
 				}
 				panel_1.revalidate();
+				panel_2.revalidate();
+			}
+			public void componentHidden(ComponentEvent e) {
+				for(int x = 0; x < panel_1.getComponentCount(); x++)
+				{
+					panel_1.getComponent(x).setVisible(false);
+				}
+				panel_1.removeAll();
+				panel_1.revalidate();
+				panel_2.removeAll();
 				panel_2.revalidate();
 			}
 		});

@@ -669,7 +669,7 @@ public class SearchPanel extends JPanel{
 							original.isRemoved());
 				}
 				temp.setName(temp.getName().toLowerCase().trim().replaceAll(" ", ""));
-				temp.setID(temp.getID().toLowerCase().trim().replaceAll(" ", ""));
+				temp.setID(temp.getID());
 				temp.setPhone1(temp.getPhone1());
 				temp.setStAdress1(temp.getStAdress1().toLowerCase().trim().replaceAll(" ", ""));
 				if(temp.getEmail()!=null){
@@ -720,9 +720,9 @@ public class SearchPanel extends JPanel{
 				}
 				
 				//checks Id
-				if(!searchID.equals(""))
+				if(!supplierIDTextField.getText().equals(""))
 				{
-					if(originalList.get(y).getID().contains(searchID))
+					if(originalList.get(y).getID()==(Integer.parseInt(searchID)))
 					{
 						containsID = true;
 					}
@@ -746,7 +746,7 @@ public class SearchPanel extends JPanel{
 				}
 				
 				//checks Id
-				if(!searchID.equals(""))
+				if(!supplierIDTextField.getText().equals(""))
 				{
 					if(originalList.get(y).getStAdress1().contains(searchAddress))
 					{
@@ -789,7 +789,7 @@ public class SearchPanel extends JPanel{
 					addToResults = true;
 				}
 				
-				if(searchName.equals("") && searchID.equals("") && searchPhone.equals("") 
+				if(searchName.equals("") && supplierIDTextField.getText().equals("") && searchPhone.equals("") 
 						&& searchAddress.equals("") && searchEmail.equals("") && searchWebsite.equals(""))
 				{
 					addToResults = true;
@@ -816,7 +816,7 @@ public class SearchPanel extends JPanel{
 		String string = "";
 		if(customerRadioButton.isSelected())
 		{
-			string += "Customer ID\tFirst Name\tLast Name\tAddress\tCity\tState\tZipcode\tMain Phone\tOther Phone\tEmail\t\tFax\n";
+			string += "Customer ID\tFirst Name\tLast Name\tAddress\t\tCity\tState\tZipcode\tMain Phone\tOther Phone\tEmail\t\tFax\n";
 			string += "---------------------------------------------------------------------------------------------------------";
 			string += "---------------------------------------------------------------------------------------------------------";
 			string += "-------------------------------------------------------------------------\n";

@@ -74,11 +74,16 @@ public class EmployeeList {
 		s += "-------------------------------------------------------------------------";
 		s += "-------------------------------------------------------------------------";
 		s += "-------------------------------------------------------------------------\n";
-		for(int i = 0; i < employees.size(); i++){
-			s += employees.get(i).getUserId() + "\t" + employees.get(i).getUsername();
-			s += "\t" + employees.get(i).getFirstName();
-			s += "\t" + employees.get(i).getLastName() + "\t" + employees.get(i).getRole();
-			s += "\t" + employees.get(i).getEmail() + "\t" + employees.get(i).getPhone() + "\n";
+		
+		for(int i = 0; i < employees.size(); i++)
+		{
+			if(!employees.get(i).isRemoved())
+			{
+				s += employees.get(i).getUserId() + "\t" + employees.get(i).getUsername();
+				s += "\t" + employees.get(i).getFirstName();
+				s += "\t" + employees.get(i).getLastName() + "\t" + employees.get(i).getRole();
+				s += "\t" + employees.get(i).getEmail() + "\t" + employees.get(i).getPhone() + "\n";
+			}
 		}
 		return s;
 	}

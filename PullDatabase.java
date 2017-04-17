@@ -194,7 +194,7 @@ public class PullDatabase {
 				String email = rs.getString("email");
 				String fax = rs.getString("fax");
 				boolean removed = rs.getBoolean("removed");
-				Supplier s = new Supplier(name, id, st_address1, st_address2,
+				Supplier s = new Supplier(name, Integer.parseInt(id), st_address1, st_address2,
 						city, state, zip_code, logo, phone1, phone2, website,
 						email, fax, removed);
 				suppliers.add(s);

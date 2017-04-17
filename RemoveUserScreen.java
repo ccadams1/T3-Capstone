@@ -62,7 +62,7 @@ public class RemoveUserScreen extends JDialog {
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setModal(true);
-		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		this.setModalityType(ModalityType.DOCUMENT_MODAL);
 		this.setTitle("Remove User");
 		this.getContentPane().setLayout(null);
 		
@@ -83,18 +83,18 @@ public class RemoveUserScreen extends JDialog {
 		usernameTextField.setBounds(100, 8, 150, 35);
 		this.getContentPane().add(usernameTextField);
 		usernameTextField.setColumns(10);
-		String username = usernameTextField.getText().trim();
 		
 		userIDTextField = new JTextField();
 		userIDTextField.setBounds(100, 49, 150, 35);
 		this.getContentPane().add(userIDTextField);
 		userIDTextField.setColumns(10);
-		String userID = userIDTextField.getText().trim();
 		
 		JButton btnRemoveUser = new JButton("Remove User");
 		btnRemoveUser.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnRemoveUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String username = usernameTextField.getText().trim();
+				String userID = userIDTextField.getText().trim();
 				for(int x = 0; x < employees.size(); x++)
 				{
 					if(employees.get(x).getUserId().equals(userID))
@@ -121,6 +121,7 @@ public class RemoveUserScreen extends JDialog {
 				else{
 					setWarningMsg("There is no user match.");
 				}
+				updateDisplay();
 			}
 		});
 		btnRemoveUser.setBounds(263, 34, 150, 37);
@@ -180,5 +181,6 @@ public class RemoveUserScreen extends JDialog {
 	
 	private void updateDisplay(){
 		textPane.setText(employees.toString());
+		textPane.revalidate();
 	}
 }

@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 public class POSButton extends JButton {
 	private static final long serialVersionUID = 1L;
 	private Item item;
-	private CheckoutItemPanel checkoutPanel;
+	public CheckoutItemPanel checkoutPanel;
 	
 	public POSButton(Item item, JPanel parent, CheckoutPanel panel_3){
 		this.item = item;
@@ -12,7 +12,7 @@ public class POSButton extends JButton {
 		this.checkoutPanel = new CheckoutItemPanel(item, parent, panel_3);
 	}
 	
-	public JPanel getCheckPanel(){
+	public CheckoutItemPanel getCheckPanel(){
 		return checkoutPanel.getThisPanel();
 	}
 	

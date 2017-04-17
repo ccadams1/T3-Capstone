@@ -30,8 +30,6 @@ public class ReportPanel extends JPanel{
 	JCheckBox businessCheck2;
 	JCheckBox businessCheck3;
 	JCheckBox businessCheck4;
-	JCheckBox businessCheck5;
-	JCheckBox businessCheck6;
 	JCheckBox businessCheck7;
 	JCheckBox businessCheck8;
 	JCheckBox businessCheck9;
@@ -50,11 +48,6 @@ public class ReportPanel extends JPanel{
 	JCheckBox itemInactiveCheck;
 	
 	JCheckBox salesCheck1;
-	JCheckBox salesCheck2;
-	JCheckBox salesCheck3;
-	JCheckBox salesCheck4;
-	JCheckBox salesCheck5;
-	JCheckBox salesCheck6;
 		
 	public ReportPanel(ArrayList<Object> data)
 	{
@@ -108,8 +101,6 @@ public class ReportPanel extends JPanel{
 					businessCheck2.setEnabled(true);
 					businessCheck3.setEnabled(true);
 					businessCheck4.setEnabled(true);
-					businessCheck5.setEnabled(true);
-					businessCheck6.setEnabled(true);
 					businessCheck7.setEnabled(true);
 					businessCheck8.setEnabled(true);
 					businessCheck9.setEnabled(true);
@@ -123,8 +114,6 @@ public class ReportPanel extends JPanel{
 					businessCheck2.setEnabled(false);
 					businessCheck3.setEnabled(false);
 					businessCheck4.setEnabled(false);
-					businessCheck5.setEnabled(false);
-					businessCheck6.setEnabled(false);
 					businessCheck7.setEnabled(false);
 					businessCheck8.setEnabled(false);
 					businessCheck9.setEnabled(false);
@@ -171,20 +160,10 @@ public class ReportPanel extends JPanel{
 				if(salesCheckBox.isSelected())
 				{
 					salesCheck1.setEnabled(true);
-					salesCheck2.setEnabled(true);
-					salesCheck3.setEnabled(true);
-					salesCheck4.setEnabled(true);
-					salesCheck5.setEnabled(true);
-					salesCheck6.setEnabled(true);
 				}
 				else if(!salesCheckBox.isSelected())
 				{
 					salesCheck1.setEnabled(false);
-					salesCheck2.setEnabled(false);
-					salesCheck3.setEnabled(false);
-					salesCheck4.setEnabled(false);
-					salesCheck5.setEnabled(false);
-					salesCheck6.setEnabled(false);
 				}
 			}
 		});
@@ -200,48 +179,37 @@ public class ReportPanel extends JPanel{
 						textAreaString += "\t \t \t"+ businessObj.getBizName() +" \n";
 					}
 					if(businessCheck2.isSelected()) {
-						textAreaString += "Street Address \n";
-						textAreaString += businessObj.getStAdress1();
+						textAreaString += businessObj.getStAdress1()+"\n";
 					}
 					if(businessCheck3.isSelected()) {
-						textAreaString += "Street Address Line 2 \n";
-						textAreaString += businessObj.getStAdress2();
+						textAreaString += businessObj.getStAdress2()+"\n";
 					}
 					if(businessCheck4.isSelected()) {
-						textAreaString += "City, State, Zip Code \n \n";
-						textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n";	    
-					}
-					if(businessCheck5.isSelected()) {
-						textAreaString += "Logo \n";
-						textAreaString += businessObj.getLogo1();
-					}
-					if(businessCheck6.isSelected()) {
-						textAreaString += "Logo 2 \n";
-						textAreaString += businessObj.getLogo2();
+						textAreaString += businessObj.getCity()+" , "+businessObj.getState()+" , "+businessObj.getZipCode() + "\n\n";	    
 					}
 					if(businessCheck7.isSelected()) {
-						textAreaString += "Phone Number \n";
-						textAreaString += businessObj.getPhone1();
+						textAreaString += "Phone Number: ";
+						textAreaString += businessObj.getPhone1()+"\n";
 					}
 					if(businessCheck8.isSelected()) {
-						textAreaString += "Phone Number 2 \n";
-						textAreaString += businessObj.getPhone2();
+						textAreaString += "Phone Number 2: ";
+						textAreaString += businessObj.getPhone2()+"\n";
 					}
 					if(businessCheck9.isSelected()) {
-						textAreaString += "Website \n";
-						textAreaString += businessObj.getWebsite();
+						textAreaString += "Website: ";
+						textAreaString += businessObj.getWebsite()+"\n";
 					}
 					if(businessCheck10.isSelected()) {
-						textAreaString += "E-mail \n";
-						textAreaString += businessObj.getEmail();
+						textAreaString += "E-mail: ";
+						textAreaString += businessObj.getEmail()+"\n";
 					}
 					if(businessCheck11.isSelected()) {
-						textAreaString += "Fax Number \n";
-						textAreaString += businessObj.getFax();
+						textAreaString += "Fax Number: ";
+						textAreaString += businessObj.getFax()+"\n";
 					}
 					if(businessCheck12.isSelected()) {
-						textAreaString += "Owner First/Last Name \n \n";
-						textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName();
+						textAreaString += "Owner: ";
+						textAreaString += businessObj.getOwnerFirstName() + " " + businessObj.getOwnerLastName()+"\n\n";
 					}
 					textArea.setText(textAreaString);
 				}
@@ -387,25 +355,9 @@ public class ReportPanel extends JPanel{
 					if (salesCheck1.isSelected()) {
 						
 					}
-					if (salesCheck2.isSelected()) {
-							
-					}
-					if (salesCheck3.isSelected()) {
-							
-					}
-					if (salesCheck4.isSelected()) {
-							
-					}
-					if (salesCheck5.isSelected()) {
-							
-					}
-					if (salesCheck6.isSelected()) {
-							
-					}
 						
-					textAreaString += "Sales Report\n";
-					textAreaString += "-------------------------------------------------------------------------------- \n \n";
-					
+					textAreaString += "\nSales Report\n";
+					textAreaString += "-------------------------------------------------------------------------------- \n ";
 					textAreaString += "Sales: ";
 					textArea.setText(textAreaString);
 				}
@@ -526,18 +478,6 @@ public class ReportPanel extends JPanel{
 		businessCheck4.setEnabled(false);
 				
 		//checkbox for business panel
-		businessCheck5 = new JCheckBox("Logo");
-		businessCheck5.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		businessPanel.add(businessCheck5);
-		businessCheck5.setEnabled(false);
-		
-		//checkbox for business panel
-		businessCheck6 = new JCheckBox("Logo 2");
-		businessCheck6.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		businessPanel.add(businessCheck6);
-		businessCheck6.setEnabled(false);
-				
-		//checkbox for business panel
 		businessCheck7 = new JCheckBox("Phone Number");
 		businessCheck7.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		businessPanel.add(businessCheck7);
@@ -656,41 +596,11 @@ public class ReportPanel extends JPanel{
 		salesPanel.setLayout(new GridLayout(15, 1, 0, 0));
 				
 		//checkbox for sales panel
-		salesCheck1 = new JCheckBox("Insert Sales info");
+		salesCheck1 = new JCheckBox("Today's sales");
 		salesCheck1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		salesCheck1.setActionCommand("");
 		salesPanel.add(salesCheck1);
 		salesCheck1.setEnabled(false);
-				
-		//checkbox for sales panel
-		salesCheck2 = new JCheckBox("more info");
-		salesCheck2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		salesPanel.add(salesCheck2);
-		salesCheck2.setEnabled(false);		
-		
-		//checkbox for sales panel
-		salesCheck3 = new JCheckBox("and more");
-		salesCheck3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		salesPanel.add(salesCheck3);
-		salesCheck3.setEnabled(false);
-		
-		//checkbox for sales panel
-		salesCheck4 = new JCheckBox("and more");
-		salesCheck4.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		salesPanel.add(salesCheck4);
-		salesCheck4.setEnabled(false);
-		
-		//checkbox for sales panel
-		salesCheck5 = new JCheckBox("and more");
-		salesCheck5.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		salesPanel.add(salesCheck5);
-		salesCheck5.setEnabled(false);
-			
-		//checkbox for sales panel
-		salesCheck6 = new JCheckBox("and more");
-		salesCheck6.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		salesPanel.add(salesCheck6);
-		salesCheck6.setEnabled(false);
 		return reportInfoPanel;
 	}
 }

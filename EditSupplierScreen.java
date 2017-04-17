@@ -1,4 +1,5 @@
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -6,28 +7,34 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.sql.CallableStatement;
 import java.sql.Connection; 
 import java.sql.SQLException; 
-import java.sql.Statement; 
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList; 
 import java.awt.Font;
+import java.awt.Toolkit;
+
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 
 public class EditSupplierScreen extends JDialog {
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
+	private JTextField supplierIDTextField;
+	private JTextField supplierNameTextField;
+	private JTextField addressTextField;
+	private JTextField cityTextField;
+	private JTextField stateTextField;
+	private JTextField zipCodeTextField;
+	private JTextField phoneTextField;
+	private JTextField websiteTextField;
+	private JTextField emailTextField;
 	private JTextArea textArea;
+	private SupplierList suppliers;
+	private Supplier selectedSupplier;
 	
-	private EmployeeList employees;
 
 	/*
 	public static void main(String[] args) {
@@ -58,117 +65,103 @@ public class EditSupplierScreen extends JDialog {
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setModal(true);
-		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		this.setModalityType(ModalityType.DOCUMENT_MODAL);
 		this.setTitle("Edit Supplier");
 		this.getContentPane().setLayout(null);
 		
-		employees = (EmployeeList) data.get(2); 
+		suppliers = (SupplierList) data.get(5); 
 		Connection connect = (Connection) data.get(0);
+
+		JLabel lblSupplierId = new JLabel("Supplier ID*:");
+		lblSupplierId.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSupplierId.setBounds(10, 17, 149, 29);
+		getContentPane().add(lblSupplierId);
 		
-		JLabel lblUsername = new JLabel("Supplier Id:");
-		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblUsername.setBounds(10, 55, 149, 29);
-		getContentPane().add(lblUsername);
+		JLabel lblSupplierName = new JLabel("Supplier Name:");
+		lblSupplierName.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSupplierName.setBounds(10, 55, 149, 29);
+		getContentPane().add(lblSupplierName);
 		
-		JLabel lblPassword = new JLabel("Name:");
-		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblPassword.setBounds(10, 93, 149, 29);
-		getContentPane().add(lblPassword);
+		JLabel lblAddress = new JLabel("Street Address:");
+		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblAddress.setBounds(10, 93, 149, 29);
+		getContentPane().add(lblAddress);
 		
-		JLabel lblRetypePassword = new JLabel("Street Address:");
-		lblRetypePassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblRetypePassword.setBounds(10, 131, 149, 29);
-		getContentPane().add(lblRetypePassword);
+		JLabel lblCity = new JLabel("City:");
+		lblCity.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblCity.setBounds(10, 131, 149, 29);
+		getContentPane().add(lblCity);
 		
-		JLabel lblFirstName = new JLabel("City:");
-		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblFirstName.setBounds(10, 169, 149, 29);
-		getContentPane().add(lblFirstName);
+		JLabel lblState = new JLabel("State:");
+		lblState.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblState.setBounds(10, 169, 149, 29);
+		getContentPane().add(lblState);
 		
-		JLabel lblLastName = new JLabel("State:");
-		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblLastName.setBounds(10, 207, 149, 29);
-		getContentPane().add(lblLastName);
+		JLabel lblZipCode = new JLabel("Zip Code:");
+		lblZipCode.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblZipCode.setBounds(10, 207, 149, 29);
+		getContentPane().add(lblZipCode);
 		
-		JLabel lblEmployeeRole = new JLabel("Zip Code:");
-		lblEmployeeRole.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblEmployeeRole.setBounds(10, 245, 149, 29);
-		getContentPane().add(lblEmployeeRole);
+		JLabel lblPhone = new JLabel("Phone Number:");
+		lblPhone.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblPhone.setBounds(10, 245, 149, 29);
+		getContentPane().add(lblPhone);
 		
-		JLabel lblEmailAddress = new JLabel("Phone Number:");
+		JLabel lblWebsite = new JLabel("Website:");
+		lblWebsite.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblWebsite.setBounds(10, 283, 149, 29);
+		getContentPane().add(lblWebsite);
+		
+		JLabel lblEmailAddress = new JLabel("Email:");
 		lblEmailAddress.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblEmailAddress.setBounds(10, 283, 149, 29);
+		lblEmailAddress.setBounds(10, 321, 149, 29);
 		getContentPane().add(lblEmailAddress);
 		
-		JLabel lblPhoneNumber = new JLabel("Email:");
-		lblPhoneNumber.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblPhoneNumber.setBounds(10, 321, 149, 29);
-		getContentPane().add(lblPhoneNumber);
+		supplierIDTextField = new JTextField();
+		supplierIDTextField.setToolTipText("Required to edit the user");
+		supplierIDTextField.setColumns(10);
+		supplierIDTextField.setBounds(158, 11, 191, 35);
+		getContentPane().add(supplierIDTextField);
 		
-		textField = new JTextField();
-		textField.setBounds(158, 49, 191, 35);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		supplierNameTextField = new JTextField();
+		supplierNameTextField.setBounds(158, 49, 191, 35);
+		getContentPane().add(supplierNameTextField);
+		supplierNameTextField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(158, 87, 191, 35);
-		getContentPane().add(textField_1);
+		addressTextField = new JTextField();
+		addressTextField.setColumns(10);
+		addressTextField.setBounds(158, 87, 191, 35);
+		getContentPane().add(addressTextField);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(158, 125, 191, 35);
-		getContentPane().add(textField_2);
+		cityTextField = new JTextField();
+		cityTextField.setColumns(10);
+		cityTextField.setBounds(158, 125, 191, 35);
+		getContentPane().add(cityTextField);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(158, 163, 191, 35);
-		getContentPane().add(textField_3);
+		stateTextField = new JTextField();
+		stateTextField.setColumns(10);
+		stateTextField.setBounds(158, 163, 191, 35);
+		getContentPane().add(stateTextField);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(158, 201, 191, 35);
-		getContentPane().add(textField_4);
+		zipCodeTextField = new JTextField();
+		zipCodeTextField.setColumns(10);
+		zipCodeTextField.setBounds(158, 201, 191, 35);
+		getContentPane().add(zipCodeTextField);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(158, 277, 191, 35);
-		getContentPane().add(textField_5);
+		phoneTextField = new JTextField();
+		phoneTextField.setColumns(10);
+		phoneTextField.setBounds(158, 238, 191, 35);
+		getContentPane().add(phoneTextField);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(158, 315, 191, 35);
-		getContentPane().add(textField_6);
+		websiteTextField = new JTextField();
+		websiteTextField.setColumns(10);
+		websiteTextField.setBounds(158, 277, 191, 35);
+		getContentPane().add(websiteTextField);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.addItem("");
-		comboBox.addItem("Inventory Manager");
-		comboBox.addItem("Inventory User");
-		comboBox.addItem("POS Manager");
-		comboBox.addItem("POS User");
-		comboBox.setSelectedItem("");
-		comboBox.setBounds(158, 238, 191, 35);
-		getContentPane().add(comboBox);
-		
-		JButton btnEditUser = new JButton("Edit User");
-		/*
-		btnEditUser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new AdminVerificationScreen();
-			}
-		});
-		*/
-		
-		JLabel lblUserId = new JLabel("User ID:");
-		lblUserId.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblUserId.setBounds(10, 17, 149, 29);
-		getContentPane().add(lblUserId);
-		
-		textField_7 = new JTextField();
-		textField_7.setToolTipText("Required to edit the user");
-		textField_7.setColumns(10);
-		textField_7.setBounds(158, 11, 191, 35);
-		getContentPane().add(textField_7);
+		emailTextField = new JTextField();
+		emailTextField.setColumns(10);
+		emailTextField.setBounds(158, 315, 191, 35);
+		getContentPane().add(emailTextField);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 404, 372, 117);
@@ -177,133 +170,149 @@ public class EditSupplierScreen extends JDialog {
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(false);
-		textArea.setText(employees.toString());
+		textArea.setText(suppliers.toString());
 				
+		JButton btnEditUser = new JButton("Edit Supplier");
 		btnEditUser.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String text = textField.getText();
-				String text_1 = textField_1.getText();
-				String text_2 = textField_2.getText();
-				String text_3 = textField_3.getText();
-				String text_4 = textField_4.getText();
-				String text_5 = textField_5.getText();
-				String text_6 = textField_6.getText();
-				String text_7 = textField_7.getText();
-				String combo = (String) comboBox.getSelectedItem();
+				int supplierId = Integer.parseInt(supplierIDTextField.getText().trim());
+				String supplierName = supplierNameTextField.getText();
+				String address = addressTextField.getText();
+				String city = cityTextField.getText();
+				String state = stateTextField.getText();
+				int zipCode = 00000;
+				try{
+					zipCode = Integer.parseInt(zipCodeTextField.getText());
+				}
+				catch(NumberFormatException e1)
+				{
+				}		
+				String phone = phoneTextField.getText();
+				String website = websiteTextField.getText();
+				String email = emailTextField.getText();
 
-				if(text_7.equals("")){
-					//Return warning (User Id Required)
-					return;
-				}
-				int index = -1;
-				
-				for(int i = 0; i < employees.size(); i++)
-				{
-					if(employees.get(i).getUserId().equals(text_7))
+				if(supplierIDTextField.getText().equals("")){	
+					setWarningMsg("Please enter information in the *required boxes.");
+				}else{
+					for(int x = 0; x < suppliers.size(); x++)
 					{
-						index = i;
-					}
-				}
-				if(index >= 0)
-				{
-					int counter = 0;
-					String query = "UPDATE USER SET ";
-					String queryTail = "";
-					
-					if(!text.equals(""))
-					{
-						employees.get(index).setUsername(text);
-						queryTail += "LoginName = " + text;
-						counter++;
-					}
-					if(!text_1.equals(""))
-					{
-						if(text_1.equals(text_2))
+						if(suppliers.getSupplier(x).getID()==supplierId)
 						{
-							employees.get(index).setPassword(text_1);
-							if(counter > 0)
-							{
-								queryTail += ", ";
-							}
-							queryTail += "PasswordHash = " + text_1;
-							counter++;
+							selectedSupplier = suppliers.getSupplier(x);
 						}
-						else
+					}
+
+					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
+					if (adminveri.verify)
+					{
+						callEditSupplierProcedure(connect, selectedSupplier);
+						if(!supplierIDTextField.getText().equals(""))
 						{
-							//Return warning (Passwords Dont Match)
+							selectedSupplier.setID(supplierId);
 						}
-					}
-					if(!text_3.equals(""))
-					{
-						employees.get(index).setFirstName(text_3);
-						if(counter > 0)
+						if(!supplierName.equals(""))
 						{
-							queryTail += ", ";
+							selectedSupplier.setName(supplierName);
 						}
-						queryTail += "FirstName = " + text_3;
-						counter++;
-					}
-					if(!text_4.equals(""))
-					{
-						employees.get(index).setLastName(text_4);
-						if(counter > 0)
+						if(!address.equals(""))
 						{
-							queryTail += ", ";
+							selectedSupplier.setStAdress1(address);
 						}
-						queryTail += "LastName = " + text_4;
-						counter++;
-					}
-					if(!text_5.equals(""))
-					{
-						employees.get(index).setEmail(text_5);
-						if(counter > 0){
-							queryTail += ", ";
-						}
-						queryTail += "email = " + text_5;
-						counter++;
-					}
-					if(!text_6.equals(""))
-					{
-						employees.get(index).setPhone(text_6);
-						if(counter > 0)
+						if(!city.equals(""))
 						{
-							queryTail += ", ";
+							selectedSupplier.setCity(city);
 						}
-						queryTail += "phone1 = " + text_6;
-						counter++;
+						if(!state.equals(""))
+						{
+							selectedSupplier.setState(state);
+						}
+						if(!zipCodeTextField.getText().equals(""))
+						{
+							selectedSupplier.setZipCode(zipCode);
+						}
+						if(!phone.equals(""))
+						{
+							selectedSupplier.setPhone1(phone);
+						}
+						if(!website.equals(""))
+						{
+							selectedSupplier.setWebsite(website);
+						}
+						if(!email.equals(""))
+						{
+							selectedSupplier.setEmail(email);
+						}
+						System.out.println("User customer complete");
+						updateDisplay();
 					}
-					if(!combo.equals(""))
+					else
 					{
-						employees.get(index).setRole(combo);
-						if(counter > 0){
-							queryTail += ", ";
-						}
-	// Set role?					queryTail += ""
+						setWarningMsg("Administrator not verified. No "
+								+ "information was saved.");
 					}
-					query += queryTail + " WHERE UserID = " + text_7;
-					if(counter > 0)
-					{
-						/*
-						try{
-							Statement stmt = connect.createStatement();
-							stmt.executeQuery(query);
-						}
-						catch (SQLException e1){
-							System.out.println(e1);
-						}
-						*/
-					}
-					updateDisplay();
 				}
 			}
 		});
-
 		btnEditUser.setBounds(99, 356, 155, 37);
 		getContentPane().add(btnEditUser);
+		
+		updateDisplay();
 	}
-
+	
+	protected void callEditSupplierProcedure(Connection connect, Supplier temp) {
+		CallableStatement stmt = null;
+			
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspEditSupplier(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setInt(1, temp.getID());
+			stmt.setString(2, temp.getName());
+			stmt.setString(3, temp.getStAdress1());
+			stmt.setString(4, temp.getStAdress2());
+			stmt.setString(5, temp.getCity());
+			stmt.setString(6, temp.getState());
+			stmt.setInt(7, temp.getZipCode());
+			stmt.setBinaryStream(8, null);
+			stmt.setString(9, temp.getPhone1());
+			stmt.setString(10, temp.getPhone2());
+			stmt.setString(11, temp.getWebsite());
+			stmt.setString(12, temp.getEmail());
+			stmt.setString(13, temp.getFax());
+			stmt.setInt(14, /*temp.isRemoved()*/0);
+			stmt.registerOutParameter(15, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to edit supplier");
+			stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(15);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+	}
+	
 	private void updateDisplay(){
-		textArea.setText(employees.toString());
+		String allSuppliers = "";
+		for(int x = 0; x < suppliers.size(); x++)
+		{
+			allSuppliers += suppliers.getSupplier(x).toString() + "\n";
+		}
+		textArea.setText(allSuppliers);
+	}
+	
+	public void setWarningMsg(String text){
+	    Toolkit.getDefaultToolkit().beep();
+	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
+	    JDialog dialog = optionPane.createDialog("Warning!");
+	    dialog.setAlwaysOnTop(true);
+	    dialog.setVisible(true);
 	}
 }

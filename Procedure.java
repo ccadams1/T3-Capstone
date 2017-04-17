@@ -180,7 +180,7 @@ public class Procedure {
 		
 		return id;
 	}*/
-	protected void callEditSupplierProcedure(Connection connect, Supplier temp) {
+	/*protected void callEditSupplierProcedure(Connection connect, Supplier temp) {
 		CallableStatement stmt = null;
 			
 		try{
@@ -201,7 +201,7 @@ public class Procedure {
 			stmt.setString(11, temp.getWebsite());
 			stmt.setString(12, temp.getEmail());
 			stmt.setString(13, temp.getFax());
-			stmt.setInt(14, /*temp.isRemoved()*/0);
+			stmt.setInt(14, 0);//temp.isRemoved()
 			stmt.registerOutParameter(15, Types.VARCHAR);
 			
 			//call stored procedure
@@ -217,8 +217,8 @@ public class Procedure {
 		{
 			System.out.println(e);
 		}
-	}
-	protected void callRemoveSupplierProcedure(Connection connect, Supplier temp){
+	}*/
+	/*protected void callRemoveSupplierProcedure(Connection connect, Supplier temp){
 		CallableStatement stmt = null;
 			
 		try{
@@ -239,7 +239,7 @@ public class Procedure {
 			stmt.setString(11, temp.getWebsite());
 			stmt.setString(12, temp.getEmail());
 			stmt.setString(13, temp.getFax());
-			stmt.setInt(14, /*temp.isRemoved()*/1);
+			stmt.setInt(14, 1);//temp.isRemoved()
 			stmt.registerOutParameter(15, Types.VARCHAR);
 			
 			//call stored procedure
@@ -255,7 +255,7 @@ public class Procedure {
 		{
 			System.out.println(e);
 		}
-	}
+	}*/
 	protected int callAddCustomerProcedure(Connection connect, Customer temp) {
 		CallableStatement stmt = null;
 		

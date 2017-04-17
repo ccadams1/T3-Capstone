@@ -34,7 +34,6 @@ public class EditBusinessInformationScreen extends JDialog {
 	private JTextField ownerLastNameTextField;
 	private static MyBusiness info;
 	private static Connection connect;
-	private static boolean verified = false;
 
 	/**
 	 * Launch the application.
@@ -70,7 +69,7 @@ public class EditBusinessInformationScreen extends JDialog {
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setModal(true);
-		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		this.setModalityType(ModalityType.DOCUMENT_MODAL);
 		this.setTitle("Business Information");
 		this.getContentPane().setLayout(null);
 		
@@ -213,7 +212,6 @@ public class EditBusinessInformationScreen extends JDialog {
 				AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
 				if (adminveri.verify)
 				{
-					callEditMyBusinessProcedure(connect, info);
 					mainFrame.setTitle("T3 Tracking and Inventory for " + bizNameTextField.getText());
 					info.setBizName(bizNameTextField.getText());
 					info.setStAdress1(stAddressTextField.getText());
@@ -227,6 +225,7 @@ public class EditBusinessInformationScreen extends JDialog {
 					info.setWebsite(websiteTextField.getText());
 					info.setOwnerFirstName(ownerFirstNameTextField.getText());
 					info.setOwnerLastName(ownerLastNameTextField.getText());
+					callEditMyBusinessProcedure(connect, info);
 					System.out.println("data saved");
 				}
 				else

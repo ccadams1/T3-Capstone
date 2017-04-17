@@ -64,7 +64,7 @@ public class EditUserScreen extends JDialog {
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setModal(true);
-		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		this.setModalityType(ModalityType.DOCUMENT_MODAL);
 		this.setTitle("Edit User");
 		this.getContentPane().setLayout(null);
 		

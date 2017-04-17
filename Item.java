@@ -25,7 +25,6 @@ public class Item {
 		this.setRemoved(false);
 	}
 	
-	//constructor for population
 	public Item(String n, String i, double p, int sn, String s, int q, int par,
 			String d)
 	{
@@ -40,11 +39,13 @@ public class Item {
 		this.setRemoved(false);
 	}
 	
+	//constructor for population
 	public Item(String n, String i, double p, int sn, String s, int q, int par,
 			String d, boolean r) {
 		this.name = n;
 		this.id = i;
 		this.price = p;
+		this.supplierID = sn;
 		this.supplier = s;
 		this.quantity = q;
 		this.parStock = par;
@@ -137,11 +138,6 @@ public class Item {
 		string +=  name + "\t" + id + "\t" + price + "\t" + quantity + "\t" 
 		+ parStock + "\t" + supplier + "\t" + description;
 		return string;
-	}
-
-	public String getSupplierIDString() {
-		String supID = supplierID+"";
-		return supID;
 	}
 
 	public int getSupplierID() {

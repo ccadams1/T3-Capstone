@@ -3,7 +3,7 @@ import java.io.File;
 public class Supplier {
 
 	private String name;
-	private String Id;
+	private int Id;
 	private String stAddress1;
 	private String stAddress2;
 	private String city;
@@ -17,7 +17,7 @@ public class Supplier {
 	private String fax;
 	private boolean removed;
 	
-	public Supplier (String name, String Id, String stAddress1, String stAddress2, String city, String state, int zipCode,
+	public Supplier (String name, int Id, String stAddress1, String stAddress2, String city, String state, int zipCode,
 			File logo1, String phone1, String phone2, String website, String email, String fax, boolean r)
 	{
 		this.name = name;
@@ -39,7 +39,6 @@ public class Supplier {
 			String email, String website, String phone1)
 	{
 		this.name = name;
-		this.Id = null;
 		this.stAddress1 = stAddress1;
 		this.stAddress2 = "";
 		this.city = city;
@@ -69,14 +68,10 @@ public class Supplier {
 	
 	public void setID (int i)
 	{
-		this.Id = i + "";
-	}
-	
-	public void setID(String i) {
 		this.Id = i;
 	}
 	
-	public String getID()
+	public int getID()
 	{
 		return Id;
 	}

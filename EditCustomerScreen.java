@@ -65,7 +65,7 @@ public class EditCustomerScreen extends JDialog {
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setModal(true);
-		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		this.setModalityType(ModalityType.DOCUMENT_MODAL);
 		this.setTitle("Edit Customer");
 		this.getContentPane().setLayout(null);
 		
@@ -73,7 +73,7 @@ public class EditCustomerScreen extends JDialog {
 		Connection connect = (Connection) data.get(0);
 		
 
-		JLabel lblCustomerId = new JLabel("Customer ID:");
+		JLabel lblCustomerId = new JLabel("Customer ID*:");
 		lblCustomerId.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblCustomerId.setBounds(10, 17, 149, 29);
 		getContentPane().add(lblCustomerId);
@@ -272,7 +272,7 @@ public class EditCustomerScreen extends JDialog {
 			stmt = connect.prepareCall("{call dbo.uspEditCustomer(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
 			
 			//set the parameters
-			stmt.setString(1, temp.getID());
+			stmt.setInt(1, Integer.parseInt(temp.getID()));
 			stmt.setString(2, temp.getFName());
 			stmt.setString(3, temp.getLName());
 			stmt.setString(4, temp.getStAdress1());

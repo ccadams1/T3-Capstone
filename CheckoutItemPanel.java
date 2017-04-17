@@ -13,9 +13,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class CheckoutItemPanel{
+public class CheckoutItemPanel extends JPanel{
 	private JPanel parent;
-	public JPanel ciPanel = new JPanel();
+	private Item item;
+	public CheckoutItemPanel ciPanel = this;
 	public int quant = 1;
 	public double itemTotal = 0;
 	private NumberFormat formatter = NumberFormat.getCurrencyInstance();
@@ -23,28 +24,29 @@ public class CheckoutItemPanel{
 	public CheckoutItemPanel(){
 	}
 	
-	public CheckoutItemPanel(Component c)
+	public CheckoutItemPanel(CheckoutItemPanel c)
 	{
-		ciPanel = (JPanel) c;
+		ciPanel = (CheckoutItemPanel) c;
 	}
 	
 	public CheckoutItemPanel(Item item, JPanel parent, CheckoutPanel panel_3)
 	{
+		this.item = item; 
 		this.parent = parent;
-		ciPanel.setSize(257, 37);
-		ciPanel.setLayout(null);
-		ciPanel.setVisible(true);
+		this.setSize(257, 37);
+		this.setLayout(null);
+		this.setVisible(true);
 		
 		JLabel lblItemName = new JLabel(item.getName());
 		lblItemName.setBounds(3, 13, 79, 20);
 		lblItemName.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		ciPanel.add(lblItemName);
+		this.add(lblItemName);
 		
 		JSpinner txtQuant = new JSpinner();
 		txtQuant.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
 		txtQuant.setBounds(88, 11, 44, 25);
 		txtQuant.setPreferredSize(new Dimension(6, 12));
-		ciPanel.add(txtQuant);
+		this.add(txtQuant);
 		
 		JButton closeButton = new JButton("X");
 		closeButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -62,13 +64,13 @@ public class CheckoutItemPanel{
 				parent.revalidate();
 			}
 		});
-		ciPanel.add(closeButton);
+		this.add(closeButton);
 		
 		itemTotal = quant * item.getPrice();
 		JLabel lblNewLabel = new JLabel(formatter.format(itemTotal));
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel.setBounds(200, 17, 74, 12);
-		ciPanel.add(lblNewLabel);
+		this.add(lblNewLabel);
 		
 		txtQuant.addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e) {
@@ -79,8 +81,8 @@ public class CheckoutItemPanel{
 			}
 		});
 	}
-	
-	public JPanel getThisPanel()
+
+	public CheckoutItemPanel getThisPanel()
 	{
 		quant = 1;
 		return ciPanel;
@@ -123,8 +125,14 @@ public class CheckoutItemPanel{
 		}
 		return index;
 	}
+	
+	public void increaseQuantity()
+	{
+		quant++;
+	}
 
-	public void setVisible(boolean b) {
-		this.setVisible(b);
+	public String getItemName()
+	{
+		return item.getName();
 	}
 }

@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.CardLayout;
 
 public class MainApplicationWindow extends JFrame{

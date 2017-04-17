@@ -26,7 +26,6 @@ public class AddSupplierScreen extends JDialog {
 	public SupplierList suppliers = new SupplierList();
 	public boolean added = false;
 	
-	
 	/** Launch the application.
 	
 	public static void main(String[] args) {
@@ -72,7 +71,7 @@ public class AddSupplierScreen extends JDialog {
 		addingSups.setLocationRelativeTo(null);
 		addingSups.setVisible(true);
 		addingSups.setModal(true);
-		addingSups.setModalityType(ModalityType.APPLICATION_MODAL);
+		addingSups.setModalityType(ModalityType.DOCUMENT_MODAL);
 		addingSups.setTitle("Add Supplier");
 		addingSups.getContentPane().setLayout(null);
 
@@ -99,7 +98,7 @@ public class AddSupplierScreen extends JDialog {
 		lblFirstName.setBounds(11, 138, 149, 29);
 		addingSups.add(lblFirstName);
 		
-		JLabel lblLastName = new JLabel("Zip_Code:*");
+		JLabel lblLastName = new JLabel("Zip Code:*");
 		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblLastName.setBounds(11, 176, 149, 29);
 		addingSups.add(lblLastName);
@@ -159,8 +158,8 @@ public class AddSupplierScreen extends JDialog {
 		supPhoneTextField.setBounds(158, 283, 191, 35);
 		addingSups.add(supPhoneTextField);
 		
-		JButton btnAddUser = new JButton("Add Supplier");
-		btnAddUser.addActionListener(new ActionListener() {
+		JButton btnAddSupplier = new JButton("Add Supplier");
+		btnAddSupplier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String supName = supNameTextField.getText().trim();
 				String supAddress = supAddressTextField.getText().trim();
@@ -204,8 +203,8 @@ public class AddSupplierScreen extends JDialog {
 				}
 			}
 		});
-		btnAddUser.setBounds(99, 322, 155, 37);
-		addingSups.add(btnAddUser);
+		btnAddSupplier.setBounds(99, 322, 155, 37);
+		addingSups.add(btnAddSupplier);
 	}
 	
 	protected int callAddSupplierProcedure(Connection connect, Supplier temp) {

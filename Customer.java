@@ -31,6 +31,21 @@ public class Customer {
 		this.fax = fax;
 	}
 
+	public Customer(String firstName, String lastName, String cusAddress, String cusCity, String cusState,
+			int cusZip, String cusPhone, String cusEmail) {
+		this.ID = null;
+		this.fName = firstName;
+		this.lName = lastName;
+		this.stAddress1 = cusAddress;
+		this.stAddress2 = "";
+		this.city = cusCity;
+		this.state = cusState;
+		this.zipCode = cusZip;
+		this.phone1 = cusPhone;
+		this.phone2 = "";
+		this.email = cusEmail;
+		this.fax = "";	}
+
 	public void setID (String ID)
 	{
 		this.ID = ID;
@@ -163,7 +178,7 @@ public class Customer {
 		string += ID + " \t";
 		string += fName + " \t";
 		string += lName + " \t";
-		string += stAddress1 + " \t";
+		string += stAddress1 + "\t\t";
 		string += city + " \t";
 		string += state + " \t";
 		string += zipCode + " \t";

@@ -4,6 +4,8 @@ import java.awt.Panel;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
@@ -50,6 +52,13 @@ public class InventoryPanel extends JPanel{
 		connect = (Connection) data.get(0);
 		inventory = (Inventory) data.get(3);
 		suppliers = (SupplierList) data.get(5);
+		
+		this.addComponentListener(new ComponentAdapter(){
+			public void componentShown(ComponentEvent e){
+				
+				new InventoryNotificationWindow(data);
+			}
+		});
 		
 		//bounds should be set to (0, 0, 772, 476)
 		this.setBounds(0, 0, 772, 476);
@@ -134,13 +143,29 @@ public class InventoryPanel extends JPanel{
 		addItemRadioPanel.add(addSupplierNameLabel);
 		
 		addSupplierNameComboBox = new JComboBox<String>();
+		addItemRadioPanel.addComponentListener(new ComponentAdapter(){
+			public void componentShown(ComponentEvent e){
+				addSupplierNameComboBox.addItem("");
+				addSupplierNameComboBox.setSelectedIndex(0);
+				for(int x = 0; x< suppliers.size(); x++)
+				{
+					addSupplierNameComboBox.addItem(suppliers.getSupplier(x).getName());
+				}
+				addSupplierNameComboBox.addItem("New Supplier");
+			}
+			public void componentHidden(ComponentEvent e) {
+				addSupplierNameComboBox.removeAllItems();
+		    }
+		});
 		addSupplierNameComboBox.addItem("");
+		addSupplierNameComboBox.setSelectedIndex(0);
 		for(int x = 0; x< suppliers.size(); x++)
 		{
 			addSupplierNameComboBox.addItem(suppliers.getSupplier(x).getName());
 		}
 		addSupplierNameComboBox.addItem("New Supplier");
 		addSupplierNameComboBox.setBounds(124, 85, 231, 35);
+		addSupplierNameComboBox.setVisible(true);
 		addItemRadioPanel.add(addSupplierNameComboBox);
 		
 		addQuantityTextField = new JTextField();
@@ -207,13 +232,22 @@ public class InventoryPanel extends JPanel{
 		editItemRadioPanel.add(supplierNameLabel);
 				
 		editSupplierNameComboBox = new JComboBox<String>();
-		editSupplierNameComboBox.addItem("");
-		for(int x = 0; x< suppliers.size(); x++)
-		{
-			editSupplierNameComboBox.addItem(suppliers.getSupplier(x).getName());
-		}
-		editSupplierNameComboBox.addItem("New Supplier");
+		editItemRadioPanel.addComponentListener(new ComponentAdapter(){
+			public void componentShown(ComponentEvent e){
+				editSupplierNameComboBox.addItem("");
+				editSupplierNameComboBox.setSelectedIndex(0);
+				for(int x = 0; x< suppliers.size(); x++)
+				{
+					editSupplierNameComboBox.addItem(suppliers.getSupplier(x).getName());
+				}
+				editSupplierNameComboBox.addItem("New Supplier");
+			}
+			public void componentHidden(ComponentEvent e) {
+				editSupplierNameComboBox.removeAllItems();
+		    }
+		});
 		editSupplierNameComboBox.setBounds(124, 85, 231, 35);
+		editSupplierNameComboBox.setVisible(true);
 		editItemRadioPanel.add(editSupplierNameComboBox);
 				
 		editItemIDTextField = new JTextField();
@@ -401,7 +435,7 @@ public class InventoryPanel extends JPanel{
 	private void addToInventory(){
 		String n = addItemNameTextField.getText();
 		String quantity = addQuantityTextField.getText();
-		String supID = null;
+		int supID = 0;
 		int q = 0;
 		if(!quantity.equals("")){
 			q = Integer.parseInt(quantity);
@@ -412,10 +446,6 @@ public class InventoryPanel extends JPanel{
 			p = Double.parseDouble(price);
 		}
 		String s = (String) addSupplierNameComboBox.getSelectedItem();
-		if(s.equals("New Supplier"))
-		{
-			//new addSupplierScreen(data);
-		}
 		
 		String d = addItemDescription.getText();
 		String parStock = addParStockTextField.getText();
@@ -435,7 +465,7 @@ public class InventoryPanel extends JPanel{
 					supID = suppliers.getSupplier(x).getID();
 				}
 			}
-			Item newItem = new Item(n, p, Integer.parseInt(supID), s, q, par, d);
+			Item newItem = new Item(n, p, supID, s, q, par, d);
 			newItem.setId(callAddItemProcedure(connect, newItem)+"");
 			inventory.addItem(newItem);
 		}
@@ -445,17 +475,13 @@ public class InventoryPanel extends JPanel{
 		String id = editItemIDTextField.getText();
 		String n = editItemNameTextField.getText();
 		String price = editPriceTextField.getText();
-		String supID = null;
 		double p = 0;
 		if(!price.equals("")){
 			p = Double.parseDouble(price);
 		}
+		int supID = 0;
 		String s = (String) editSupplierNameComboBox.getSelectedItem();
-		if(s.equals("New Supplier"))
-		{
-			//new addSupplierScreen(data);
-		}
-		else
+		if(!s.equals(""))
 		{
 			for(int x = 0; x < suppliers.size(); x++)
 			{
@@ -495,7 +521,8 @@ public class InventoryPanel extends JPanel{
 				if(!s.equals(""))
 				{
 					inventory.get(index).setSupplier(s);
-					inventory.get(index).setSupplierID(Integer.parseInt(supID));
+					inventory.get(index).setSupplierID(supID);
+					System.out.println("Changed id-"+supID);
 				}
 				if(!quantity.equals(""))
 				{
@@ -582,7 +609,7 @@ public class InventoryPanel extends JPanel{
 			
 			//set the parameters
 			stmt.setInt(1, Integer.parseInt(temp.getId()));
-			stmt.setInt(2, 0);
+			stmt.setString(2, null);
 			stmt.setString(3, temp.getName());
 			stmt.setString(4, temp.getDescription());
 			stmt.setInt(5, temp.getQuantity());
@@ -594,7 +621,7 @@ public class InventoryPanel extends JPanel{
 			
 			//call stored procedure
 			System.out.println("Calling stored procedure to edit item");
-			stmt.execute();
+			stmt.executeUpdate();
 			System.out.println("Finished calling procedure");
 			
 			//Get the response message of the OUT parameter
@@ -615,15 +642,15 @@ public class InventoryPanel extends JPanel{
 			
 			//set the parameters
 			stmt.setInt(1, Integer.parseInt(temp.getId()));
-			stmt.setInt(2, 0);
+			stmt.setString(2, null);
 			stmt.setString(3, temp.getName());
 			stmt.setString(4, temp.getDescription());
 			stmt.setInt(5, temp.getQuantity());
 			stmt.setInt(6, temp.getParStock());
 			stmt.setDouble(7, temp.getPrice());
 			stmt.setInt(8, temp.getSupplierID());
-			stmt.setInt(9, 0);//temp.isRemoved()
-			stmt.registerOutParameter(10, Types.VARCHAR);
+			stmt.setInt(9, 1);//temp.isRemoved()
+			stmt.registerOutParameter(10, Types.NVARCHAR);
 			
 			//call stored procedure
 			System.out.println("Calling stored procedure to remove item");

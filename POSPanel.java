@@ -2,6 +2,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
@@ -9,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +27,11 @@ public class POSPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Inventory inventory = new Inventory();
 	private JPanel panel_2;
+	private ArrayList<CheckoutItemPanel> panelList = new ArrayList<CheckoutItemPanel>();
 	private int panelCounter = 0;
 	private int checkoutPanels = 1;
 	private int switchPosition = 0;
-	private static JPanel p1, p2, p3, p4, p5, p6, p7, p8, p9, p10
-		= new JPanel(new GridLayout(8, 1, 0, 0));
+	private static JPanel p1, p2, p3, p4, p5, p6, p7, p8, p9, p10;
 	private JPanel addingTo = new JPanel(new GridLayout(8, 1, 0, 0));
 
 	public POSPanel(ArrayList<Object> data)
@@ -116,41 +119,70 @@ public class POSPanel extends JPanel{
 		});
 		panel_3.add(btnCheckOut);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(500, 0, 272, 333);
-		panel.add(scrollPane);
-		
 		JPanel panel_2 = new JPanel(new CardLayout());
-		scrollPane.setViewportView(panel_2);
+		panel_2.setBounds(500, 0, 272, 333);
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_2.setVisible(true);
+		panel.add(panel_2);
 		
-		p1 = new JPanel(new GridLayout(8, 1, 0, 0));
+		p1 = new JPanel(new GridLayout(7, 1, 0, 0));
 		panel_2.add(p1);
-		p2 = new JPanel(new GridLayout(8, 1, 0, 0));
+		p2 = new JPanel(new GridLayout(7, 1, 0, 0));
 		panel_2.add(p2);
-		p3 = new JPanel(new GridLayout(8, 1, 0, 0));
+		addCompCycle(p1, p2);
+		p3 = new JPanel(new GridLayout(7, 1, 0, 0));
 		panel_2.add(p3);
-		p4 = new JPanel(new GridLayout(8, 1, 0, 0));
+		addCompCycle(p2, p3);
+		p4 = new JPanel(new GridLayout(7, 1, 0, 0));
 		panel_2.add(p4);
-		p5 = new JPanel(new GridLayout(8, 1, 0, 0));
+		addCompCycle(p3, p4);
+		p5 = new JPanel(new GridLayout(7, 1, 0, 0));
 		panel_2.add(p5);
-		p6 = new JPanel(new GridLayout(8, 1, 0, 0));
+		addCompCycle(p4, p5);
+		p6 = new JPanel(new GridLayout(7, 1, 0, 0));
 		panel_2.add(p6);
-		p7 = new JPanel(new GridLayout(8, 1, 0, 0));
+		addCompCycle(p5, p6);
+		p7 = new JPanel(new GridLayout(7, 1, 0, 0));
 		panel_2.add(p7);
-		p8 = new JPanel(new GridLayout(8, 1, 0, 0));
+		addCompCycle(p6, p7);
+		p8 = new JPanel(new GridLayout(7, 1, 0, 0));
 		panel_2.add(p8);
-		p9 = new JPanel(new GridLayout(8, 1, 0, 0));
+		addCompCycle(p7, p8);
+		p9 = new JPanel(new GridLayout(7, 1, 0, 0));
 		panel_2.add(p9);
-		p10 = new JPanel(new GridLayout(8, 1, 0, 0));
-		panel_2.add(p10);		
+		addCompCycle(p8, p9);
+		p10 = new JPanel(new GridLayout(7, 1, 0, 0));
+		panel_2.add(p10);	
+		addCompCycle(p9, p10);
 		
 		CardLayout cl = (CardLayout) (panel_2.getLayout());
-
-		JButton btnNewButton = new JButton("Previous");
-		btnNewButton.setEnabled(false);
-		btnNewButton.setBounds(500, 333, 136, 24);
-		panel.add(btnNewButton);
-		btnNewButton.addActionListener(new ActionListener(){
+		
+		JButton btnPrevious = new JButton("Previous");
+		btnPrevious.setEnabled(false);
+		btnPrevious.setBounds(500, 333, 136, 24);
+		panel.add(btnPrevious);
+		
+		
+		JButton btnNext = new JButton("Next");
+		btnNext.setBounds(636, 333, 136, 24);
+		panel.add(btnNext);
+		btnNext.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cl.next(panel_2);
+				btnPrevious.setEnabled(true);
+				switchPosition++;
+				int test = switchPosition;
+				if(test==9)
+				{
+					btnNext.setEnabled(false);
+				}
+				btnPrevious.setEnabled(true);
+				System.out.println(switchPosition);
+			}
+		});
+		
+		btnPrevious.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cl.previous(panel_2);
@@ -158,73 +190,53 @@ public class POSPanel extends JPanel{
 				int test = switchPosition;
 				if(test==0)
 				{
-					btnNewButton.setEnabled(false);
-				}
+					btnPrevious.setEnabled(false);
+				}		
+				btnNext.setEnabled(true);
+				System.out.println(switchPosition);
 			}
 		});
 		
-		JButton btnNewButton_1 = new JButton("Next");
-		btnNewButton_1.setBounds(636, 333, 136, 24);
-		panel.add(btnNewButton_1);
-		btnNewButton_1.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				cl.next(panel_2);
-				btnNewButton.setEnabled(true);
-			}
-		});
-		
-		//panel_2.setLayout(new GridLayout(10, 1, 0, 0));
-		ArrayList<CheckoutItemPanel> panelList = new ArrayList<CheckoutItemPanel>(); 
+		panelList = new ArrayList<CheckoutItemPanel>(); 
 
 		this.addComponentListener(new ComponentAdapter(){
+			//resets the screen
 			public void componentShown(ComponentEvent e){
+				cl.first(panel_2);
+				switchPosition = 0;
+				btnNext.setEnabled(true);
+				btnPrevious.setEnabled(false);
 				panel_1.removeAll();
-				panel_2.removeAll();
 				panel_1.revalidate();
+				for(int x = 0; x < panel_2.getComponentCount(); x++)
+				{
+					((Container) panel_2.getComponent(x)).removeAll();
+				}
 				panel_2.revalidate();
 				for(int x = 0; x < inventory.size(); x++)
 				{
 					if(!inventory.get(x).isRemoved())
 					{
-						POSButton button = new POSButton(inventory.get(x), panel_2, panel_3);
+						POSButton button = new POSButton(inventory.get(x), panel_2, panel_3, cl, panelList);
 						button.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								CheckoutItemPanel newPanel = button.checkoutPanel;
 								newPanel.setVisible(true);
-								JPanel spacer = new JPanel();
-								spacer.setSize(235,1);
-								if((panelList.size()/6)==checkoutPanels)
+								if((panelList.size()/7)==checkoutPanels)
 								{
 									panelCounter++;
 									checkoutPanels++;
+									switchPosition++;
+									btnPrevious.setEnabled(true);
 								}
-						        switch (panelCounter) {
-						            case 0:  addingTo = p1;
-						                     break;
-						            case 1:  addingTo = p2;
-						                     break;
-						            case 2:  addingTo = p3;
-						                     break;
-						            case 3:  addingTo = p4;
-						                     break;
-						            case 4:  addingTo = p5;
-						                     break;
-						            case 5:  addingTo = p6;
-						                     break;
-						            case 6:  addingTo = p7;
-						                     break;
-						            case 7:  addingTo = p8;
-						                     break;
-						            case 8:  addingTo = p9;
-						                     break;
-						            case 9:  addingTo = p10;
-						                     break;
-						            default: break;
-						        }
+						        determinePanel();
+						        
+						        //boolean to check for existing panel
 								boolean hasPanel = false;
+								//for loop to check for existing panel
 								for(int x = 0; x < panelList.size(); x++)
 								{
+									//cycles through existing panel
 									if(panelList.get(x).getItemName().equals(newPanel.getItemName()))
 									{
 										panelList.get(x).increaseQuantity();
@@ -240,10 +252,9 @@ public class POSPanel extends JPanel{
 								{
 									panelCounter--;
 									checkoutPanels--;
+									cl.next(panel_2);
 								}
-								panel_2.add(spacer);
 								panel_3.addToSubtotal(button.getPrice());
-								panel_2.remove(spacer);
 								panel_3.updateLabels();
 								panel_2.validate();				
 							}
@@ -260,11 +271,69 @@ public class POSPanel extends JPanel{
 					panel_1.getComponent(x).setVisible(false);
 				}
 				panel_1.removeAll();
+				
+				panelList = new ArrayList<CheckoutItemPanel>();
+				
+				for(int x = 0; x < panel_2.getComponentCount(); x++)
+				{
+					((Container) panel_2.getComponent(x)).removeAll();
+				}
+				panel_3.setSubtotal(0.0);
 				panel_1.revalidate();
-				panel_2.removeAll();
 				panel_2.revalidate();
 			}
 		});
+	}
+
+	private void addCompCycle(JPanel innerPanel, JPanel nextPanel) {
+		innerPanel.addContainerListener(new ContainerListener(){
+			@Override
+			public void componentRemoved(ContainerEvent e){
+				System.out.println("This is used");
+				if(nextPanel.getComponentCount()>0)
+				{
+					innerPanel.add(nextPanel.getComponent(0));
+				}
+			}
+
+			@Override
+			public void componentAdded(ContainerEvent arg0) {
+			}
+		});
+	}
+	
+	private void determinePanel()
+	{
+		if(p1.getComponentCount()<7){
+			addingTo = p1;
+		}
+		else if(p2.getComponentCount()<7){
+			addingTo = p2;
+		}
+		else if(p3.getComponentCount()<7){
+			addingTo = p3;
+		}
+		else if(p4.getComponentCount()<7){
+			addingTo = p4;
+		}
+		else if(p5.getComponentCount()<7){
+			addingTo = p5;
+		}
+		else if(p6.getComponentCount()<7){
+			addingTo = p6;
+		}
+		else if(p7.getComponentCount()<7){
+			addingTo = p7;
+		}
+		else if(p8.getComponentCount()<7){
+			addingTo = p8;
+		}
+		else if(p9.getComponentCount()<7){
+			addingTo = p9;
+		}
+		else if(p10.getComponentCount()<7){
+			addingTo = p10;
+		}
 	}
 
 	public JPanel getPanel_2() {
@@ -273,29 +342,5 @@ public class POSPanel extends JPanel{
 
 	public void setPanel_2(JPanel panel_2) {
 		this.panel_2 = panel_2;
-	}
-	
-	public void populateInnerPanels(JPanel card)
-	{
-		JPanel p1 = new JPanel();
-		panel_2.add(p1, "p1");
-		JPanel p2 = new JPanel();
-		panel_2.add(p2, "p2");
-		JPanel p3 = new JPanel();
-		panel_2.add(p3, "p3");
-		JPanel p4 = new JPanel();
-		panel_2.add(p4, "p4");
-		JPanel p5 = new JPanel();
-		panel_2.add(p5, "p5");
-		JPanel p6 = new JPanel();
-		panel_2.add(p6, "p6");
-		JPanel p7 = new JPanel();
-		panel_2.add(p7, "p7");
-		JPanel p8 = new JPanel();
-		panel_2.add(p8, "p8");
-		JPanel p9 = new JPanel();
-		panel_2.add(p9, "p9");
-		JPanel p10 = new JPanel();
-		panel_2.add(p10, "p10");
 	}
 } 

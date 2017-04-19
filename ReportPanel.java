@@ -226,7 +226,7 @@ public class ReportPanel extends JPanel{
 				//INVENTORY CONDITIONS
 				if(inventoryCheckBox.isSelected())
 				{
-					textAreaString += "Inventory Report \n";
+					textAreaString += "\nInventory Report \n";
 					textAreaString += "-------------------------------------------------------------------------------- \n";
 					for(int x = 0; x < inventory.size(); x++)
 					{

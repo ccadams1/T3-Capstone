@@ -75,7 +75,7 @@ public class LoginScreen extends JDialog{
 			});
 		}
 		else{
-			System.out.println("Current user is " + currentUser);
+			System.out.println("Current user is " + currentUser.getUsername());
 			login.setDefaultCloseOperation(
 					JDialog.DISPOSE_ON_CLOSE);
 		}
@@ -127,7 +127,6 @@ public class LoginScreen extends JDialog{
 					checkRole(mainPanel, currentUser);
 					frame.revalidate();
 					mainPanel.revalidate();
-					System.out.println("mPanel and mBar validated");
 					login.dispose();
 				}
 			}

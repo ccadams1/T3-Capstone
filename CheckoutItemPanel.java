@@ -1,9 +1,12 @@
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -30,7 +33,7 @@ public class CheckoutItemPanel extends JPanel{
 		ciPanel = (CheckoutItemPanel) c;
 	}
 	
-	public CheckoutItemPanel(Item item, JPanel parent, CheckoutPanel panel_3)
+	public CheckoutItemPanel(Item item, JPanel parent, CheckoutPanel panel_3, CardLayout cl, ArrayList<CheckoutItemPanel> panelList)
 	{
 		this.item = item; 
 		this.parent = parent;
@@ -54,6 +57,17 @@ public class CheckoutItemPanel extends JPanel{
 		closeButton.setBounds(149, 8, 41, 36);
 		closeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				int position = 0;
+				int totalPanelsUsed = panelList.size()/7;
+				for(int x = 0; x<panelList.size();x++){
+					if(panelList.get(x).getItemName().equals(item.getName()))
+					{
+						position = x;
+						panelList.remove(x);
+					}
+				}
+				int panelIndex = (position/7);
+				int indexInPanel = (position%7);
 				if(getIndex()==(parent.getComponentCount()-1))
 				{
 					ciPanel.setVisible(false);
@@ -61,7 +75,9 @@ public class CheckoutItemPanel extends JPanel{
 					ciPanel.setVisible(true);
 				}
 				setSubtotal(quant, 0, item.getPrice(), panel_3);
-				parent.remove(getIndex());
+				((JPanel)((JPanel) parent).getComponent(panelIndex)).remove(indexInPanel);
+				cl.next(parent);
+				cl.previous(parent);
 				parent.revalidate();
 			}
 		});

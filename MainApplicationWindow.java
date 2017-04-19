@@ -162,14 +162,9 @@ public class MainApplicationWindow extends JFrame{
 	public static JMenuBar NavigationMenu(ArrayList<Object> data, Employee currentUser)
 	{
 		int userRole = 0;
-		if(currentUser == null)
-		{
-			System.out.println("menu validation and currentUser is null");
-		}
-		else if(currentUser != null)
+		if(currentUser != null)
 		{
 			userRole = currentUser.getRoleCode();
-			System.out.println(userRole);
 		}
 		//Create JMenuBar
 		JMenuBar menu = new JMenuBar();

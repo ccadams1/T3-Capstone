@@ -8,7 +8,13 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -23,34 +29,37 @@ import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class ReportPanel extends JPanel{
-	JCheckBox inventoryCheckBox;
-	JCheckBox salesCheckBox;
-	JCheckBox businessCheckBox;
-	JCheckBox businessCheck1;
-	JCheckBox businessCheck2;
-	JCheckBox businessCheck3;
-	JCheckBox businessCheck4;
-	JCheckBox businessCheck7;
-	JCheckBox businessCheck8;
-	JCheckBox businessCheck9;
-	JCheckBox businessCheck10;
-	JCheckBox businessCheck11;
-	JCheckBox businessCheck12;
+	private JCheckBox inventoryCheckBox;
+	private JCheckBox salesCheckBox;
+	private JCheckBox businessCheckBox;
+	private JCheckBox businessCheck1;
+	private JCheckBox businessCheck2;
+	private JCheckBox businessCheck3;
+	private JCheckBox businessCheck4;
+	private JCheckBox businessCheck7;
+	private JCheckBox businessCheck8;
+	private JCheckBox businessCheck9;
+	private JCheckBox businessCheck10;
+	private JCheckBox businessCheck11;
+	private JCheckBox businessCheck12;
 	
-	JCheckBox itemNameCheck;
-	JCheckBox itemIDCheck;
-	JCheckBox itemPriceCheck;
-	JCheckBox itemDescriptionCheck;
-	JCheckBox itemSupplierNameCheck;
-	JCheckBox itemParCheck;
-	JCheckBox itemQuantityCheck;
-	JCheckBox itemActiveCheck;
-	JCheckBox itemInactiveCheck;
+	private JCheckBox itemNameCheck;
+	private JCheckBox itemIDCheck;
+	private JCheckBox itemPriceCheck;
+	private JCheckBox itemDescriptionCheck;
+	private JCheckBox itemSupplierNameCheck;
+	private JCheckBox itemParCheck;
+	private JCheckBox itemQuantityCheck;
+	private JCheckBox itemActiveCheck;
+	private JCheckBox itemInactiveCheck;
 	
-	JCheckBox salesCheck1;
-		
+	private JCheckBox salesCheck1;
+	
+	private Connection connect = null;
+	
 	public ReportPanel(ArrayList<Object> data)
 	{
+		connect = (Connection) data.get(0);
 		MyBusiness businessObj = (MyBusiness) data.get(4);
 		Inventory inventory = (Inventory) data.get(3);
 
@@ -352,13 +361,14 @@ public class ReportPanel extends JPanel{
 				//SALES CONDITIONS ONLY
 				if(salesCheckBox.isSelected())
 				{
-					if (salesCheck1.isSelected()) {
-						
-					}
+					
 						
 					textAreaString += "\nSales Report\n";
 					textAreaString += "-------------------------------------------------------------------------------- \n ";
-					textAreaString += "Sales: ";
+					if (salesCheck1.isSelected()) {
+						textAreaString += "Today's Sales: \n";
+						textAreaString += getSalesReport();
+					}
 					textArea.setText(textAreaString);
 				}
 			}
@@ -602,5 +612,78 @@ public class ReportPanel extends JPanel{
 		salesPanel.add(salesCheck1);
 		salesCheck1.setEnabled(false);
 		return reportInfoPanel;
+	}
+	
+	public String getSalesReport() {
+		String reportString = "";
+		ArrayList<Double> report = callReportProcedure(connect);
+		reportString = "  Today's Cash Sales: $" + report.get(0);
+		reportString = "  Today's Credit Sales: $" + report.get(1); 
+		return reportString;
+	}
+	
+	protected ArrayList<Double> callReportProcedure(Connection connect) {
+		CallableStatement stmt = null;
+		
+		ArrayList<Double> report = new ArrayList<Double>();
+		double cashTotal = 0.00;
+		double creditTotal = 0.00;
+		
+		Date date = new Date();
+		String dateString = date.getYear() + "-";
+		if((date.getMonth()+1)<10)
+		{
+			dateString += "0" + (date.getMonth() + 1) + "-";
+		}
+		else
+		{
+			dateString += (date.getMonth() + 1) + "-";
+		}
+		
+		if(date.getDate()<10)
+		{
+			dateString += "0" + date.getDate();
+		}
+		else
+		{
+			dateString += date.getDate();
+		}
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.SalesByDate(?,?)}");
+			
+			//set the parameters
+			stmt.setString(1, dateString);
+			stmt.setString(2, dateString);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure for report information");
+			boolean results = stmt.execute();
+			System.out.println("Finished calling procedure");
+			
+			//Get the results
+			
+			while(results)
+			{
+				ResultSet rs = stmt.getResultSet();
+				if(rs.getString(3).equals("CASH"))
+				{
+					cashTotal += rs.getDouble(4);
+				}
+				else
+				{
+					creditTotal += rs.getDouble(4);
+				}
+			}
+			report.add(cashTotal);
+			report.add(creditTotal);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+		
+		return report;
 	}
 }

@@ -94,33 +94,32 @@ public class MainPanel extends JPanel{
 			public void actionPerformed(ActionEvent arg0) {
 				//sets main as visible screen
 				login = new LoginScreen(data);
+				login.addWindowListener(new WindowListener(){
+					@Override
+					public void windowClosed(WindowEvent arg0) {
+						mainPanel.revalidate();
+						menuBar.revalidate();
+					}
+					
+					@Override
+					public void windowActivated(WindowEvent e) {}
+
+					@Override
+					public void windowClosing(WindowEvent e) {}
+
+					@Override
+					public void windowDeactivated(WindowEvent e) {}
+
+					@Override
+					public void windowDeiconified(WindowEvent e) {}
+
+					@Override
+					public void windowIconified(WindowEvent e) {}
+
+					@Override
+					public void windowOpened(WindowEvent e) {}
+				});
 			}
-		});
-		
-		login.addWindowListener(new WindowListener(){
-			@Override
-			public void windowClosed(WindowEvent arg0) {
-				mainPanel.revalidate();
-				menuBar.revalidate();
-			}
-			
-			@Override
-			public void windowActivated(WindowEvent e) {}
-
-			@Override
-			public void windowClosing(WindowEvent e) {}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {}
-
-			@Override
-			public void windowIconified(WindowEvent e) {}
-
-			@Override
-			public void windowOpened(WindowEvent e) {}
 		});
 		
 		//Add buttons to Panels

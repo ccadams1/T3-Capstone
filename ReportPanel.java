@@ -361,8 +361,6 @@ public class ReportPanel extends JPanel{
 				//SALES CONDITIONS ONLY
 				if(salesCheckBox.isSelected())
 				{
-					
-						
 					textAreaString += "\nSales Report\n";
 					textAreaString += "-------------------------------------------------------------------------------- \n ";
 					if (salesCheck1.isSelected()) {

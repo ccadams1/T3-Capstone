@@ -11,14 +11,14 @@ public class Employee {
 	}
 	
 	//populate database
-	public Employee(String userID, String uName, String pWord,String fName,String lName,int role, String email, String phone, boolean removed){
+	public Employee(String userID, String uName, String pWord,String fName,String lName, String role, String email, String phone, boolean removed){
 		this.userID = userID;
 		this.username = uName;
 		this.password = pWord;
 		this.firstName = fName;
 		this.lastName = lName;
-		this.roleCode = role;
-		this.uRole = getRoleFromCode();
+		setRoleCode(role);
+		this.uRole = role;
 		this.email = email;
 		this.phone = phone;
 		this.removed = removed;
@@ -125,7 +125,11 @@ public class Employee {
 
 	public void setRoleCode(String role)
 	{
-		if(role.equals("Overall Manager"))
+		if(role == null)
+		{
+			roleCode = 1;
+		}
+		else if(role.equals("Overall Manager"))
 		{
 			roleCode = 2;
 		}

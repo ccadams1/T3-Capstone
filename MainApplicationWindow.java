@@ -158,7 +158,15 @@ public class MainApplicationWindow extends JFrame{
 	
 	public JMenuBar NavigationMenu(ArrayList<Object> data, Employee currrentUser)
 	{
-		int userRole = currentUser.getRoleCode();
+		int userRole = 0;
+		if(currentUser == null)
+		{
+			userRole = 0;
+		}
+		else
+		{
+			currentUser.getRoleCode();
+		}
 		//Create JMenuBar
 		JMenuBar menu = new JMenuBar();
 		

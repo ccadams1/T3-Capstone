@@ -75,7 +75,10 @@ public class InventoryNotificationWindow extends JDialog{
 		{
 			if(!inventory.get(x).isRemoved())
 			{
-				if(((inventory.get(x).getQuantity())/(inventory.get(x).getParStock()))==0 && 
+				if(inventory.get(x).getParStock()==0)
+				{
+				}
+				else if(((inventory.get(x).getQuantity())/(inventory.get(x).getParStock()))==0 && 
 						((inventory.get(x).getQuantity())%(inventory.get(x).getParStock()))
 						<=(inventory.get(x).getParStock()*(10.0f/100.0f)))
 				{

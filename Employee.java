@@ -11,21 +11,21 @@ public class Employee {
 	}
 	
 	//populate database
-	public Employee(String userID, String uName, String pWord,String fName,String lName, String role, String email, String phone, boolean removed){
+	public Employee(String userID, String uName, String pWord,String fName,String lName, String roleCode, String email, String phone, boolean removed){
 		this.userID = userID;
 		this.username = uName;
 		this.password = pWord;
 		this.firstName = fName;
 		this.lastName = lName;
-		setRoleCode(role);
-		this.uRole = role;
+		this.roleCode = Integer.parseInt(roleCode);
+		getRoleFromCode();
 		this.email = email;
 		this.phone = phone;
 		this.removed = removed;
 	}
 	
 	//adding new user
-	public Employee(String uName, String pWord,String fName,String lName,String role, String email, String phone){
+	public Employee(String uName, String pWord,String fName,String lName, String role, String email, String phone){
 		this.userID = "";
 		this.username = uName;
 		this.password = pWord;

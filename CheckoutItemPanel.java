@@ -17,6 +17,7 @@ public class CheckoutItemPanel extends JPanel{
 	private JPanel parent;
 	private Item item;
 	public CheckoutItemPanel ciPanel = this;
+	public JSpinner txtQuant;
 	public int quant = 1;
 	public double itemTotal = 0;
 	private NumberFormat formatter = NumberFormat.getCurrencyInstance();
@@ -42,8 +43,8 @@ public class CheckoutItemPanel extends JPanel{
 		lblItemName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblItemName);
 		
-		JSpinner txtQuant = new JSpinner();
-		txtQuant.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
+		txtQuant = new JSpinner();
+		txtQuant.setModel(new SpinnerNumberModel(quant, 0, null, 1));
 		txtQuant.setBounds(88, 11, 44, 25);
 		txtQuant.setPreferredSize(new Dimension(6, 12));
 		this.add(txtQuant);
@@ -84,7 +85,6 @@ public class CheckoutItemPanel extends JPanel{
 
 	public CheckoutItemPanel getThisPanel()
 	{
-		quant = 1;
 		return ciPanel;
 	}
 	
@@ -129,6 +129,7 @@ public class CheckoutItemPanel extends JPanel{
 	public void increaseQuantity()
 	{
 		quant++;
+		txtQuant.setValue(quant);
 	}
 
 	public String getItemName()

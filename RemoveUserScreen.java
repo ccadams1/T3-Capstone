@@ -102,6 +102,7 @@ public class RemoveUserScreen extends JDialog {
 						if(employees.get(x).getUsername().equals(username))
 						{
 							removedUser = employees.get(x);
+							employees.get(x).setRemoved(true);
 						}
 					}
 				}
@@ -111,6 +112,7 @@ public class RemoveUserScreen extends JDialog {
 					{
 						callRemoveUserProcedure(connect, removedUser);
 						System.out.println("User removed");
+						updateDisplay();
 					}
 					else
 					{
@@ -121,7 +123,6 @@ public class RemoveUserScreen extends JDialog {
 				else{
 					setWarningMsg("There is no user match.");
 				}
-				updateDisplay();
 			}
 		});
 		btnRemoveUser.setBounds(263, 34, 150, 37);

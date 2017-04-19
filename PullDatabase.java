@@ -74,11 +74,11 @@ public class PullDatabase {
 				String password = rs.getString("PasswordHash");
 				String firstName = rs.getString("FirstName");
 				String lastName = rs.getString("LastName");
-				String role = rs.getString("URE_ID");
+				String roleCode = rs.getString("URE_ID");
 				String email = rs.getString("email");
 				String phone = rs.getString("phone1");
 				boolean removed = rs.getBoolean("removed");
-				Employee e = new Employee(userID, username, password, firstName, lastName, role, email, phone, removed);
+				Employee e = new Employee(userID, username, password, firstName, lastName, roleCode, email, phone, removed);
 				employees.add(e);
 			}
 		}

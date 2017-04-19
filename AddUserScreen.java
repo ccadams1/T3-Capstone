@@ -162,7 +162,7 @@ public class AddUserScreen extends JDialog {
 				String retypePassword = retypePasswordTextField.getText();
 				String fName = firstNameTextField.getText();
 				String lName = lastNameTextField.getText();
-				String userRole = (String) empRoleComboBox.getSelectedItem();
+				String userRole =  (String) empRoleComboBox.getSelectedItem();
 				String email = emailTextField.getText();
 				String phone = phoneTextField.getText();
 				

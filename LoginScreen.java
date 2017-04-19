@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -24,6 +25,7 @@ public class LoginScreen extends JDialog{
 	private static final long serialVersionUID = 1L;
 	private JPasswordField passwordField;
 	public Employee currentUser = new Employee();
+	public EmployeeList employees = new EmployeeList();
 	/**
 	 * Launch the application.
 	 
@@ -42,14 +44,15 @@ public class LoginScreen extends JDialog{
 	/**
 	 * Create the application.
 	 */
-	public LoginScreen(ArrayList<Object> data) {
-		initialize(data);
+	public LoginScreen(ArrayList<Object> allData, JFrame frame, MainApplicationWindow window, MainPanel mainPanel) {
+		initialize(allData, frame, window, mainPanel);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(ArrayList<Object> data) {
+	private void initialize(ArrayList<Object> data, JFrame frame, MainApplicationWindow window, MainPanel mainPanel) {
+		employees = (EmployeeList) data.get(2);
 		currentUser = (Employee) data.get(6);	
 		
 		JDialog login = new JDialog();
@@ -118,6 +121,13 @@ public class LoginScreen extends JDialog{
 				String response = callUserLoginProcedure(data, username, passwordString);
 				if(response.equals("User successfully logged in"))
 				{
+					currentUser = employees.getEmployee(username);
+					frame.setJMenuBar(null);
+					frame.setJMenuBar(window.NavigationMenu(data, currentUser));
+					checkRole(mainPanel, currentUser);
+					frame.revalidate();
+					mainPanel.revalidate();
+					System.out.println("mPanel and mBar validated");
 					login.dispose();
 				}
 			}
@@ -126,6 +136,38 @@ public class LoginScreen extends JDialog{
 		login.add(loginPanel);
 	}
 	
+	protected void checkRole(MainPanel mainPanel, Employee currentUser) {
+		int userRole = currentUser.getRoleCode();
+		if(userRole==3||userRole==5)
+		{
+			mainPanel.getButtons().getComponent(0).setEnabled(false);
+		}
+		else
+		{
+			mainPanel.getButtons().getComponent(0).setEnabled(true);
+		}
+		if(userRole==4||userRole==6)
+		{
+			mainPanel.getButtons().getComponent(1).setEnabled(false);
+		}
+		else
+		{
+			mainPanel.getButtons().getComponent(1).setEnabled(true);
+		}
+		if(userRole==5||userRole==6)
+		{
+			mainPanel.getButtons().getComponent(2).setEnabled(false);
+			mainPanel.getButtons().getComponent(3).setEnabled(false);
+			mainPanel.getButtons().getComponent(5).setEnabled(false);
+		}
+		else
+		{
+			mainPanel.getButtons().getComponent(2).setEnabled(true);
+			mainPanel.getButtons().getComponent(3).setEnabled(true);
+			mainPanel.getButtons().getComponent(5).setEnabled(true);
+		}
+	}
+
 	protected String callUserLoginProcedure(ArrayList<Object> data, String username, String password) 
 	{
 		Connection connect = (Connection) data.get(0);

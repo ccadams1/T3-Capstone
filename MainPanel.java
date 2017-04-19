@@ -13,14 +13,15 @@ import javax.swing.JPanel;
 
 public class MainPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
-	private JPanel mainPanel, buttons, bottomPanel;
-	private JButton sales, inventory, reports, search, help;			
-	private JButton settings, changeUser;
+	private JPanel mainPanel;
+	private JPanel buttons, bottomPanel;
+	public JButton sales, inventory, reports, search, help;			
+	public static JButton settings, changeUser;
 	public static JPanel pos;
 	public Employee currentUser = new Employee();
 	public LoginScreen login = null;
 
-	public MainPanel(JMenuBar menuBar, ArrayList<Object> data, JFrame mainFrame){
+	public MainPanel(JMenuBar menuBar, ArrayList<Object> data, JFrame mainFrame, MainApplicationWindow window){
 		mainPanel = this;
 		currentUser = (Employee) data.get(6);
 		
@@ -46,7 +47,7 @@ public class MainPanel extends JPanel{
 		bottomPanel = new JPanel();
 		bottomPanel.setBounds(0, 431, 772, 75);
 		changeUser = new JButton("CHANGE USER");
-					
+		
 		//Add ActionListeners to buttons
 		sales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -93,32 +94,7 @@ public class MainPanel extends JPanel{
 		changeUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//sets main as visible screen
-				login = new LoginScreen(data);
-				login.addWindowListener(new WindowListener(){
-					@Override
-					public void windowClosed(WindowEvent arg0) {
-						mainPanel.revalidate();
-						menuBar.revalidate();
-					}
-					
-					@Override
-					public void windowActivated(WindowEvent e) {}
-
-					@Override
-					public void windowClosing(WindowEvent e) {}
-
-					@Override
-					public void windowDeactivated(WindowEvent e) {}
-
-					@Override
-					public void windowDeiconified(WindowEvent e) {}
-
-					@Override
-					public void windowIconified(WindowEvent e) {}
-
-					@Override
-					public void windowOpened(WindowEvent e) {}
-				});
+				login = new LoginScreen(data, mainFrame, window, (MainPanel) mainPanel);
 			}
 		});
 		
@@ -134,5 +110,10 @@ public class MainPanel extends JPanel{
 		//Add components to JFrame
 		mainPanel.add(buttons);
 		mainPanel.add(bottomPanel);
+	}
+	
+	public JPanel getButtons()
+	{
+		return buttons;
 	}
 }

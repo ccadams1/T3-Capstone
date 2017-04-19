@@ -177,7 +177,7 @@ public class EditUserScreen extends JDialog {
 				String retypePassword = retypePasswordTextField.getText();
 				String fName = firstNameTextField.getText();
 				String lName = lastNameTextField.getText();
-				String userRole = (String) empRoleComboBox.getSelectedItem();
+				String userRole =  (String) empRoleComboBox.getSelectedItem();
 				String email = emailTextField.getText();
 				String phone = phoneTextField.getText();
 				
@@ -206,7 +206,6 @@ public class EditUserScreen extends JDialog {
 					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
 					if (adminveri.verify)
 					{
-						callEditUserProcedure(connect, selectedUser);
 						if(!username.equals(""))
 						{
 							selectedUser.setUsername(username);
@@ -225,8 +224,8 @@ public class EditUserScreen extends JDialog {
 						}
 						if(!userRole.equals(""))
 						{
-							selectedUser.setRole(userRole);
 							selectedUser.setRoleCode(userRole);
+							selectedUser.setRole(userRole);
 						}
 						if(!email.equals(""))
 						{
@@ -236,6 +235,7 @@ public class EditUserScreen extends JDialog {
 						{
 							selectedUser.setPhone(phone);
 						}
+						callEditUserProcedure(connect, selectedUser);
 						System.out.println("User edit complete");
 						updateDisplay();
 					}

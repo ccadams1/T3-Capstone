@@ -1,6 +1,8 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -19,14 +21,15 @@ public class MainApplicationWindow extends JFrame{
 	private static EmployeeList employees = new EmployeeList();
 	private static MyBusiness myBusiness = new MyBusiness();
 	private static Employee currentUser = new Employee();
-	private JFrame frame;
-	private JPanel mainPanel;
-	private JPanel posPanel;
-	private JPanel inventoryPanel;
-	private JPanel searchPanel;
-	private JPanel reportPanel;
-	private JPanel helpPanel;
-	private JMenuBar menuBar;
+	private static JFrame frame;
+	private static JPanel mainPanel;
+	private static JPanel posPanel;
+	private static JPanel inventoryPanel;
+	private static JPanel searchPanel;
+	private static JPanel reportPanel;
+	private static JPanel helpPanel;
+	private static JMenuBar menuBar;
+	private static MainApplicationWindow window;
 	
 	/**
 	 * Launch the application.
@@ -70,8 +73,8 @@ public class MainApplicationWindow extends JFrame{
 					allData.add(myBusiness);//get(4)
 					allData.add(suppliers);//get(5)
 					allData.add(currentUser);//get(6)
-					MainApplicationWindow window = new MainApplicationWindow(allData);
-					LoginScreen login = new LoginScreen(allData);
+					window = new MainApplicationWindow(allData);
+					LoginScreen login = new LoginScreen(allData, frame, window, (MainPanel) mainPanel);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -110,7 +113,7 @@ public class MainApplicationWindow extends JFrame{
 		
 		//Main panel
 		//adds the Main Screen
-		mainPanel = new MainPanel(menuBar, data, frame);
+		mainPanel = new MainPanel(menuBar, data, frame, window);
 		mainPanel.setBounds(0, 0, 772, 476);
 		layeredPane.add(mainPanel);
 		mainPanel.setVisible(true);
@@ -156,16 +159,17 @@ public class MainApplicationWindow extends JFrame{
 		helpPanel.setVisible(false);
 	}
 	
-	public JMenuBar NavigationMenu(ArrayList<Object> data, Employee currrentUser)
+	public static JMenuBar NavigationMenu(ArrayList<Object> data, Employee currentUser)
 	{
 		int userRole = 0;
 		if(currentUser == null)
 		{
-			userRole = 0;
+			System.out.println("menu validation and currentUser is null");
 		}
-		else
+		else if(currentUser != null)
 		{
-			currentUser.getRoleCode();
+			userRole = currentUser.getRoleCode();
+			System.out.println(userRole);
 		}
 		//Create JMenuBar
 		JMenuBar menu = new JMenuBar();
@@ -178,7 +182,6 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(mainPanel, posPanel, inventoryPanel, searchPanel,
 						reportPanel, helpPanel);
 				mainPanel.revalidate();
-				menu.revalidate();
 			}
 		});
 		menu.add(mainScreenButton);
@@ -191,7 +194,6 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(posPanel, mainPanel, inventoryPanel, searchPanel,
 						reportPanel, helpPanel);
 				posPanel.revalidate();
-				menu.revalidate();
 			}
 		});
 		menu.add(posScreenButton);
@@ -208,7 +210,6 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(inventoryPanel, mainPanel, posPanel, searchPanel,
 						reportPanel, helpPanel);
 				inventoryPanel.revalidate();
-				menu.revalidate();
 			}
 		});
 		menu.add(inventoryScreenButton);
@@ -225,7 +226,6 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(searchPanel, mainPanel, posPanel, inventoryPanel,
 						reportPanel, helpPanel);
 				searchPanel.revalidate();
-				menu.revalidate();
 			}
 		});
 		menu.add(searchScreenButton);
@@ -242,7 +242,6 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(reportPanel, mainPanel, posPanel, inventoryPanel, 
 						searchPanel, helpPanel);
 				reportPanel.revalidate();
-				menu.revalidate();
 			}
 		});
 		menu.add(reportScreenButton);
@@ -259,7 +258,6 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(helpPanel, mainPanel, posPanel, inventoryPanel, 
 						searchPanel, reportPanel);
 				helpPanel.revalidate();
-				menu.revalidate();
 			}
 		});
 		menu.add(helpScreenButton);
@@ -276,7 +274,7 @@ public class MainApplicationWindow extends JFrame{
 	}
 	
 	//sets thisScreen to the visible screen and the rest stay invisible
-	private void toggleVisibility(JPanel thisScreen, JPanel otherScreen1, 
+	private static void toggleVisibility(JPanel thisScreen, JPanel otherScreen1, 
 			JPanel otherScreen2, JPanel otherScreen3, JPanel otherScreen4, 
 			JPanel otherScreen5)
 	{

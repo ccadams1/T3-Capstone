@@ -149,6 +149,7 @@ public class EditUserScreen extends JDialog {
 
 		JComboBox<String> empRoleComboBox = new JComboBox<String>();
 		empRoleComboBox.addItem("");
+		empRoleComboBox.addItem("Overall Manager");
 		empRoleComboBox.addItem("Inventory Manager");
 		empRoleComboBox.addItem("Inventory User");
 		empRoleComboBox.addItem("POS Manager");
@@ -225,6 +226,7 @@ public class EditUserScreen extends JDialog {
 						if(!userRole.equals(""))
 						{
 							selectedUser.setRole(userRole);
+							selectedUser.setRoleCode(userRole);
 						}
 						if(!email.equals(""))
 						{
@@ -272,7 +274,7 @@ public class EditUserScreen extends JDialog {
 			stmt.setString(3, temp.getPassword());
 			stmt.setString(4, temp.getFirstName());
 			stmt.setString(5, temp.getLastName());
-			stmt.setInt(6, /*temp.getRole()*/1);
+			stmt.setInt(6, temp.getRoleCode());
 			stmt.setString(7, temp.getEmail());
 			stmt.setString(8, temp.getPhone());
 			stmt.setInt(9, /*temp.isRemoved()*/0);

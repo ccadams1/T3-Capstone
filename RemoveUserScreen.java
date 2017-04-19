@@ -150,7 +150,7 @@ public class RemoveUserScreen extends JDialog {
 			stmt.setString(3, temp.getPassword());
 			stmt.setString(4, temp.getFirstName());
 			stmt.setString(5, temp.getLastName());
-			stmt.setInt(6, /*temp.getRole()*/1);
+			stmt.setInt(6, temp.getRoleCode());
 			stmt.setString(7, temp.getEmail());
 			stmt.setString(8, temp.getPhone());
 			stmt.setInt(9, /*temp.isRemoved()*/1);

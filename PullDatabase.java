@@ -78,7 +78,7 @@ public class PullDatabase {
 				String email = rs.getString("email");
 				String phone = rs.getString("phone1");
 				boolean removed = rs.getBoolean("removed");
-				Employee e = new Employee(userID, username, password, firstName, lastName, role, email, phone, removed);
+				Employee e = new Employee(userID, username, password, firstName, lastName, Integer.parseInt(role), email, phone, removed);
 				employees.add(e);
 			}
 		}

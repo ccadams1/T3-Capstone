@@ -3,6 +3,7 @@ public class Employee {
 	private String username, password, firstName;
 	private String lastName, email, uRole;
 	private String userID, phone, address;
+	private int roleCode;
 	private boolean removed;
 		
 	public Employee(){
@@ -10,13 +11,14 @@ public class Employee {
 	}
 	
 	//populate database
-	public Employee(String userID, String uName, String pWord,String fName,String lName,String role, String email, String phone, boolean removed){
+	public Employee(String userID, String uName, String pWord,String fName,String lName,int role, String email, String phone, boolean removed){
 		this.userID = userID;
 		this.username = uName;
 		this.password = pWord;
 		this.firstName = fName;
 		this.lastName = lName;
-		this.uRole = role;
+		this.roleCode = role;
+		this.uRole = getRoleFromCode();
 		this.email = email;
 		this.phone = phone;
 		this.removed = removed;
@@ -30,6 +32,7 @@ public class Employee {
 		this.firstName = fName;
 		this.lastName = lName;
 		this.uRole = role;
+		setRoleCode(role);
 		this.email = email;
 		this.phone = phone;
 		this.removed = false;
@@ -120,6 +123,68 @@ public class Employee {
 		this.removed = removed;
 	}
 
+	public void setRoleCode(String role)
+	{
+		if(role.equals("Overall Manager"))
+		{
+			roleCode = 2;
+		}
+		else if(role.equals("Inventory Manager"))
+		{
+			roleCode = 3;
+		}
+		else if(role.equals("POS Manager"))
+		{
+			roleCode = 4;
+		}
+		else if(role.equals("Inventory User"))
+		{
+			roleCode = 5;
+		}
+		else
+		{
+			roleCode = 6;
+		}
+	}
+	
+	public void setRoleCode(int role)
+	{
+		this.roleCode = role;
+	}
+	
+	public String getRoleFromCode()
+	{
+		if(roleCode == 1)
+		{
+			uRole = "Administrator";
+		}
+		else if(roleCode == 2)
+		{
+			uRole = "Overall Manager";
+		}
+		else if(roleCode == 3)
+		{
+			uRole = "Inventory Manager";
+		}
+		else if(roleCode == 4)
+		{
+			uRole = "POS Manager";
+		}
+		else if(roleCode == 5)
+		{
+			uRole = "Inventory User";
+		}
+		else
+		{
+			uRole = "POS User";
+		}
+		return uRole;
+	}
+	
+	public int getRoleCode()
+	{
+		return roleCode;
+	}
 	
 	public void print(){
 		String s = "";

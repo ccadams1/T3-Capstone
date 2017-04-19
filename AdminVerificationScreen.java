@@ -63,9 +63,7 @@ public class AdminVerificationScreen extends JDialog{
 		adminVeri.setModalityType(ModalityType.DOCUMENT_MODAL);
 		adminVeri.setTitle("Administrator Verification");
 		
-		//temp admin is 24
-		//real admin is 1
-		if (currentUser.getUserId().equals("24")){
+		if (currentUser.getRoleCode()==1){
 			verify = true;
 			System.out.println("is Admin");
 			adminVeri.dispose();

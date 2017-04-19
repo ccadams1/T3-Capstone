@@ -71,7 +71,7 @@ public class MainApplicationWindow extends JFrame{
 					allData.add(suppliers);//get(5)
 					allData.add(currentUser);//get(6)
 					MainApplicationWindow window = new MainApplicationWindow(allData);
-					//new LoginScreen(allData);
+					LoginScreen login = new LoginScreen(allData);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -105,7 +105,7 @@ public class MainApplicationWindow extends JFrame{
 		
 		//Navigation Menu
 		//creates navigation menu
-		menuBar = NavigationMenu(data);
+		menuBar = NavigationMenu(data, currentUser);
 		frame.setJMenuBar(menuBar);
 		
 		//Main panel
@@ -154,12 +154,11 @@ public class MainApplicationWindow extends JFrame{
 		layeredPane.add(helpPanel);
 		helpPanel.setLayout(null);	
 		helpPanel.setVisible(false);
-		
-		
 	}
 	
-	public JMenuBar NavigationMenu(ArrayList<Object> data)
+	public JMenuBar NavigationMenu(ArrayList<Object> data, Employee currrentUser)
 	{
+		int userRole = currentUser.getRoleCode();
 		//Create JMenuBar
 		JMenuBar menu = new JMenuBar();
 		
@@ -171,6 +170,7 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(mainPanel, posPanel, inventoryPanel, searchPanel,
 						reportPanel, helpPanel);
 				mainPanel.revalidate();
+				menu.revalidate();
 			}
 		});
 		menu.add(mainScreenButton);
@@ -183,9 +183,14 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(posPanel, mainPanel, inventoryPanel, searchPanel,
 						reportPanel, helpPanel);
 				posPanel.revalidate();
+				menu.revalidate();
 			}
 		});
 		menu.add(posScreenButton);
+		if(userRole==3||userRole==5)
+		{
+			posScreenButton.setEnabled(false);
+		}
 		
 		//Inventory button for menu
 		JButton inventoryScreenButton = new JButton("Inventory");
@@ -195,9 +200,14 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(inventoryPanel, mainPanel, posPanel, searchPanel,
 						reportPanel, helpPanel);
 				inventoryPanel.revalidate();
+				menu.revalidate();
 			}
 		});
 		menu.add(inventoryScreenButton);
+		if(userRole==4||userRole==6)
+		{
+			inventoryScreenButton.setEnabled(false);
+		}
 		
 		//Search button for menu
 		JButton searchScreenButton = new JButton("Search");
@@ -207,9 +217,14 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(searchPanel, mainPanel, posPanel, inventoryPanel,
 						reportPanel, helpPanel);
 				searchPanel.revalidate();
+				menu.revalidate();
 			}
 		});
 		menu.add(searchScreenButton);
+		if(userRole==5||userRole==6)
+		{
+			searchScreenButton.setEnabled(false);
+		}
 		
 		//Report button for menu
 		JButton reportScreenButton = new JButton("Reports");
@@ -219,9 +234,14 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(reportPanel, mainPanel, posPanel, inventoryPanel, 
 						searchPanel, helpPanel);
 				reportPanel.revalidate();
+				menu.revalidate();
 			}
 		});
 		menu.add(reportScreenButton);
+		if(userRole==5||userRole==6)
+		{
+			reportScreenButton.setEnabled(false);
+		}
 		
 		//Help button for menu
 		JButton helpScreenButton = new JButton("Help");
@@ -231,6 +251,7 @@ public class MainApplicationWindow extends JFrame{
 				toggleVisibility(helpPanel, mainPanel, posPanel, inventoryPanel, 
 						searchPanel, reportPanel);
 				helpPanel.revalidate();
+				menu.revalidate();
 			}
 		});
 		menu.add(helpScreenButton);

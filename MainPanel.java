@@ -1,6 +1,8 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
@@ -11,17 +13,21 @@ import javax.swing.JPanel;
 
 public class MainPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
-	private JPanel buttons, bottomPanel;
+	private JPanel mainPanel, buttons, bottomPanel;
 	private JButton sales, inventory, reports, search, help;			
 	private JButton settings, changeUser;
 	public static JPanel pos;
+	public Employee currentUser = new Employee();
+	public LoginScreen login = null;
 
 	public MainPanel(JMenuBar menuBar, ArrayList<Object> data, JFrame mainFrame){
+		mainPanel = this;
+		currentUser = (Employee) data.get(6);
 		
 		//Create JFrame and GridLayout
-		this.setLayout(null);
-		this.setBounds(0, 0, 772, 476);
-		this.setVisible(true);
+		mainPanel.setLayout(null);
+		mainPanel.setBounds(0, 0, 772, 476);
+		mainPanel.setVisible(true);
 					
 		//Create JPanel for Buttons
 		buttons = new JPanel();
@@ -84,12 +90,37 @@ public class MainPanel extends JPanel{
 			}
 		});
 		
-		
 		changeUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//sets main as visible screen
-				new LoginScreen(data);
+				login = new LoginScreen(data);
 			}
+		});
+		
+		login.addWindowListener(new WindowListener(){
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				mainPanel.revalidate();
+				menuBar.revalidate();
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {}
+
+			@Override
+			public void windowClosing(WindowEvent e) {}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {}
+
+			@Override
+			public void windowIconified(WindowEvent e) {}
+
+			@Override
+			public void windowOpened(WindowEvent e) {}
 		});
 		
 		//Add buttons to Panels
@@ -100,14 +131,9 @@ public class MainPanel extends JPanel{
 		buttons.add(help);
 		buttons.add(settings);
 		bottomPanel.add(changeUser);
-		
-		if (search.isSelected())
-		{
-			((AbstractButton) menuBar.getComponent(3)).doClick();
-		}
 				
 		//Add components to JFrame
-		this.add(buttons);
-		this.add(bottomPanel);
+		mainPanel.add(buttons);
+		mainPanel.add(bottomPanel);
 	}
 }

@@ -3,6 +3,10 @@ import java.awt.FlowLayout;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -13,6 +17,7 @@ import javax.swing.JLabel;
 public class PaymentScreen extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	private static Connection connect = null;
 
 	/**
 	 * Launch the application.
@@ -29,8 +34,12 @@ public class PaymentScreen extends JDialog {
 	*/
 	/**
 	 * Create the dialog.
+	 * @param checkoutData 
+	 * @param data 
 	 */
-	public PaymentScreen(Customer cus, String total, JDialog parent) {
+	public PaymentScreen(ArrayList<Object> data, ArrayList<String> checkoutData, Customer cus, String total, JDialog parent) {
+		connect = (Connection) data.get(0);
+		
 		setAlwaysOnTop (true);
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -78,6 +87,7 @@ public class PaymentScreen extends JDialog {
 		button.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				invoice(connect);
 				parent.dispose();
 				dispose();
 			}
@@ -90,6 +100,28 @@ public class PaymentScreen extends JDialog {
 		getContentPane().add(btnCreditPayment);
 		contentPanel.setLayout(null);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+	}
+	
+	protected void invoice(Connection connect) 
+	{
+		Statement stmt = null;
 		
+		String query = "Insert into invoice (RTN_id, invoice_total, payment_type, ivc_open) "
+				+ "values ('" + /*id?*/ ""+ "', " + /*total?*/ ""+ ", '"  + /*paymentType?*/ ""+ "', " 
+				+ "'Paid')";
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.createStatement();
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure for invoice sale");
+			stmt.execute(query);
+			System.out.println("Finished calling procedure");
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
 	}
 }

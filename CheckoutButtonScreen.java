@@ -161,7 +161,7 @@ public class CheckoutButtonScreen extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				if(thisCustomer!=null)
 				{
-					setThisCustomer(thisCustomer, total, cBS);
+					setThisCustomer(data, checkoutData, thisCustomer, total, cBS);
 				}
 				else
 				{
@@ -172,9 +172,9 @@ public class CheckoutButtonScreen extends JDialog{
 		cBS.add(btnPayment);
 	}
 	
-	public void setThisCustomer(Customer cus, String total, JDialog cBS)
+	public void setThisCustomer(ArrayList<Object> data, ArrayList<String> checkoutData, Customer cus, String total, JDialog cBS)
 	{
-		new PaymentScreen(cus, total, cBS);
+		new PaymentScreen(data, checkoutData, cus, total, cBS);
 	}
 	
 	public void setWarningMsg(String text){

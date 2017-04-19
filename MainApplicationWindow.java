@@ -1,14 +1,13 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import java.awt.CardLayout;
 
@@ -38,7 +37,8 @@ public class MainApplicationWindow extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DatabaseConnection database = new DatabaseConnection();
+					Scanner input = new Scanner(new FileReader("DatabaseName.txt"));
+					DatabaseConnection database = new DatabaseConnection(input.nextLine());
 					connection = database.getConnection();
 					PullDatabase pull = new PullDatabase(connection);
 					myBusiness = pull.getMyBusinessData();

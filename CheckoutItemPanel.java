@@ -74,6 +74,8 @@ public class CheckoutItemPanel extends JPanel{
 					parent.validate();
 					ciPanel.setVisible(true);
 				}
+				quant = 1;
+				txtQuant.setValue(quant);
 				setSubtotal(quant, 0, item.getPrice(), panel_3);
 				((JPanel)((JPanel) parent).getComponent(panelIndex)).remove(indexInPanel);
 				cl.next(parent);

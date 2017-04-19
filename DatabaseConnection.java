@@ -5,11 +5,19 @@ public class DatabaseConnection {
 	public static String password;
 	public static String serverName = "t3tisvr.database.windows.net";
 	public static String portNumber = "1433";
+	public static String database = "T3_TI_WTCC";
 	
 	public DatabaseConnection()
 	{
 		DatabaseConnection.username = "t3tiadmin@t3tisvr";
 		DatabaseConnection.password = "T3!admin";
+	}
+	
+	public DatabaseConnection(String database)
+	{
+		DatabaseConnection.username = "t3tiadmin@t3tisvr";
+		DatabaseConnection.password = "T3!admin";
+		DatabaseConnection.database = database;
 	}
 	
 	public DatabaseConnection(String username, String password)
@@ -19,11 +27,12 @@ public class DatabaseConnection {
 	}
 	
 	//Connect to your database.
-	//Replace server name, username, and password with your credentials
+	//Replace database name, username, and password with your credentials
 	public Connection getConnection() throws SQLException{
 		String connectionString =
 			"jdbc:sqlserver://t3tisvr.database.windows.net:1433;"
-			+ "database=T3_TI_WTCC;" + "user=" + username + ";"
+			+ "database=" + database + ";"
+			+ "user=" + username + ";"
 			+ "password=" + password + ";"
 			+ "encrypt=true;"
 			+ "trustServerCertificate=false;"

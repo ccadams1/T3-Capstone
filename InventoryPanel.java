@@ -510,6 +510,10 @@ public class InventoryPanel extends JPanel{
 			inventory.get(index);
 			if(index >= 0)
 			{
+				if(!n.equals(""))
+				{
+					inventory.get(index).setName(n);
+				}
 				if(!d.equals(""))
 				{
 					inventory.get(index).setDescription(d);

@@ -552,14 +552,17 @@ public class InventoryPanel extends JPanel{
 				callRemoveItemProcedure(connect, inventory.get(index));
 				updateInventoryDisplay(textArea);
 			}
-			else
+			else if(!inventory.get(index).getId().equals(id))
+			{
+				setWarningMsg("Item name and Item ID do not match.");
+			}
+			else if(check == false)
 			{
 				setWarningMsg("Confirm delete check box is not selected.");
 			}
-		}						
-		else
-		{
-			setWarningMsg("Item name and Item ID do not match.");
+		}
+		if(index < 0){
+			setWarningMsg("Item name not found in inventory");
 		}
 	}
 	

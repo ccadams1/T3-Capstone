@@ -21,7 +21,7 @@ public class CheckoutItemPanel extends JPanel{
 	private Item item;
 	public CheckoutItemPanel ciPanel = this;
 	public JSpinner txtQuant;
-	public int quant = 1;
+	public int quant = 0;
 	public double itemTotal = 0;
 	private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 		
@@ -47,7 +47,7 @@ public class CheckoutItemPanel extends JPanel{
 		this.add(lblItemName);
 		
 		txtQuant = new JSpinner();
-		txtQuant.setModel(new SpinnerNumberModel(quant, 0, null, 1));
+		txtQuant.setModel(new SpinnerNumberModel(quant, 0, item.getQuantity(), 1));
 		txtQuant.setBounds(88, 11, 44, 25);
 		txtQuant.setPreferredSize(new Dimension(6, 12));
 		this.add(txtQuant);
@@ -74,7 +74,6 @@ public class CheckoutItemPanel extends JPanel{
 					parent.validate();
 					ciPanel.setVisible(true);
 				}
-				quant = 1;
 				txtQuant.setValue(quant);
 				setSubtotal(quant, 0, item.getPrice(), panel_3);
 				((JPanel)((JPanel) parent).getComponent(panelIndex)).remove(indexInPanel);
@@ -146,12 +145,24 @@ public class CheckoutItemPanel extends JPanel{
 	
 	public void increaseQuantity()
 	{
-		quant++;
-		txtQuant.setValue(quant);
+		if(item.getQuantity()>quant)
+		{
+			quant++;
+			txtQuant.setValue(quant);
+		}
 	}
 
 	public String getItemName()
 	{
 		return item.getName();
+	}
+
+	public int getItemID() {
+		return Integer.parseInt(item.getId());
+	}
+
+	public void setQuant(int i) {
+		quant = i;
+		txtQuant.setValue(quant);
 	}
 }

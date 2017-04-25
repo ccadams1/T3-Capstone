@@ -11,6 +11,10 @@ public class Item {
 	private String description;
 	private boolean removed;
 	
+
+	public Item() {
+	}
+	
 	public Item(String n, double p, int sn, String s, int quantity,
 			int par, String d)
 	{
@@ -146,5 +150,10 @@ public class Item {
 	
 	public void setSupplierID(int supplierID) {
 		this.supplierID = supplierID;
+	}
+	
+	public void sellItem(int numberSold)
+	{
+		this.quantity -= numberSold;
 	}
 }	

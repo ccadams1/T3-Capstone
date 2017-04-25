@@ -26,7 +26,9 @@ import javax.swing.border.LineBorder;
 public class POSPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Inventory inventory = new Inventory();
-	private static JPanel panel_2 = new JPanel(new CardLayout());
+	public JPanel panel_1 = new JPanel();
+	public static JPanel panel_2 = new JPanel(new CardLayout());
+	public CheckoutPanel panel_3 = new CheckoutPanel();
 	private ArrayList<CheckoutItemPanel> panelList = new ArrayList<CheckoutItemPanel>();
 	private JButton btnNext, btnPrevious = new JButton();
 	private int switchPosition = 0;
@@ -38,9 +40,8 @@ public class POSPanel extends JPanel{
 	{
 		inventory = (Inventory) data.get(3);
 		
-		JPanel panel = new JPanel();
+		JPanel panel = this;
 		panel.setBounds(0, 0, 772, 476);
-		this.add(panel);
 		panel.setLayout(null);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -53,7 +54,7 @@ public class POSPanel extends JPanel{
 		scrollPane_1.setViewportView(panel_1);
 		panel_1.setLayout(new GridLayout(7, 4, 25, 25));
 		
-		CheckoutPanel panel_3 = new CheckoutPanel();
+		panel_3 = new CheckoutPanel();
 		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_3.setBounds(500, 357, 272, 119);
 		panel.add(panel_3);
@@ -114,7 +115,8 @@ public class POSPanel extends JPanel{
 				checkoutData.add(discountValueText.getText());
 				checkoutData.add(taxesValueText.getText());
 				checkoutData.add(totalValueText.getText());
-				new CheckoutButtonScreen(data, checkoutData);
+				double totalValue = panel_3.getTotalValue();
+				new CheckoutButtonScreen(data, checkoutData, (POSPanel) panel, panelList, totalValue);
 			}
 		});
 		panel_3.add(btnCheckOut);
@@ -212,49 +214,11 @@ public class POSPanel extends JPanel{
 					((Container) panel_2.getComponent(x)).removeAll();
 				}
 				panel_2.revalidate();
-				for(int x = 0; x < inventory.size(); x++)
-				{
-					if(!inventory.get(x).isRemoved())
-					{
-						POSButton button = new POSButton(inventory.get(x), panel_2, panel_3, cl, panelList);
-						button.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg0) {
-								CheckoutItemPanel newPanel = button.checkoutPanel;
-								newPanel.setVisible(true);
-						        
-						        //boolean to check for existing panel
-								boolean hasPanel = false;
-								//for loop to check for existing panel
-								for(int x = 0; x < panelList.size(); x++)
-								{
-									//cycles through existing panel
-									if(panelList.get(x).getItemName().equals(newPanel.getItemName()))
-									{
-										panelList.get(x).increaseQuantity();
-										hasPanel = true;
-										cl.next(panel_2);
-										cl.previous(panel_2);
-									}
-								}
-								if(!hasPanel)
-								{
-									cl.first(panel_2);
-							        determinePanel();
-							        newPanel.quant = 1;
-									panelList.add(newPanel);
-									addingTo.add(newPanel);
-								}
-								panel_3.setSubtotal(getSubtotal(panelList));
-								panel_3.updateLabels();
-								panel_2.validate();				
-							}
-						});
-						panel_1.add(button);
-					}
-				}
+				createButtons(panel_1, panel_3);
 				panel_1.revalidate();
 				panel_2.revalidate();
 			}
+			
 			public void componentHidden(ComponentEvent e) {
 				for(int x = 0; x < panel_1.getComponentCount(); x++)
 				{
@@ -403,5 +367,63 @@ public class POSPanel extends JPanel{
 
 	public void setPanel_2(JPanel panel_2) {
 		this.panel_2 = panel_2;
+	}
+	
+	public void createButtons(JPanel panel_1, CheckoutPanel panel_3) 
+	{
+		for(int x = 0; x < inventory.size(); x++)
+		{
+			if(!inventory.get(x).isRemoved())
+			{
+				POSButton button = new POSButton(inventory.get(x), panel_2, panel_3, cl, panelList);
+				if(inventory.get(x).getQuantity()==0)
+				{
+					button.setEnabled(false);
+					button.setToolTipText("Disabled due to 0 stock");
+				}
+				button.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						CheckoutItemPanel newPanel = button.checkoutPanel;
+						newPanel.setVisible(true);
+				        
+				        //boolean to check for existing panel
+						boolean hasPanel = false;
+						//for loop to check for existing panel
+						for(int x = 0; x < panelList.size(); x++)
+						{
+							//cycles through existing panel
+							if(panelList.get(x).getItemName().equals(newPanel.getItemName()))
+							{
+								if(panelList.get(x).getQuantity()==0)
+								{
+									button.setEnabled(false);
+									button.setToolTipText("Disabled due to 0 stock");
+									hasPanel = true;
+								}
+								else
+								{
+									panelList.get(x).increaseQuantity();
+									hasPanel = true;
+									cl.next(panel_2);
+									cl.previous(panel_2);
+								}
+							}
+						}
+						if(!hasPanel)
+						{
+							cl.first(panel_2);
+					        determinePanel();
+					        newPanel.setQuant(1);
+							panelList.add(newPanel);
+							addingTo.add(newPanel);
+						}
+						panel_3.setSubtotal(getSubtotal(panelList));
+						panel_3.updateLabels();
+						panel_2.validate();				
+					}
+				});
+				panel_1.add(button);
+			}
+		}
 	}
 } 

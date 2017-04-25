@@ -51,14 +51,16 @@ public class AddCustomerScreen extends JDialog {
 	}
 
 	private void initialize(ArrayList<Object> data, Customer thisCustomer, JLabel customerLabel) {
-		this.setAlwaysOnTop (true);
-		this.setSize(400,450);
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
-		this.setModal(true);
-		this.setModalityType(ModalityType.DOCUMENT_MODAL);
-		this.setTitle("Add Customer");
-		this.getContentPane().setLayout(null);
+		JDialog addingCus = new JDialog();
+
+		addingCus.setAlwaysOnTop (true);
+		addingCus.setSize(400,450);
+		addingCus.setLocationRelativeTo(null);
+		addingCus.setVisible(true);
+		addingCus.setModal(true);
+		addingCus.setModalityType(ModalityType.DOCUMENT_MODAL);
+		addingCus.setTitle("Add Customer");
+		addingCus.setLayout(null);
 
 		customers = (CustomerList) data.get(1);
 		Connection connect = (Connection) data.get(0);
@@ -67,82 +69,81 @@ public class AddCustomerScreen extends JDialog {
 		JLabel lblUsername = new JLabel("First Name:*");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUsername.setBounds(11, 24, 149, 29);
-		getContentPane().add(lblUsername);
+		addingCus.add(lblUsername);
 		
 		JLabel lblPassword = new JLabel("Last Name:*");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPassword.setBounds(11, 62, 149, 29);
-		getContentPane().add(lblPassword);
+		addingCus.add(lblPassword);
 		
 		JLabel lblRetypePassword = new JLabel("Address:*");
 		lblRetypePassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblRetypePassword.setBounds(11, 100, 149, 29);
-		getContentPane().add(lblRetypePassword);
+		addingCus.add(lblRetypePassword);
 		
 		JLabel lblFirstName = new JLabel("City:*");
 		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblFirstName.setBounds(11, 138, 149, 29);
-		getContentPane().add(lblFirstName);
+		addingCus.add(lblFirstName);
 		
 		JLabel lblLastName = new JLabel("State:*");
 		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblLastName.setBounds(11, 176, 149, 29);
-		getContentPane().add(lblLastName);
+		addingCus.add(lblLastName);
 		
 		JLabel lblEmployeeRole = new JLabel("Zip Code:*");
 		lblEmployeeRole.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblEmployeeRole.setBounds(11, 214, 149, 29);
-		getContentPane().add(lblEmployeeRole);
+		addingCus.add(lblEmployeeRole);
 		
 		JLabel lblEmailAddress = new JLabel("Phone Number:*");
 		lblEmailAddress.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblEmailAddress.setBounds(11, 252, 149, 29);
-		getContentPane().add(lblEmailAddress);
+		addingCus.add(lblEmailAddress);
 		
 		JLabel lblPhoneNumber = new JLabel("Email:");
 		lblPhoneNumber.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPhoneNumber.setBounds(11, 290, 149, 29);
-		getContentPane().add(lblPhoneNumber);
+		addingCus.add(lblPhoneNumber);
 		
 		firstNameTextField = new JTextField();
 		firstNameTextField.setBounds(158, 17, 191, 35);
-		getContentPane().add(firstNameTextField);
+		addingCus.add(firstNameTextField);
 		firstNameTextField.setColumns(10);
 		
 		lastNameTextField = new JTextField();
 		lastNameTextField.setColumns(10);
 		lastNameTextField.setBounds(158, 55, 191, 35);
-		getContentPane().add(lastNameTextField);
+		addingCus.add(lastNameTextField);
 		
 		cusAddressTextField = new JTextField();
 		cusAddressTextField.setColumns(10);
 		cusAddressTextField.setBounds(158, 93, 191, 35);
-		getContentPane().add(cusAddressTextField);
+		addingCus.add(cusAddressTextField);
 		
 		cusCityTextField = new JTextField();
 		cusCityTextField.setColumns(10);
-		cusCityTextField.setBounds(158, 131, 191, 35);
-		getContentPane().add(cusCityTextField);
+		addingCus.add(cusCityTextField);
 		
 		cusStateTextField = new JTextField();
 		cusStateTextField.setColumns(10);
 		cusStateTextField.setBounds(158, 169, 191, 35);
-		getContentPane().add(cusStateTextField);
+		addingCus.add(cusStateTextField);
 		
 		cusZipTextField = new JTextField();
 		cusZipTextField.setColumns(10);
 		cusZipTextField.setBounds(158, 207, 191, 35);
-		getContentPane().add(cusZipTextField);
+		addingCus.add(cusZipTextField);
 		
 		cusPhoneTextField = new JTextField();
 		cusPhoneTextField.setColumns(10);
 		cusPhoneTextField.setBounds(158, 245, 191, 35);
-		getContentPane().add(cusPhoneTextField);
+		addingCus.add(cusPhoneTextField);
 		
 		cusEmailTextField = new JTextField();
 		cusEmailTextField.setColumns(10);
 		cusEmailTextField.setBounds(158, 283, 191, 35);
-		getContentPane().add(cusEmailTextField);
+		addingCus.add(cusEmailTextField);
 		
 		JButton btnAddUser = new JButton("Add Customer");
 		btnAddUser.addActionListener(new ActionListener() {
@@ -176,6 +177,7 @@ public class AddCustomerScreen extends JDialog {
 					AddCustomerScreen.thisCustomer = temp;
 					customerLabel.setText("Customer: " + thisCustomer.getID() + " " + thisCustomer.getFName() 
 						+ " " + thisCustomer.getLName());
+					addingCus.dispose();
 				}
 			}
 		});
@@ -187,7 +189,7 @@ public class AddCustomerScreen extends JDialog {
 		});
 		
 		btnAddUser.setBounds(99, 322, 155, 37);
-		getContentPane().add(btnAddUser);
+		addingCus.add(btnAddUser);
 	}
 	
 	protected int callAddCustomerProcedure(Connection connect, Customer temp) {

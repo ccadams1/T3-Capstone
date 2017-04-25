@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -15,6 +16,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.awt.Dialog.ModalityType;
 
 public class CheckoutButtonScreen extends JDialog{
@@ -23,6 +25,7 @@ public class CheckoutButtonScreen extends JDialog{
 	public static CustomerList customers;
 	public static Customer thisCustomer = null;
 	public String total = "";
+	public long time;
 	
 	/**
 	 * Launch the application.
@@ -42,15 +45,20 @@ public class CheckoutButtonScreen extends JDialog{
 
 	/**
 	 * Create the application.
+	 * @param panel_2 
+	 * @param totalValue 
 	 */
-	public CheckoutButtonScreen(ArrayList<Object> data, ArrayList<String> checkoutData){
-		initialize(data, checkoutData);
+	public CheckoutButtonScreen(ArrayList<Object> data, ArrayList<String> checkoutData, POSPanel posPanel, ArrayList<CheckoutItemPanel> panelList, double totalValue){
+		initialize(data, checkoutData, panelList, posPanel, totalValue);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @param panel_2 
 	 */
-	private void initialize(ArrayList<Object> data, ArrayList<String> checkoutData) {
+	private void initialize(ArrayList<Object> data, ArrayList<String> checkoutData, ArrayList<CheckoutItemPanel> panelList, POSPanel posPanel, double totalValue) {
+		Date date = new Date();
+		
 		JDialog cBS = new JDialog();
 		cBS.setAlwaysOnTop (true);
 		cBS.setSize(400,600);
@@ -161,7 +169,7 @@ public class CheckoutButtonScreen extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				if(thisCustomer!=null)
 				{
-					setThisCustomer(data, checkoutData, thisCustomer, total, cBS);
+					setThisCustomer(data, panelList, posPanel, thisCustomer, total, totalValue, cBS, date.getTime());
 				}
 				else
 				{
@@ -172,9 +180,9 @@ public class CheckoutButtonScreen extends JDialog{
 		cBS.add(btnPayment);
 	}
 	
-	public void setThisCustomer(ArrayList<Object> data, ArrayList<String> checkoutData, Customer cus, String total, JDialog cBS)
+	public void setThisCustomer(ArrayList<Object> data, ArrayList<CheckoutItemPanel> panelList, POSPanel posPanel, Customer cus, String total, double totalValue, JDialog cBS, long time)
 	{
-		new PaymentScreen(data, checkoutData, cus, total, cBS);
+		new PaymentScreen(data, panelList, posPanel, cus, total, totalValue, cBS, time);
 	}
 	
 	public void setWarningMsg(String text){

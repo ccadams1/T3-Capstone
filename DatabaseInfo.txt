@@ -1,0 +1,4 @@
+t3tisvr.database.windows.net
+1433
+t3tiadmin@t3tisvr
+T3!admin

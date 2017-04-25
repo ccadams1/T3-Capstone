@@ -3,10 +3,15 @@ import java.awt.FlowLayout;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.sql.Date;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -18,6 +23,12 @@ public class PaymentScreen extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private static Connection connect = null;
+	private Customer thisCustomer = new Customer();
+	private static Inventory inventory = new Inventory();
+	private Employee currentUser = new Employee();
+	private ArrayList<CheckoutItemPanel> panelList = new ArrayList<CheckoutItemPanel>();
+	private double totalValue;
+	private long time;
 
 	/**
 	 * Launch the application.
@@ -36,9 +47,18 @@ public class PaymentScreen extends JDialog {
 	 * Create the dialog.
 	 * @param checkoutData 
 	 * @param data 
+	 * @param panelList 
+	 * @param panel_2 
+	 * @param totalValue 
 	 */
-	public PaymentScreen(ArrayList<Object> data, ArrayList<String> checkoutData, Customer cus, String total, JDialog parent) {
-		connect = (Connection) data.get(0);
+	public PaymentScreen(ArrayList<Object> data, ArrayList<CheckoutItemPanel> panelList, POSPanel posPanel, Customer cus, String total, double totalValue, JDialog parent, long time) {
+		PaymentScreen.connect = (Connection) data.get(0);
+		PaymentScreen.inventory = (Inventory) data.get(3);
+		this.currentUser = (Employee) data.get(6);
+		this.panelList = panelList;
+		this.thisCustomer = cus;
+		this.totalValue = totalValue;
+		this.time = time;
 		
 		setAlwaysOnTop (true);
 		setLocationRelativeTo(null);
@@ -81,13 +101,15 @@ public class PaymentScreen extends JDialog {
 		lblAmount.setBounds(146, 107, 99, 14);
 		getContentPane().add(lblAmount);
 		
-		JButton button = new JButton("Cash Payment");
-		button.setBounds(146, 153, 123, 23);
-		getContentPane().add(button);
-		button.addActionListener(new ActionListener(){
+		JButton btnCashPayment = new JButton("Cash Payment");
+		btnCashPayment.setBounds(146, 153, 123, 23);
+		getContentPane().add(btnCashPayment);
+		btnCashPayment.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				invoice(connect);
+				invoice("CASH");
+				posPanel.setVisible(false);
+				posPanel.setVisible(true);
 				parent.dispose();
 				dispose();
 			}
@@ -97,27 +119,155 @@ public class PaymentScreen extends JDialog {
 		btnCreditPayment.setEnabled(false);
 		btnCreditPayment.setToolTipText("Disabled due to lack of credit card scanner");
 		btnCreditPayment.setBounds(146, 187, 123, 23);
+		btnCreditPayment.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				invoice("CREDIT");
+				posPanel.setVisible(false);
+				posPanel.setVisible(true);
+				parent.dispose();
+				dispose();
+			}
+		});
 		getContentPane().add(btnCreditPayment);
 		contentPanel.setLayout(null);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 	}
 	
-	protected void invoice(Connection connect) 
+	protected void invoice(String paymentType) 
 	{
-		Statement stmt = null;
-		
-		String query = "Insert into invoice (RTN_id, invoice_total, payment_type, ivc_open) "
-				+ "values ('" + /*id?*/ ""+ "', " + /*total?*/ ""+ ", '"  + /*paymentType?*/ ""+ "', " 
-				+ "'Paid')";
+		int transaction = callAddRetailTransactionProcedure(connect, thisCustomer, currentUser, time);
+		for(CheckoutItemPanel panel : panelList)
+		{
+			callAddRetailTranItemProcedure(connect, transaction, panel.getItemID(), panel.getQuantity(), panel.getTotal());
+			System.out.println("Tran:"+transaction+"\tItemID:"+panel.getItemID()+"\tItemQuant:"+panel.getQuantity()+"\tTotal:"+panel.getTotal());
+			inventory.get(inventory.findItemByName(panel.getItemName())).sellItem(panel.getQuantity());
+			callEditItemProcedure(connect, inventory.get(inventory.findItemByName(panel.getItemName())));
+		}
+		callAddInvoiceProcedure(connect, transaction, paymentType, totalValue);
+	}
+	
+
+	protected int callAddRetailTransactionProcedure(Connection connect, Customer customer, Employee user, long time){
+		Date date = new Date(time);
+		CallableStatement stmt = null;
 		
 		try{
 			//Prepare the stored procedure call
-			stmt = connect.createStatement();
+			stmt = connect.prepareCall("{call dbo.uspAddRetailTransaction(?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.registerOutParameter(1, Types.INTEGER);
+			stmt.setDate(2, date);
+			stmt.setInt(3, Integer.parseInt(customer.getID()));
+			stmt.setInt(4, user.getIntUserID());
+			stmt.registerOutParameter(5, Types.VARCHAR);
 			
 			//call stored procedure
-			System.out.println("Calling stored procedure for invoice sale");
-			stmt.execute(query);
+			System.out.println("Calling stored procedure to add a retail transaction");
+			stmt.executeUpdate();
 			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			int rtnID = stmt.getInt(1);
+			String response = stmt.getString(5);
+			System.out.println(response);
+			
+			return rtnID;
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+		return -1;
+	}
+	
+	protected void callAddRetailTranItemProcedure(Connection connect, int rtnID, int itemID, int quantity, double cost){
+		CallableStatement stmt = null;
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspAddRetailTranItem(?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setInt(1, rtnID);
+			stmt.setInt(2, itemID);
+			stmt.setInt(3, quantity);
+			stmt.setDouble(4, cost);
+			stmt.registerOutParameter(5, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to add a retail transaction item");
+			stmt.executeUpdate();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(5);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	protected void callAddInvoiceProcedure(Connection connect, int rtnID, String paymentType, double total){
+		CallableStatement stmt = null;
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspAddInvoice(?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.registerOutParameter(1, Types.INTEGER);
+			stmt.setInt(2, rtnID);
+			stmt.setInt(3, 0);
+			stmt.setString(4, paymentType);
+			stmt.setDouble(5, total);
+			stmt.registerOutParameter(6, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to add invoice");
+			stmt.executeUpdate();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			int invoiceNumber = stmt.getInt(1);
+			String response = stmt.getString(6);
+			System.out.println(response);
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e);
+		}
+	}
+	protected void callEditItemProcedure(Connection connect, Item temp){
+		CallableStatement stmt = null;
+		
+		try{
+			//Prepare the stored procedure call
+			stmt = connect.prepareCall("{call dbo.uspEditInventory(?,?,?,?,?,?,?,?,?,?)}");
+			
+			//set the parameters
+			stmt.setInt(1, Integer.parseInt(temp.getId()));
+			stmt.setString(2, null);
+			stmt.setString(3, temp.getName());
+			stmt.setString(4, temp.getDescription());
+			stmt.setInt(5, temp.getQuantity());
+			stmt.setInt(6, temp.getParStock());
+			stmt.setDouble(7, temp.getPrice());
+			stmt.setInt(8, temp.getSupplierID());
+			stmt.setInt(9, /*temp.isRemoved()*/0);
+			stmt.registerOutParameter(10, Types.VARCHAR);
+			
+			//call stored procedure
+			System.out.println("Calling stored procedure to edit item");
+			stmt.executeUpdate();
+			System.out.println("Finished calling procedure");
+			
+			//Get the response message of the OUT parameter
+			String response = stmt.getString(10);
+			System.out.println(response);
 		}
 		catch (SQLException e)
 		{

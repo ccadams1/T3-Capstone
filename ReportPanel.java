@@ -615,8 +615,8 @@ public class ReportPanel extends JPanel{
 	public String getSalesReport() {
 		String reportString = "";
 		ArrayList<Double> report = callReportProcedure(connect);
-		reportString = "  Today's Cash Sales: $" + report.get(0);
-		reportString = "  Today's Credit Sales: $" + report.get(1); 
+		reportString += "  Today's Cash Sales: $" + report.get(0);
+		reportString += "\n  Today's Credit Sales: $" + report.get(1); 
 		return reportString;
 	}
 	
@@ -628,7 +628,7 @@ public class ReportPanel extends JPanel{
 		double creditTotal = 0.00;
 		
 		Date date = new Date();
-		String dateString = date.getYear() + "-";
+		String dateString = date.getYear()+1900 + "-";
 		if((date.getMonth()+1)<10)
 		{
 			dateString += "0" + (date.getMonth() + 1) + "-";
@@ -646,7 +646,7 @@ public class ReportPanel extends JPanel{
 		{
 			dateString += date.getDate();
 		}
-		
+		System.out.println(dateString);
 		try{
 			//Prepare the stored procedure call
 			stmt = connect.prepareCall("{call dbo.SalesByDate(?,?)}");
@@ -657,15 +657,14 @@ public class ReportPanel extends JPanel{
 			
 			//call stored procedure
 			System.out.println("Calling stored procedure for report information");
-			boolean results = stmt.execute();
+			stmt.execute();
 			System.out.println("Finished calling procedure");
 			
 			//Get the results
-			
-			while(results)
+			ResultSet rs = stmt.getResultSet();
+			while(rs.next())
 			{
-				ResultSet rs = stmt.getResultSet();
-				if(rs.getString(3).equals("CASH"))
+				if(rs.getString(3).toUpperCase().equals("CASH"))
 				{
 					cashTotal += rs.getDouble(4);
 				}

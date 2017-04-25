@@ -82,4 +82,8 @@ public class CheckoutPanel extends JPanel {
 		subtotal += price;
 	}
 
+	public double getTotalValue() {
+		return totalValue;
+	}
+
 }

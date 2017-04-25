@@ -46,6 +46,9 @@ public class Customer {
 		this.email = cusEmail;
 		this.fax = "";	}
 
+	public Customer() {
+	}
+
 	public void setID (String ID)
 	{
 		this.ID = ID;

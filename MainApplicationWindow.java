@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 import javax.swing.*;
@@ -36,9 +37,10 @@ public class MainApplicationWindow extends JFrame{
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
+				try {					
 					Scanner input = new Scanner(new FileReader("DatabaseName.txt"));
-					DatabaseConnection database = new DatabaseConnection(input.nextLine());
+					DatabaseConnection database = new DatabaseConnection();//input.nextLine(),input.nextLine(),
+							//input.nextLine(),input.nextLine());
 					connection = database.getConnection();
 					PullDatabase pull = new PullDatabase(connection);
 					myBusiness = pull.getMyBusinessData();

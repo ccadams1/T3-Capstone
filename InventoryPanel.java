@@ -560,9 +560,10 @@ public class InventoryPanel extends JPanel{
 			{
 				setWarningMsg("Confirm delete check box is not selected.");
 			}
-		}
-		if(index < 0){
-			setWarningMsg("Item name not found in inventory");
+		}						
+		if(index < 0)
+		{
+			setWarningMsg("Item name not found in inventory.");
 		}
 	}
 	

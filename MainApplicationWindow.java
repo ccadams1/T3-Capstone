@@ -38,9 +38,10 @@ public class MainApplicationWindow extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {					
-					Scanner input = new Scanner(new FileReader("DatabaseName.txt"));
-					DatabaseConnection database = new DatabaseConnection();//input.nextLine(),input.nextLine(),
-							//input.nextLine(),input.nextLine());
+					File desktop = new File(System.getProperty("user.home"), "/Desktop");
+					Scanner input = new Scanner(new File(desktop, "/T3 Tracking and Inventory_lib/DatabaseInfo.txt"));
+					DatabaseConnection database = new DatabaseConnection(input.nextLine(),input.nextLine(),
+						input.nextLine(),input.nextLine());
 					connection = database.getConnection();
 					PullDatabase pull = new PullDatabase(connection);
 					myBusiness = pull.getMyBusinessData();

@@ -1,6 +1,6 @@
 
 public class Item {
-
+	//sets up variables
 	private String name;
 	private String id;
 	private double price;
@@ -11,10 +11,11 @@ public class Item {
 	private String description;
 	private boolean removed;
 	
-
+	//default constructor
 	public Item() {
 	}
 	
+	//constructor for adding new items
 	public Item(String n, double p, int sn, String s, int quantity,
 			int par, String d)
 	{
@@ -29,6 +30,7 @@ public class Item {
 		this.setRemoved(false);
 	}
 	
+	//constructor for editing items
 	public Item(String n, String i, double p, int sn, String s, int q, int par,
 			String d)
 	{
@@ -57,6 +59,7 @@ public class Item {
 		this.setRemoved(r);
 	}
 
+	//the following are get/set methods
 	public void setName(String name) {
 		
 		this.name = name;
@@ -137,13 +140,6 @@ public class Item {
 		this.removed = removed;
 	}
 
-	public String toString(){
-		String string = "";
-		string +=  name + "\t" + id + "\t" + price + "\t" + quantity + "\t" 
-		+ parStock + "\t" + supplier + "\t" + description;
-		return string;
-	}
-
 	public int getSupplierID() {
 		return supplierID;
 	}
@@ -155,5 +151,13 @@ public class Item {
 	public void sellItem(int numberSold)
 	{
 		this.quantity -= numberSold;
+	}
+	
+	//displays Item information
+	public String toString(){
+		String string = "";
+		string +=  name + "\t" + id + "\t" + price + "\t" + quantity + "\t" 
+		+ parStock + "\t" + supplier + "\t" + description;
+		return string;
 	}
 }	

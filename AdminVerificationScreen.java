@@ -15,7 +15,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.WindowConstants;
+
 public class AdminVerificationScreen extends JDialog{
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JPasswordField passwordField;
 	public EmployeeList employees = new EmployeeList();
@@ -49,11 +51,13 @@ public class AdminVerificationScreen extends JDialog{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data) {
+		//gets database information
 		Connection connect = (Connection) data.get(0);
 		employees = (EmployeeList) data.get(2);
 		currentUser = (Employee) data.get(6);
 		admin = employees.get(0);
-				
+			
+		//sets screen properties
 		JDialog adminVeri = new JDialog();
 		adminVeri.setAlwaysOnTop (true);
 		adminVeri.setSize(600,250);
@@ -63,9 +67,8 @@ public class AdminVerificationScreen extends JDialog{
 		adminVeri.setModalityType(ModalityType.DOCUMENT_MODAL);
 		adminVeri.setTitle("Administrator Verification");
 		
-		//temp admin is 24
-		//real admin is 1
-		if (currentUser.getUserId().equals("24")){
+		//admin is 1
+		if (currentUser.getRoleCode()==1){
 			verify = true;
 			System.out.println("is Admin");
 			adminVeri.dispose();
@@ -109,9 +112,9 @@ public class AdminVerificationScreen extends JDialog{
 						passwordString += password[x];
 					}
 					
+					//checks if username match password
 					String response = callUserLoginProcedure(connect, username, passwordString);
-					//change JTest to admin
-					if(response.equals("User successfully logged in") && username.equals("JTest"))
+					if(response.equals("User successfully logged in") && employees.getEmployee(username).getRoleCode()==1)
 					{
 						verify = true;
 						System.out.println("Administrator verified");
@@ -124,6 +127,7 @@ public class AdminVerificationScreen extends JDialog{
 		}
 	}
 	
+	//check if username match password
 	protected String callUserLoginProcedure(Connection connect, String username, String password) 
 	{
 		String response = "";
@@ -161,15 +165,12 @@ public class AdminVerificationScreen extends JDialog{
 		return response;
 	}
 	
+	//warning jdialog message
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
 	    JDialog dialog = optionPane.createDialog("Warning!");
 	    dialog.setAlwaysOnTop(true);
 	    dialog.setVisible(true);
-	}
-
-	public boolean getVerification() {
-		return false;
 	}
 }

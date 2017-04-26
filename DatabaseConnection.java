@@ -1,23 +1,27 @@
 import java.sql.*;
 
 public class DatabaseConnection {
+	//sets up variables
 	public static String username;
 	public static String password;
 	public static String serverName = "t3tisvr.database.windows.net";
 	public static String portNumber = "1433";
 	
+	//default constructor
 	public DatabaseConnection()
 	{
 		DatabaseConnection.username = "t3tiadmin@t3tisvr";
 		DatabaseConnection.password = "T3!admin";
 	}
 	
+	//constructor for username and password
 	public DatabaseConnection(String username, String password)
 	{
 		DatabaseConnection.username = username;
 		DatabaseConnection.password = password;
 	}
 	
+	//constructor for customer use based on different servers, port numbers, usernames, and passwords
 	public DatabaseConnection(String serverName, String portNumber, String username, String password) {
 		DatabaseConnection.serverName = serverName;
 		DatabaseConnection.portNumber = portNumber;

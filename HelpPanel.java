@@ -19,6 +19,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class HelpPanel extends JPanel {
+	//set up variables
 	private static final long serialVersionUID = 1L;
 	private int startLine, lastLine, numLines;
 	// private JTextArea textArea;
@@ -40,6 +41,7 @@ public class HelpPanel extends JPanel {
 		scrollPane.setViewportView(textArea);
 		textArea.setBorder(new LineBorder(new Color(0, 0, 0)));
 
+		//panel for table of contents buttons
 		JPanel tableOfContentsPanel = new JPanel();
 		tableOfContentsPanel.setBounds(0, 0, 772, 178);
 		tableOfContentsPanel.setBorder(new TitledBorder(null, "Help Contents", TitledBorder.LEADING, TitledBorder.TOP,
@@ -47,8 +49,11 @@ public class HelpPanel extends JPanel {
 		this.add(tableOfContentsPanel);
 		tableOfContentsPanel.setLayout(null);
 
+		//buttonGroup for table of contents radio buttons
 		ButtonGroup tableOfContentsGroup = new ButtonGroup();
 
+		//the following contains radio buttons corresponding to the user's guide. These radio button are
+		//hard coded to the user guide line numbers
 		JRadioButton rdbtnMainScreen = new JRadioButton("Main Screen");
 		rdbtnMainScreen.setFont(new Font("Tahoma", Font.BOLD, 18));
 		rdbtnMainScreen.setBounds(14, 22, 204, 19);

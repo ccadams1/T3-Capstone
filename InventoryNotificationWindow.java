@@ -10,7 +10,7 @@ import java.awt.Dialog.ModalityType;
 import java.util.ArrayList;
 
 public class InventoryNotificationWindow extends JDialog{
-
+	//sets up variables
 	private JFrame frame;
 	private Inventory inventory;
 	
@@ -41,8 +41,10 @@ public class InventoryNotificationWindow extends JDialog{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data) {
+		//gets inventory data
 		inventory = (Inventory) data.get(3);
 		
+		//sets screen properties
 		this.setAlwaysOnTop (true);
 		this.setSize(400,350);
 		this.setLocationRelativeTo(null);
@@ -52,6 +54,7 @@ public class InventoryNotificationWindow extends JDialog{
 		this.setTitle("Inventory Notification");
 		this.getContentPane().setLayout(null);
 		
+		//displays low inventory information
 		JTextPane txtpnTheFollowingInventory = new JTextPane();
 		txtpnTheFollowingInventory.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		txtpnTheFollowingInventory.setBackground(UIManager.getColor("menu"));
@@ -71,6 +74,7 @@ public class InventoryNotificationWindow extends JDialog{
 		list += "------------------------------";
 		list += "-------------------------------------------------------\n";
 		int count = 0;
+		//goes through inventory to determine which are lower than 10% par stock
 		for(int x = 0; x < inventory.size(); x++)
 		{
 			if(!inventory.get(x).isRemoved())

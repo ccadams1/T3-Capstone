@@ -33,6 +33,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class InventoryPanel extends JPanel{
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JTextField editItemNameTextField, addItemNameTextField, deleteItemNameTextField;
 	private JTextField addQuantityTextField, editItemIDTextField, deleteItemIDTextField;
@@ -47,15 +48,17 @@ public class InventoryPanel extends JPanel{
 	private Inventory inventory;
 	private SupplierList suppliers;
 	
+	//constructor with necessary parameter
 	public InventoryPanel(ArrayList<Object> data)
 	{
+		//gets database information
 		connect = (Connection) data.get(0);
 		inventory = (Inventory) data.get(3);
 		suppliers = (SupplierList) data.get(5);
 		
+		//updates panel when set to visible
 		this.addComponentListener(new ComponentAdapter(){
-			public void componentShown(ComponentEvent e){
-				
+			public void componentShown(ComponentEvent e){		
 				new InventoryNotificationWindow(data);
 			}
 		});
@@ -141,24 +144,29 @@ public class InventoryPanel extends JPanel{
 		addSupplierNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		addSupplierNameLabel.setBounds(10, 92, 114, 29);
 		addItemRadioPanel.add(addSupplierNameLabel);
-		
+		//combo box for suppliers
 		addSupplierNameComboBox = new JComboBox<String>();
 		addItemRadioPanel.addComponentListener(new ComponentAdapter(){
+			//action listener for visibility
 			public void componentShown(ComponentEvent e){
 				addSupplierNameComboBox.addItem("");
 				addSupplierNameComboBox.setSelectedIndex(0);
+				//lists all suppliers
 				for(int x = 0; x< suppliers.size(); x++)
 				{
 					addSupplierNameComboBox.addItem(suppliers.getSupplier(x).getName());
 				}
+				//for new supplier
 				addSupplierNameComboBox.addItem("New Supplier");
 			}
+			//removes combo box info for update
 			public void componentHidden(ComponentEvent e) {
 				addSupplierNameComboBox.removeAllItems();
 		    }
 		});
 		addSupplierNameComboBox.addItem("");
 		addSupplierNameComboBox.setSelectedIndex(0);
+		//sets the initial combo box
 		for(int x = 0; x< suppliers.size(); x++)
 		{
 			addSupplierNameComboBox.addItem(suppliers.getSupplier(x).getName());
@@ -231,6 +239,7 @@ public class InventoryPanel extends JPanel{
 		supplierNameLabel.setBounds(10, 92, 114, 29);
 		editItemRadioPanel.add(supplierNameLabel);
 				
+		//set up same as previous combo box
 		editSupplierNameComboBox = new JComboBox<String>();
 		editItemRadioPanel.addComponentListener(new ComponentAdapter(){
 			public void componentShown(ComponentEvent e){
@@ -375,6 +384,7 @@ public class InventoryPanel extends JPanel{
 			}
 		});
 		
+		//sets supplier combo boxes to creates a new supplier when new supplier is selected
 		addSupplierNameComboBox.addItemListener(new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -432,6 +442,7 @@ public class InventoryPanel extends JPanel{
 		
 	}
 	
+	//checks for necessary fields to be in place to make a new item object in the database
 	private void addToInventory(){
 		String n = addItemNameTextField.getText();
 		String quantity = addQuantityTextField.getText();
@@ -466,11 +477,14 @@ public class InventoryPanel extends JPanel{
 				}
 			}
 			Item newItem = new Item(n, p, supID, s, q, par, d);
+			//makes a new item object in the database
 			newItem.setId(callAddItemProcedure(connect, newItem)+"");
+			//updates program's inventory
 			inventory.addItem(newItem);
 		}
 	}
 	
+	//checks for necessary fields to be in place to update an existing item object in the database
 	private void editInventory(){
 		String id = editItemIDTextField.getText();
 		String n = editItemNameTextField.getText();
@@ -536,11 +550,13 @@ public class InventoryPanel extends JPanel{
 				{
 					inventory.get(index).setParStock(par);
 				}
+				//updates the item in the database
 				callEditItemProcedure(connect, inventory.get(index));
 			}
 		}
 	}
 	
+	//removes an item from use if required fields are met
 	private void deleteFromInventory(){
 		String n = deleteItemNameTextField.getText();
 		String id = deleteItemIDTextField.getText();
@@ -550,6 +566,7 @@ public class InventoryPanel extends JPanel{
 			if(inventory.get(index).getId().equals(id) && check == true){
 				inventory.get(index).setRemoved(true);
 				callRemoveItemProcedure(connect, inventory.get(index));
+				//updates displayed inventory
 				updateInventoryDisplay(textArea);
 			}
 			else if(!inventory.get(index).getId().equals(id))
@@ -567,10 +584,12 @@ public class InventoryPanel extends JPanel{
 		}
 	}
 	
+	//updates displayed inventory from changes in inventory
 	private void updateInventoryDisplay(JTextArea text){
 		text.setText(inventory.toString());
 	}
 	
+	//add item callable procedure
 	protected int callAddItemProcedure(Connection connect, Item temp) {
 		CallableStatement stmt = null;
 		
@@ -608,6 +627,8 @@ public class InventoryPanel extends JPanel{
 		}
 		return id;
 	}
+	
+	//edit item callable procedure
 	protected void callEditItemProcedure(Connection connect, Item temp){
 		CallableStatement stmt = null;
 		
@@ -641,6 +662,8 @@ public class InventoryPanel extends JPanel{
 			System.out.println(e);
 		}
 	}
+	
+	//remove item callable procedure
 	protected void callRemoveItemProcedure(Connection connect, Item temp){
 		CallableStatement stmt = null;
 		
@@ -675,6 +698,7 @@ public class InventoryPanel extends JPanel{
 		}
 	}
 	
+	//warning Jdialog
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);

@@ -20,6 +20,7 @@ import java.util.Date;
 import java.awt.Dialog.ModalityType;
 
 public class CheckoutButtonScreen extends JDialog{
+	//sets up variables
 	private JFrame frame;
 	private JTextField customerIDTextField;
 	public static CustomerList customers;
@@ -57,9 +58,11 @@ public class CheckoutButtonScreen extends JDialog{
 	 * @param panel_2 
 	 */
 	private void initialize(ArrayList<Object> data, ArrayList<String> checkoutData, ArrayList<CheckoutItemPanel> panelList, POSPanel posPanel, double totalValue) {
+		//gets java.util.date for date transfer to java.sql.date
 		Date date = new Date();
 		
-		JDialog cBS = new JDialog();
+		//sets screen properties
+		CheckoutButtonScreen cBS = this;
 		cBS.setAlwaysOnTop (true);
 		cBS.setSize(400,600);
 		cBS.setLocationRelativeTo(null);
@@ -70,11 +73,13 @@ public class CheckoutButtonScreen extends JDialog{
 		cBS.getContentPane().setLayout(null);
 		cBS.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+		//gets database information
 		customers = (CustomerList) data.get(1);
 
 		cBS.setBounds(100, 100, 450, 450);
 		getContentPane().setLayout(null);
 
+		//labels related to checkout information
 		JLabel lblSubtotal = new JLabel("Subtotal:");
 		lblSubtotal.setBounds(22, 24, 123, 29);
 		cBS.add(lblSubtotal);
@@ -108,6 +113,7 @@ public class CheckoutButtonScreen extends JDialog{
 		lblTotalvalue.setBounds(159, 133, 104, 29);
 		cBS.add(lblTotalvalue);
 		
+		//labels and textFields related to finding existing customer or adding a new customer
 		JLabel lblSearchCustomer = new JLabel("Search Customer ID:");
 		lblSearchCustomer.setBounds(22, 179, 241, 29);
 		cBS.add(lblSearchCustomer);
@@ -125,27 +131,33 @@ public class CheckoutButtonScreen extends JDialog{
 		lblThisCustomer.setBounds(22, 324, 241, 29);
 		cBS.add(lblThisCustomer);
 		
+		//creates new customer
 		JButton btnCreateNewCustomer = new JButton("Create new Customer");
 		btnCreateNewCustomer.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnCreateNewCustomer.setBounds(205, 270, 205, 37);
 		btnCreateNewCustomer.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new AddCustomerScreen(data, thisCustomer, lblThisCustomer);
+				//opens screen to create a new customer
+				new AddCustomerScreen(data, cBS, lblThisCustomer);
 			}
 		});
 		cBS.add(btnCreateNewCustomer);
 		
+		//search for an existing customer
 		JButton btnSearchCustomer = new JButton("Search Customer");
 		btnSearchCustomer.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnSearchCustomer.setBounds(205, 217, 205, 37);
 		btnSearchCustomer.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//resets this customer
 				thisCustomer = null;
 				lblThisCustomer.setText("No customer selected");
+				//searches through customers in data
 				for(int x = 0; x < customers.size(); x++)
 				{
+					//if customer is found, displays customer information
 					if(customers.getCustomer(x).getID().equals(customerIDTextField.getText().trim()))
 					{
 						thisCustomer = customers.getCustomer(x);
@@ -153,6 +165,7 @@ public class CheckoutButtonScreen extends JDialog{
 							+ " " + thisCustomer.getLName());
 					}
 				}
+				//if customer not found, displays no customer found
 				if(thisCustomer == null)
 				{
 					setWarningMsg("No Customer found");
@@ -161,6 +174,7 @@ public class CheckoutButtonScreen extends JDialog{
 		});
 		cBS.add(btnSearchCustomer);
 		
+		//goes to payment screen, if customer is selected
 		JButton btnPayment = new JButton("Pay");
 		btnPayment.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnPayment.setBounds(205, 324, 205, 37);
@@ -180,11 +194,19 @@ public class CheckoutButtonScreen extends JDialog{
 		cBS.add(btnPayment);
 	}
 	
+	//sets thisCustomer
+	public void setCustomer(Customer cus)
+	{
+		thisCustomer = cus;
+	}
+
+	//start payment screen with this customer info and sales info
 	public void setThisCustomer(ArrayList<Object> data, ArrayList<CheckoutItemPanel> panelList, POSPanel posPanel, Customer cus, String total, double totalValue, JDialog cBS, long time)
 	{
 		new PaymentScreen(data, panelList, posPanel, cus, total, totalValue, cBS, time);
 	}
 	
+	//warning jdialog message
 	public void setWarningMsg(String text){
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
 	    JDialog dialog = optionPane.createDialog("Error");

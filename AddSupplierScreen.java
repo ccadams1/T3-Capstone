@@ -19,6 +19,7 @@ import java.awt.Toolkit;
 import javax.swing.JComboBox;
 
 public class AddSupplierScreen extends JDialog {
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JTextField supNameTextField, supAddressTextField, supCityTextField;
 	private JTextField supStateTextField, supZipTextField, supEmailTextField;
@@ -64,8 +65,10 @@ public class AddSupplierScreen extends JDialog {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data, JComboBox<String> list) {
+		//initiates itself
 		JDialog addingSups = new JDialog();
 		
+		//sets screen properties
 		addingSups.setAlwaysOnTop (true);
 		addingSups.setSize(400,450);
 		addingSups.setLocationRelativeTo(null);
@@ -75,9 +78,11 @@ public class AddSupplierScreen extends JDialog {
 		addingSups.setTitle("Add Supplier");
 		addingSups.getContentPane().setLayout(null);
 
+		//gets database information
 		suppliers = (SupplierList) data.get(5);
 		Connection connect = (Connection) data.get(0);
 		
+		//labels and TextFields related to Suppliers
 		JLabel lblUsername = new JLabel("Supplier Name:*");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUsername.setBounds(11, 24, 149, 29);
@@ -158,9 +163,11 @@ public class AddSupplierScreen extends JDialog {
 		supPhoneTextField.setBounds(158, 283, 191, 35);
 		addingSups.add(supPhoneTextField);
 		
+		//add supplier button
 		JButton btnAddSupplier = new JButton("Add Supplier");
 		btnAddSupplier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//gets information from TextFields
 				String supName = supNameTextField.getText().trim();
 				String supAddress = supAddressTextField.getText().trim();
 				String supCity = supCityTextField.getText().trim();
@@ -170,6 +177,7 @@ public class AddSupplierScreen extends JDialog {
 				String supWebsite = supWebsiteTextField.getText().trim();
 				String supPhone = supPhoneTextField.getText().trim();
 				
+				//check for required information
 				if(supName.equals("") || supAddress.equals("") || supCity.equals("") || 
 						supState.equals("") || supZipTextField.getText().equals("")){
 					setWarningMsg("Please enter information in the *required boxes.");
@@ -178,14 +186,18 @@ public class AddSupplierScreen extends JDialog {
 					Supplier temp = new Supplier(supName, supAddress, supCity, supState,
 						supZip, supEmail, supWebsite, supPhone);
 				
+					//checks for administrator approval
 					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
 					if (adminveri.verify)
 					{
 						System.out.println("New Supplier added");
+						//adds supplier to database
 						temp.setID(callAddSupplierProcedure(connect, temp));
+						//adds supplier to program
 						suppliers.addSupplier(temp);
 						added = true;
 						list.removeAllItems();
+						//adds new supplier to comboBox list and selects it 
 						for(int x = 0; x< suppliers.size(); x++)
 						{
 							list.addItem(suppliers.getSupplier(x).getName());
@@ -207,6 +219,7 @@ public class AddSupplierScreen extends JDialog {
 		addingSups.add(btnAddSupplier);
 	}
 	
+	//callable procedure to add supplier to database
 	protected int callAddSupplierProcedure(Connection connect, Supplier temp) {
 		CallableStatement stmt = null;
 			
@@ -251,6 +264,7 @@ public class AddSupplierScreen extends JDialog {
 		return id;
 	}
 	
+	//warning jdialog message
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);

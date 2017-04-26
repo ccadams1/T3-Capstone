@@ -19,6 +19,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 
 public class EditBusinessInformationScreen extends JDialog {
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JTextField bizNameTextField;
 	private JTextField stAddressTextField;
@@ -61,9 +62,11 @@ public class EditBusinessInformationScreen extends JDialog {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data, JFrame mainFrame) {
+		//gets database information
 		info = (MyBusiness) data.get(4);
 		connect = (Connection) data.get(0);
 		
+		//sets up screen properties
 		this.setAlwaysOnTop (true);
 		this.setSize(400,620);
 		this.setLocationRelativeTo(null);
@@ -73,6 +76,7 @@ public class EditBusinessInformationScreen extends JDialog {
 		this.setTitle("Business Information");
 		this.getContentPane().setLayout(null);
 		
+		//MyBusiness specific labels and textFields
 		JLabel lblbusinessName = new JLabel("Business name:");
 		lblbusinessName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblbusinessName.setBounds(11, 24, 149, 29);
@@ -206,13 +210,17 @@ public class EditBusinessInformationScreen extends JDialog {
 		getContentPane().add(ownerLastNameTextField);
 		ownerLastNameTextField.setText(info.getOwnerLastName());
 		
+		//edit MyBusiness information button
 		JButton btnEditBusinessInfo = new JButton("Save Changes");
 		btnEditBusinessInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//check for administrator approval
 				AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
 				if (adminveri.verify)
 				{
+					//sets the main frame's title
 					mainFrame.setTitle("T3 Tracking and Inventory for " + bizNameTextField.getText());
+					//gets textField information
 					info.setBizName(bizNameTextField.getText());
 					info.setStAdress1(stAddressTextField.getText());
 					info.setStAdress2(stAddress2TextField.getText());
@@ -225,6 +233,7 @@ public class EditBusinessInformationScreen extends JDialog {
 					info.setWebsite(websiteTextField.getText());
 					info.setOwnerFirstName(ownerFirstNameTextField.getText());
 					info.setOwnerLastName(ownerLastNameTextField.getText());
+					//updates database
 					callEditMyBusinessProcedure(connect, info);
 					System.out.println("data saved");
 				}
@@ -240,6 +249,7 @@ public class EditBusinessInformationScreen extends JDialog {
 		getContentPane().add(btnEditBusinessInfo);
 	}
 	
+	//edit MyBusiness callable procedure
 	protected void callEditMyBusinessProcedure(Connection connect, MyBusiness business) {
 		CallableStatement stmt = null;
 		
@@ -280,6 +290,7 @@ public class EditBusinessInformationScreen extends JDialog {
 		}
 	}
 	
+	//warning jdialog message
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.PLAIN_MESSAGE);

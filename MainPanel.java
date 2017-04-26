@@ -12,6 +12,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 public class MainPanel extends JPanel{
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JPanel mainPanel;
 	private JPanel buttons, bottomPanel;
@@ -21,8 +22,11 @@ public class MainPanel extends JPanel{
 	public Employee currentUser = new Employee();
 	public LoginScreen login = null;
 
+	//constructor with necessary variable parameters
 	public MainPanel(JMenuBar menuBar, ArrayList<Object> data, JFrame mainFrame, MainApplicationWindow window){
+		//initiates it's panel
 		mainPanel = this;
+		//gets current user data
 		currentUser = (Employee) data.get(6);
 		
 		//Create JFrame and GridLayout
@@ -112,6 +116,7 @@ public class MainPanel extends JPanel{
 		mainPanel.add(bottomPanel);
 	}
 	
+	//returns the panel with the buttons
 	public JPanel getButtons()
 	{
 		return buttons;

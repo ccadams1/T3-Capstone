@@ -21,6 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 
 public class EditUserScreen extends JDialog {
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JTextField userIDTextField;
 	private JTextField userNameTextField;
@@ -59,6 +60,7 @@ public class EditUserScreen extends JDialog {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data) {
+		//sets up screen properties
 		this.setAlwaysOnTop (true);
 		this.setSize(400,600);
 		this.setLocationRelativeTo(null);
@@ -68,9 +70,11 @@ public class EditUserScreen extends JDialog {
 		this.setTitle("Edit User");
 		this.getContentPane().setLayout(null);
 		
+		//gets database information
 		employees = (EmployeeList) data.get(2); 
 		connect = (Connection) data.get(0);
 		
+		//user specific labels and textFields
 		JLabel lblUserId = new JLabel("User ID:*");
 		lblUserId.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUserId.setBounds(10, 17, 149, 29);
@@ -168,9 +172,11 @@ public class EditUserScreen extends JDialog {
 		phoneTextField.setBounds(158, 315, 191, 35);
 		getContentPane().add(phoneTextField);
 		
+		//edit button to change employee information
 		JButton btnEditUser = new JButton("Edit User");
 		btnEditUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//gets texrtField information
 				String userID = userIDTextField.getText();
 				String username = userNameTextField.getText();
 				String password = passwordTextField.getText();
@@ -181,9 +187,11 @@ public class EditUserScreen extends JDialog {
 				String email = emailTextField.getText();
 				String phone = phoneTextField.getText();
 				
+				//requires employee id to change anything
 				if(userID.equals("")){
 					setWarningMsg("Please enter information in the *required boxes.");
 				}
+				//checks password length and match of retyping the password
 				else if(password.length() < 8 && password.length() != 0){
 					setWarningMsg("Password is too small.");
 				}
@@ -194,6 +202,7 @@ public class EditUserScreen extends JDialog {
 					setWarningMsg("Passwords do not match.");
 				}
 				else{
+					//finds specific employee
 					for(int x = 0; x < employees.size(); x++)
 					{
 						if(employees.get(x).getUserId().equals(userID))
@@ -203,9 +212,11 @@ public class EditUserScreen extends JDialog {
 						}
 					}
 
+					//check for administrator approval
 					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
 					if (adminveri.verify)
 					{
+						//checks changes
 						if(!username.equals(""))
 						{
 							selectedUser.setUsername(username);
@@ -235,8 +246,10 @@ public class EditUserScreen extends JDialog {
 						{
 							selectedUser.setPhone(phone);
 						}
+						//changes employee in the database
 						callEditUserProcedure(connect, selectedUser);
 						System.out.println("User edit complete");
+						//updates displayed text
 						updateDisplay();
 					}
 					else
@@ -260,6 +273,7 @@ public class EditUserScreen extends JDialog {
 		textArea.setText(employees.toString());
 	}
 	
+	//edit employee callable procedure
 	protected void callEditUserProcedure(Connection connect, Employee temp) 
 	{
 		CallableStatement stmt = null;
@@ -295,10 +309,12 @@ public class EditUserScreen extends JDialog {
 		}
 	}
 
+	//updates text area
 	private void updateDisplay(){
 		textArea.setText(employees.toString());
 	}
 	
+	//warning jdialog message
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);

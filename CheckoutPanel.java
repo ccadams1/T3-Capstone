@@ -4,6 +4,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class CheckoutPanel extends JPanel {
+	//sets up variables
 	private static double subtotal;
 	private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 	private double subtotalValue = 0.00;
@@ -15,10 +16,12 @@ public class CheckoutPanel extends JPanel {
 	private JLabel disLabel;
 	private JLabel totLabel;
 	
+	//default constructor
 	public CheckoutPanel()
 	{
 	}
 	
+	//standard get/set methods
 	public double getSubtotal()
 	{
 		return subtotal;
@@ -45,6 +48,7 @@ public class CheckoutPanel extends JPanel {
 		this.totLabel = totLabel;
 	}
 	
+	//updates values
 	public void updateLabels()
 	{
 		subtotalValue = getSubtotal();
@@ -57,7 +61,7 @@ public class CheckoutPanel extends JPanel {
 		totLabel.setText(formatter.format(totalValue));
 	}
 
-	
+	//the following sets label to the corresponding value in text form
 	public void addSubtotalLabel(JLabel subtotalValueText) {
 		subLabel = subtotalValueText;
 		this.add(subtotalValueText);
@@ -78,10 +82,12 @@ public class CheckoutPanel extends JPanel {
 		this.add(totalValueText);
 	}
 
+	//increases subtotal
 	public void addToSubtotal(double price) {
 		subtotal += price;
 	}
 
+	//returns total value
 	public double getTotalValue() {
 		return totalValue;
 	}

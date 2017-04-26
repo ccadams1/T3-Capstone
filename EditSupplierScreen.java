@@ -21,6 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 
 public class EditSupplierScreen extends JDialog {
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JTextField supplierIDTextField;
 	private JTextField supplierNameTextField;
@@ -60,6 +61,7 @@ public class EditSupplierScreen extends JDialog {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data) {
+		//sets screen properties
 		this.setAlwaysOnTop (true);
 		this.setSize(400,600);
 		this.setLocationRelativeTo(null);
@@ -69,9 +71,11 @@ public class EditSupplierScreen extends JDialog {
 		this.setTitle("Edit Supplier");
 		this.getContentPane().setLayout(null);
 		
+		//gets database information
 		suppliers = (SupplierList) data.get(5); 
 		Connection connect = (Connection) data.get(0);
 
+		//supplier specific labels and textFields
 		JLabel lblSupplierId = new JLabel("Supplier ID*:");
 		lblSupplierId.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSupplierId.setBounds(10, 17, 149, 29);
@@ -172,10 +176,12 @@ public class EditSupplierScreen extends JDialog {
 		textArea.setEditable(false);
 		textArea.setText(suppliers.toString());
 				
+		//edit supplier button
 		JButton btnEditUser = new JButton("Edit Supplier");
 		btnEditUser.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//gets textField information
 				int supplierId = Integer.parseInt(supplierIDTextField.getText().trim());
 				String supplierName = supplierNameTextField.getText();
 				String address = addressTextField.getText();
@@ -191,7 +197,8 @@ public class EditSupplierScreen extends JDialog {
 				String phone = phoneTextField.getText();
 				String website = websiteTextField.getText();
 				String email = emailTextField.getText();
-
+				
+				//checks for require supplier id to change informatino
 				if(supplierIDTextField.getText().equals("")){	
 					setWarningMsg("Please enter information in the *required boxes.");
 				}else{
@@ -203,10 +210,13 @@ public class EditSupplierScreen extends JDialog {
 						}
 					}
 
+					//checks for administrator approval
 					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
 					if (adminveri.verify)
 					{
+						//edits database
 						callEditSupplierProcedure(connect, selectedSupplier);
+						//changes program data
 						if(!supplierIDTextField.getText().equals(""))
 						{
 							selectedSupplier.setID(supplierId);
@@ -260,6 +270,7 @@ public class EditSupplierScreen extends JDialog {
 		updateDisplay();
 	}
 	
+	//edit supplier callable procedure
 	protected void callEditSupplierProcedure(Connection connect, Supplier temp) {
 		CallableStatement stmt = null;
 			
@@ -299,6 +310,7 @@ public class EditSupplierScreen extends JDialog {
 		}
 	}
 	
+	//updates textArea
 	private void updateDisplay(){
 		String allSuppliers = "";
 		for(int x = 0; x < suppliers.size(); x++)
@@ -308,6 +320,7 @@ public class EditSupplierScreen extends JDialog {
 		textArea.setText(allSuppliers);
 	}
 	
+	//warning jdialog message
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);

@@ -20,6 +20,7 @@ import java.awt.Toolkit;
 import javax.swing.JComboBox;
 
 public class AddUserScreen extends JDialog {
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JTextField usernameTextField;
 	private JTextField passwordTextField;
@@ -56,6 +57,7 @@ public class AddUserScreen extends JDialog {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data) {
+		//sets screen properties
 		this.setAlwaysOnTop (true);
 		this.setSize(400,450);
 		this.setLocationRelativeTo(null);
@@ -65,9 +67,11 @@ public class AddUserScreen extends JDialog {
 		this.setTitle("Add User");
 		this.getContentPane().setLayout(null);
 
+		//sets database information
 		employees = (EmployeeList) data.get(2);
 		Connection connect = (Connection) data.get(0);
 		
+		//labels and textField specific to employee information
 		JLabel lblUsername = new JLabel("Username:*");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUsername.setBounds(11, 24, 149, 29);
@@ -154,9 +158,11 @@ public class AddUserScreen extends JDialog {
 		empRoleComboBox.setBounds(158, 207, 191, 35);
 		getContentPane().add(empRoleComboBox);
 		
+		//button to add new employee
 		JButton btnAddUser = new JButton("Add User");
 		btnAddUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//gets information from textFields
 				String username = usernameTextField.getText();
 				String password = passwordTextField.getText();
 				String retypePassword = retypePasswordTextField.getText();
@@ -166,11 +172,13 @@ public class AddUserScreen extends JDialog {
 				String email = emailTextField.getText();
 				String phone = phoneTextField.getText();
 				
+				//checks for required information
 				if(username.equals("") || password.equals("") || retypePassword.equals("") || 
 						fName.equals("") || lName.equals("") || 
 						userRole.equals("")){
 					setWarningMsg("Please enter information in the *required boxes.");
 				}
+				//checks password size and match
 				else if(password.length() < 8){
 					setWarningMsg("Password is too small.");
 				}
@@ -184,11 +192,14 @@ public class AddUserScreen extends JDialog {
 					Employee temp = new Employee(username, password, fName, lName, userRole,
 							email, phone);
 					
+					//checks for administrator approval
 					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
 					if (adminveri.verify)
 					{
 						System.out.println("New user added");
+						//adds employee to database
 						temp.setUserId(callAddUserProcedure(connect, temp));
+						//adds employee to program
 						employees.addEmployee(temp);
 					}
 					else
@@ -203,7 +214,7 @@ public class AddUserScreen extends JDialog {
 		getContentPane().add(btnAddUser);
 	}
 	
-
+	//callable procedure to add employee
 	protected int callAddUserProcedure(Connection connect, Employee temp) 
 	{
 		CallableStatement stmt = null;
@@ -243,6 +254,7 @@ public class AddUserScreen extends JDialog {
 		return id;
 	}
 
+	//warning jdialog message
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);

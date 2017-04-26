@@ -21,6 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 
 public class EditCustomerScreen extends JDialog {
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JTextField firstNameTextField;
 	private JTextField lastNameTextField;
@@ -60,6 +61,7 @@ public class EditCustomerScreen extends JDialog {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data) {
+		//sets up screen properties
 		this.setAlwaysOnTop (true);
 		this.setSize(400,600);
 		this.setLocationRelativeTo(null);
@@ -69,10 +71,11 @@ public class EditCustomerScreen extends JDialog {
 		this.setTitle("Edit Customer");
 		this.getContentPane().setLayout(null);
 		
+		//get database information
 		customers = (CustomerList) data.get(1); 
 		Connection connect = (Connection) data.get(0);
 		
-
+		//customer specific labels and textFields
 		JLabel lblCustomerId = new JLabel("Customer ID*:");
 		lblCustomerId.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblCustomerId.setBounds(10, 17, 149, 29);
@@ -173,9 +176,11 @@ public class EditCustomerScreen extends JDialog {
 		emailTextField.setText("");
 		getContentPane().add(emailTextField);
 				
+		//edit customer button
 		JButton btnEditCustomer = new JButton("Edit Customer");
 		btnEditCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//gets textField information
 				String customerID = customerIDtextField.getText();
 				String fName = firstNameTextField.getText();
 				String lName = lastNameTextField.getText();
@@ -192,6 +197,7 @@ public class EditCustomerScreen extends JDialog {
 				String phone = phoneTextField.getText();
 				String email = emailTextField.getText();
 				
+				//checks for required customer id
 				if(customerID.equals("")){
 					setWarningMsg("Please enter information in the *required boxes.");
 				}
@@ -204,10 +210,13 @@ public class EditCustomerScreen extends JDialog {
 						}
 					}
 
+					//check for administrator approval
 					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
 					if (adminveri.verify)
 					{
+						//updates database
 						callEditCustomerProcedure(connect, selectedCustomer);
+						//updates program data
 						if(!fName.equals(""))
 						{
 							selectedCustomer.setFName(fName);
@@ -264,6 +273,7 @@ public class EditCustomerScreen extends JDialog {
 		updateDisplay();
 	}
 
+	//edit customer callable procedure
 	protected void callEditCustomerProcedure(Connection connect, Customer temp) {
 		CallableStatement stmt = null;
 				
@@ -302,6 +312,7 @@ public class EditCustomerScreen extends JDialog {
 		}
 	}
 	
+	//updates textArea
 	private void updateDisplay(){
 		String allCustomers = "";
 		for(int x = 0; x < customers.size(); x++)
@@ -311,6 +322,7 @@ public class EditCustomerScreen extends JDialog {
 		textArea.setText(allCustomers);
 	}
 	
+	//warning jdialog message
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);

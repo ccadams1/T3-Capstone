@@ -38,6 +38,7 @@ public class SettingsScreen extends JDialog{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data, JFrame mainFrame) {
+		//sets screen properties
 		this.setAlwaysOnTop (true);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
@@ -47,15 +48,18 @@ public class SettingsScreen extends JDialog{
 		this.setSize(250, 400);
 		this.getContentPane().setLayout(null);
 		
+		//sets up scroll pane
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(0, 0, 264, 315);
 		this.getContentPane().add(scrollPane);
 		
+		//sets up panel in scroll pane
 		JPanel panel = new JPanel();
 		scrollPane.setViewportView(panel);
 		panel.setLayout(new GridLayout(20, 1, 0, 0));
 		
+		//the following are panels that each add buttons for different editing screens
 		JPanel panel_1 = new JPanel();
 		panel.add(panel_1);
 		JButton btnUserInformation = new JButton("Add User");

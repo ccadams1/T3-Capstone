@@ -1,7 +1,7 @@
 import java.io.File;
 
 public class Supplier {
-
+	//sets up variables
 	private String name;
 	private int Id;
 	private String stAddress1;
@@ -17,6 +17,7 @@ public class Supplier {
 	private String fax;
 	private boolean removed;
 	
+	//edit supplier constructor
 	public Supplier (String name, int Id, String stAddress1, String stAddress2, String city, String state, int zipCode,
 			File logo1, String phone1, String phone2, String website, String email, String fax, boolean r)
 	{
@@ -35,6 +36,8 @@ public class Supplier {
 		this.fax = fax;
 		this.setRemoved(r);
 	}
+	
+	//add supplier constructor
 	public Supplier (String name, String stAddress1,String city, String state, int zipCode,
 			String email, String website, String phone1)
 	{
@@ -53,9 +56,11 @@ public class Supplier {
 		this.setRemoved(false);
 	}
 	
+	//default constructor
 	public Supplier() {
 	}
 
+	//the following are get/set methods
 	public void setName (String name)
 	{
 		this.name = name;
@@ -191,6 +196,7 @@ public class Supplier {
 		this.removed = removed;
 	}
 	
+	//displays supplier information
 	public String toString()
 	{
 		String string = "";
@@ -206,7 +212,8 @@ public class Supplier {
 		string += fax + " \t";
 		return string;
 	}
-
+	
+	//displays supplier information in a different way
 	public void print(){
 		String s = "";
 		s += "Supplier Name: " + this.name + "\n";

@@ -12,6 +12,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class SearchPanel extends JPanel{
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private CustomerList customers = new CustomerList();
 	private Inventory inventory = new Inventory();
@@ -37,8 +38,10 @@ public class SearchPanel extends JPanel{
 	private JTextField supplierEmailTextField;
 	private JTextField supplierWebsiteTextField;
 	
+	//constructor for search panel with necessary parameter
 	public SearchPanel(ArrayList<Object> data)
 	{
+		//gets database information
 		customers = (CustomerList) data.get(1);
 		inventory = (Inventory) data.get(3);
 		suppliers = (SupplierList) data.get(5);
@@ -159,6 +162,7 @@ public class SearchPanel extends JPanel{
 		RadioPanel.add(btnSearch);
 	} 
 	
+	//sets up customer specific labels and textfields
 	private JPanel customerRadioPanel()
 	{
 		JPanel customerRadioPanel = new JPanel();
@@ -228,6 +232,7 @@ public class SearchPanel extends JPanel{
 		return customerRadioPanel;
 	}
 
+	//sets up inventory specific labels and textfields
 	private JPanel inventoryRadioPanel()
 	{
 		JPanel inventoryRadioPanel = new JPanel();
@@ -286,6 +291,7 @@ public class SearchPanel extends JPanel{
 		return inventoryRadioPanel;
 	}
 	
+	//sets up supplier specific labels and textfields
 	private JPanel supplierRadioPanel()
 	{
 		JPanel supplierRadioPanel = new JPanel();
@@ -355,6 +361,7 @@ public class SearchPanel extends JPanel{
 		return supplierRadioPanel;
 	}
 
+	//gets results from the search using generic object arrayList for overall use
 	public ArrayList<Object> getResults()
 	{
 		ArrayList<Object> resultList = new ArrayList<Object>();
@@ -398,6 +405,7 @@ public class SearchPanel extends JPanel{
 			boolean containsAddress = false;
 			boolean containsEmail = false;
 			
+			//gets search information
 			String searchFName = customerFirstNameTextField.getText().toLowerCase().trim().replaceAll(" ", "");
 			String searchLName = customerLastNameTextField.getText().toLowerCase().trim().replaceAll(" ", "");
 			String searchID = customerIDTextField.getText().toLowerCase().trim().replaceAll(" ", "");
@@ -540,6 +548,7 @@ public class SearchPanel extends JPanel{
 			boolean containsMax = false;
 			boolean containsSupplierName = false;
 			
+			//gets search information
 			String searchName = inventoryItemNameTextField.getText().toLowerCase().trim().replaceAll(" ", "");
 			String searchID = inventoryItemIDTextField.getText().toLowerCase().trim().replaceAll(" ", "");
 			int searchMin = (int) inventoryMinPriceTextField.getValue();
@@ -688,6 +697,7 @@ public class SearchPanel extends JPanel{
 			boolean containsEmail = false;
 			boolean containsWebsite = false;
 			
+			//gets search information
 			String searchName = supplierNameTextField.getText().toLowerCase().trim().replaceAll(" ", "");
 			String searchID = supplierIDTextField.getText().toLowerCase().trim().replaceAll(" ", "");
 			String searchPhone = supplierPhoneNumberTextField.getText().toLowerCase().trim().replaceAll(" ", "");
@@ -811,6 +821,7 @@ public class SearchPanel extends JPanel{
 		return resultList; 
 	}
 	
+	//displays label based on selected radio button
 	public String textLabel()
 	{
 		String string = "";

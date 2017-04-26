@@ -29,6 +29,7 @@ import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class ReportPanel extends JPanel{
+	//sets up variables
 	private JCheckBox inventoryCheckBox;
 	private JCheckBox salesCheckBox;
 	private JCheckBox businessCheckBox;
@@ -57,8 +58,10 @@ public class ReportPanel extends JPanel{
 	
 	private Connection connect = null;
 	
+	//constructor with necessary parameter
 	public ReportPanel(ArrayList<Object> data)
 	{
+		//gets database information
 		connect = (Connection) data.get(0);
 		MyBusiness businessObj = (MyBusiness) data.get(4);
 		Inventory inventory = (Inventory) data.get(3);
@@ -101,6 +104,7 @@ public class ReportPanel extends JPanel{
 		btnView.setBounds(22, 24, 115, 37);
 		buttonPanel.add(btnView);
 		
+		//enables business buttons if checked
 		businessCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
@@ -133,6 +137,7 @@ public class ReportPanel extends JPanel{
 			}
 		});
 		
+		//enables inventory buttons if checked
 		inventoryCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
@@ -163,6 +168,7 @@ public class ReportPanel extends JPanel{
 			}
 		});
 		
+		//enables sales buttons if checked
 		salesCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
@@ -177,6 +183,7 @@ public class ReportPanel extends JPanel{
 			}
 		});
 		
+		//displays checked information
 		btnView.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
@@ -381,10 +388,12 @@ public class ReportPanel extends JPanel{
 			@Override
 	        public void actionPerformed(ActionEvent arg0) {
 	               
+				//selects location
 		        JFileChooser chooser = new JFileChooser();
 		        int chooserValue = chooser.showSaveDialog(textArea);
 		        if (chooserValue == JFileChooser.APPROVE_OPTION) 
 		        {
+		        	//writes the file
 		            PrintWriter printWriter;
 		            try {
 		            	printWriter = new PrintWriter(chooser.getSelectedFile() + ".rtf");
@@ -423,7 +432,8 @@ public class ReportPanel extends JPanel{
 	        }	
 		});
 	}
-		
+	
+	//set up checkboxes
 	private JPanel reportInfoPanel()
 	{
 		JPanel reportInfoPanel = new JPanel();
@@ -612,6 +622,7 @@ public class ReportPanel extends JPanel{
 		return reportInfoPanel;
 	}
 	
+	//gets sales report string
 	public String getSalesReport() {
 		String reportString = "";
 		ArrayList<Double> report = callReportProcedure(connect);
@@ -620,6 +631,7 @@ public class ReportPanel extends JPanel{
 		return reportString;
 	}
 	
+	//calls the report information view from database
 	protected ArrayList<Double> callReportProcedure(Connection connect) {
 		CallableStatement stmt = null;
 		
@@ -627,6 +639,7 @@ public class ReportPanel extends JPanel{
 		double cashTotal = 0.00;
 		double creditTotal = 0.00;
 		
+		//sets today's date
 		Date date = new Date();
 		String dateString = date.getYear()+1900 + "-";
 		if((date.getMonth()+1)<10)

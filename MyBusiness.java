@@ -1,7 +1,7 @@
 import java.io.File;
 
 public class MyBusiness {
-
+	//sets variables
 	private String bizName;
 	private String stAddress1;
 	private String stAddress2;
@@ -18,14 +18,17 @@ public class MyBusiness {
 	private String ownerFirstName;
 	private String ownerLastName;
 	
+	//default constructor
 	public MyBusiness (){
 	}
 	
+	//constructor for all business information
 	public MyBusiness (String bizName, String stAddress1, String stAddress2, 
 			String city, String state, int zipCode, File logo1, File logo2, 
 			String phone1, String phone2, String website, String email, String fax,
 			String ownerFirstName, String ownerLastName)
 	{
+		//initiates all business information
 		this.bizName = bizName;
 		this.stAddress1 = stAddress1;
 		this.stAddress2 = stAddress2;
@@ -43,6 +46,7 @@ public class MyBusiness {
 		this.ownerLastName = ownerLastName;
 	}
 	
+	//the following are get/set methods
 	public void setBizName (String bizName)
 	{
 		this.bizName = bizName;
@@ -189,9 +193,7 @@ public class MyBusiness {
 	public String getOwnerLastName()
 	{
 		return ownerLastName;
-	}
-
-	
+	}	
 }
 
 

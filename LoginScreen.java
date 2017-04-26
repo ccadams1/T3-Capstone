@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
 public class LoginScreen extends JDialog{
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JPasswordField passwordField;
 	public Employee currentUser = new Employee();
@@ -52,11 +53,14 @@ public class LoginScreen extends JDialog{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data, JFrame frame, MainApplicationWindow window, MainPanel mainPanel) {
+		//gets database data
 		employees = (EmployeeList) data.get(2);
 		currentUser = (Employee) data.get(6);	
 		
+		//creates it's dialog screen
 		JDialog login = new JDialog();
 		
+		//sets up properties
 		login.setAlwaysOnTop (true);
 		login.setSize(600,250);
 		login.setLocationRelativeTo(null);
@@ -64,6 +68,8 @@ public class LoginScreen extends JDialog{
 		login.setModal(true);
 		login.setModalityType(ModalityType.DOCUMENT_MODAL);
 		login.setTitle("User Login");
+		
+		//checks if no user is selected
 		if(currentUser == null){
 			System.out.println("no current user");
 			login.setDefaultCloseOperation(
@@ -75,6 +81,7 @@ public class LoginScreen extends JDialog{
 			});
 		}
 		else{
+			//diplays current user
 			System.out.println("Current user is " + currentUser.getUsername());
 			login.setDefaultCloseOperation(
 					JDialog.DISPOSE_ON_CLOSE);
@@ -118,12 +125,14 @@ public class LoginScreen extends JDialog{
 					passwordString += password[x];
 				}
 				
+				//check for a successful login
 				String response = callUserLoginProcedure(data, username, passwordString);
 				if(response.equals("User successfully logged in"))
 				{
 					currentUser = employees.getEmployee(username);
 					frame.setJMenuBar(null);
 					frame.setJMenuBar(window.NavigationMenu(data, currentUser));
+					//checks user's role and disables/enables abilities accordingly 
 					checkRole(mainPanel, currentUser);
 					frame.revalidate();
 					mainPanel.revalidate();
@@ -135,6 +144,7 @@ public class LoginScreen extends JDialog{
 		login.add(loginPanel);
 	}
 	
+	//check user role to disables/enables abilities accordingly 
 	protected void checkRole(MainPanel mainPanel, Employee currentUser) {
 		int userRole = currentUser.getRoleCode();
 		if(userRole==3||userRole==5)
@@ -167,8 +177,10 @@ public class LoginScreen extends JDialog{
 		}
 	}
 
+	//checks login username and password with the database
 	protected String callUserLoginProcedure(ArrayList<Object> data, String username, String password) 
 	{
+		//gets database information
 		Connection connect = (Connection) data.get(0);
 		EmployeeList employees = (EmployeeList) data.get(2);
 		Employee currentUser = (Employee) data.get(6);
@@ -220,6 +232,7 @@ public class LoginScreen extends JDialog{
 		return response;
 	}
 	
+	//warning dialog message
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);

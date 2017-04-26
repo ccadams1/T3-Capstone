@@ -23,6 +23,7 @@ import java.awt.Dialog.ModalityType;
 import javax.swing.JScrollPane;
 
 public class RemoveUserScreen extends JDialog {
+	//sets up variables
 	private static final long serialVersionUID = 1L;
 	private JTextField usernameTextField;
 	private JTextField userIDTextField;
@@ -57,6 +58,7 @@ public class RemoveUserScreen extends JDialog {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(ArrayList<Object> data) {
+		//sets properties
 		this.setAlwaysOnTop (true);
 		this.setSize(450,300);
 		this.setLocationRelativeTo(null);
@@ -66,9 +68,11 @@ public class RemoveUserScreen extends JDialog {
 		this.setTitle("Remove User");
 		this.getContentPane().setLayout(null);
 		
+		//gets database information
 		employees = (EmployeeList) data.get(2);
 		connect = (Connection) data.get(0);
 		
+		//sets labels and text fields to get specific user
 		JLabel usernameLabel = new JLabel("Username:");
 		usernameLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		usernameLabel.setBounds(10, 11, 84, 29);
@@ -89,6 +93,7 @@ public class RemoveUserScreen extends JDialog {
 		this.getContentPane().add(userIDTextField);
 		userIDTextField.setColumns(10);
 		
+		//removes user if data matches and confirmation checkbox is selected
 		JButton btnRemoveUser = new JButton("Remove User");
 		btnRemoveUser.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnRemoveUser.addActionListener(new ActionListener() {
@@ -107,6 +112,7 @@ public class RemoveUserScreen extends JDialog {
 					}
 				}
 				if (removedUser!=null){
+					//check for administrator approval
 					AdminVerificationScreen adminveri = new AdminVerificationScreen(data);
 					if (adminveri.verify)
 					{
@@ -137,6 +143,7 @@ public class RemoveUserScreen extends JDialog {
 		updateDisplay();
 	}
 	
+	//callable procedure to remove employee activity from database
 	protected void callRemoveUserProcedure(Connection connect, Employee temp) 
 	{
 		CallableStatement stmt = null;
@@ -172,6 +179,7 @@ public class RemoveUserScreen extends JDialog {
 		}
 	}
 	
+	//warning jdialog message
 	public void setWarningMsg(String text){
 	    Toolkit.getDefaultToolkit().beep();
 	    JOptionPane optionPane = new JOptionPane(text,JOptionPane.WARNING_MESSAGE);
@@ -180,6 +188,7 @@ public class RemoveUserScreen extends JDialog {
 	    dialog.setVisible(true);
 	}
 	
+	//updates displayed text
 	private void updateDisplay(){
 		textPane.setText(employees.toString());
 		textPane.revalidate();

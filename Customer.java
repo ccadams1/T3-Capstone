@@ -1,5 +1,5 @@
 public class Customer {
-
+	//sets up variables
 	private String ID;
 	private String fName;
 	private String lName;
@@ -14,6 +14,7 @@ public class Customer {
 	private String email;
 	private String fax;
 	
+	//edit customer constructor
 	public Customer (String ID, String fName, String lName, String stAddress1, String stAddress2, String city, String state, int zipCode,
 			String phone1, String phone2, String email, String fax)
 	{
@@ -31,6 +32,7 @@ public class Customer {
 		this.fax = fax;
 	}
 
+	//add customer constructor
 	public Customer(String firstName, String lastName, String cusAddress, String cusCity, String cusState,
 			int cusZip, String cusPhone, String cusEmail) {
 		this.ID = null;
@@ -46,9 +48,11 @@ public class Customer {
 		this.email = cusEmail;
 		this.fax = "";	}
 
+	//default constructor
 	public Customer() {
 	}
 
+	//tje following are get/set methods
 	public void setID (String ID)
 	{
 		this.ID = ID;
@@ -175,6 +179,7 @@ public class Customer {
 		this.website = website;
 	}
 	
+	//displays customer information
 	public String toString()
 	{
 		String string = "";
@@ -192,6 +197,7 @@ public class Customer {
 		return string;
 	}
 	
+	//different way to display customer information
 	public void print(){
 		String s = "";
 		s += "Customer Name: " + this.fName + " " + this.lName + "\n";

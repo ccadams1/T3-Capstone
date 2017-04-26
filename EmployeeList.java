@@ -2,20 +2,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeList {
-	
+	//sets up variables
 	private ArrayList<Employee> employees = new ArrayList<Employee>();
 	
+	//default constructor
 	public EmployeeList(){
 	}
 	
+	//populates employee arrayLsit
 	public void populate(ArrayList<Employee> employees){
 		this.employees = employees;
 	}
 	
+	//returns arrayList size
 	public int size(){
 		return employees.size();
 	}
 	
+	//check the employee based on username
 	public boolean checkForUsername(String user){
 		for(int i = 0; i < employees.size(); i++){
 			if(employees.get(i).getUsername().equals(user)){
@@ -25,6 +29,7 @@ public class EmployeeList {
 		return false;
 	}
 	
+	//check the employee based on first and last name
 	public boolean checkForUser(String fName, String lName){
 		for(int i = 0; i < employees.size(); i++){
 			if(employees.get(i).getFirstName().equals(fName)){
@@ -36,15 +41,18 @@ public class EmployeeList {
 		return false;
 	}
 	
+	//gets employee based on index
 	public Employee get(int index){
 		return employees.get(index);
 	}
 	
+	//add employee to arrayList
 	public void addEmployee(Employee emp){
 		emp.print();
 		employees.add(emp);
 	}
 	
+	//gets employee based on username
 	public Employee getEmployee(String uName){
 		Employee temp = new Employee();
 		for(int i = 0; i < employees.size(); i++){
@@ -55,6 +63,7 @@ public class EmployeeList {
 		return temp;
 	}
 	
+	//gets employee based on first and last name
 	public Employee getEmployee(String fName, String lName){
 		Employee temp = new Employee();
 		for(int i = 0; i < employees.size(); i++){
@@ -67,6 +76,7 @@ public class EmployeeList {
 		return temp;
 	}
 	
+	//displays all employees
 	public String toString(){
 		String s = "";
 		s += "UserID\t" + "Username\t" + "First Name\t" + 
@@ -88,6 +98,7 @@ public class EmployeeList {
 		return s;
 	}
 
+	//returns the employee arrayList
 	public List<Employee> getList() {
 		return employees;
 	}

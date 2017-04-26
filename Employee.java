@@ -1,11 +1,12 @@
 public class Employee {
-	
+	//sets up variables
 	private String username, password, firstName;
 	private String lastName, email, uRole;
 	private String userID, phone, address;
 	private int roleCode;
 	private boolean removed;
 		
+	//default constructor
 	public Employee(){
 		
 	}
@@ -38,6 +39,7 @@ public class Employee {
 		this.removed = false;
 	}
 	
+	//the following are get/set methods
 	public String getUserId(){
 		return this.userID;
 	}
@@ -190,6 +192,7 @@ public class Employee {
 		return roleCode;
 	}
 	
+	//displays employee information
 	public void print(){
 		String s = "";
 		s += "Username: " + this.username + "\n";

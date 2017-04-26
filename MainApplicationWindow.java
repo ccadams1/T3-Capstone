@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.CardLayout;
 
 public class MainApplicationWindow extends JFrame{
+	//sets up variables
 	private static ArrayList<Object> allData = new ArrayList<Object>();
 	private static Connection connection = null;
 	private static CustomerList customers = new CustomerList();
@@ -38,18 +39,24 @@ public class MainApplicationWindow extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {					
+					//finds the database connection file in the lib folder on the desktop
 					File desktop = new File(System.getProperty("user.home"), "/Desktop");
 					Scanner input = new Scanner(new File(desktop, "/T3 Tracking and Inventory_lib/DatabaseInfo.txt"));
+					//uses file to get necessary database info
 					DatabaseConnection database = new DatabaseConnection(input.nextLine(),input.nextLine(),
 						input.nextLine(),input.nextLine());
+					//gets connection
 					connection = database.getConnection();
+					//gives connection to pull database info
 					PullDatabase pull = new PullDatabase(connection);
+					//populates program with database info
 					myBusiness = pull.getMyBusinessData();
 					customers.populate(pull.getCustomers());
 					employees.populate(pull.getEmployees());
 					inventory.populate(pull.getInventory());
 					suppliers.populate(pull.getSuppliers());
 					currentUser = null;
+					//the following is test data for programmer initial setup
 					/*Item test1 = new Item("Test name", "123", 12.50, 1, "New guys", 5, 50, "first item for testing", false);
 					Item test2 = new Item("Another Test", "456", 9.00, 2, "More New guys", 10, 50, "second item for testing", false);
 					inventory.addItem(test1);
@@ -69,6 +76,7 @@ public class MainApplicationWindow extends JFrame{
 					suppliers.addSupplier(company1);
 					suppliers.addSupplier(company2);
 					*/
+					//adds database info to the data arrayList
 					allData.add(connection); //get(0)
 					allData.add(customers);//get(1)
 					allData.add(employees);//get(2)
@@ -76,7 +84,9 @@ public class MainApplicationWindow extends JFrame{
 					allData.add(myBusiness);//get(4)
 					allData.add(suppliers);//get(5)
 					allData.add(currentUser);//get(6)
+					//gives the data to the program
 					window = new MainApplicationWindow(allData);
+					//sets up a mandatory login
 					LoginScreen login = new LoginScreen(allData, frame, window, (MainPanel) mainPanel);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
@@ -164,6 +174,7 @@ public class MainApplicationWindow extends JFrame{
 	
 	public static JMenuBar NavigationMenu(ArrayList<Object> data, Employee currentUser)
 	{
+		//sets current user role
 		int userRole = 0;
 		if(currentUser != null)
 		{
@@ -285,10 +296,12 @@ public class MainApplicationWindow extends JFrame{
 		otherScreen5.setVisible(false);
 	}
 
+	//gets connection
 	public static Connection getConnection() {
 		return connection;
 	}
 
+	//sets connection to the main program window
 	public static void setConnection(Connection connection) {
 		MainApplicationWindow.connection = connection;
 	}
